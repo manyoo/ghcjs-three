@@ -19,6 +19,7 @@ library
                      , GHCJS.Three.Vector
                      , GHCJS.Three.Object3D
                      , GHCJS.Three.Camera
+                     , GHCJS.Three.Color
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
   default-language:    Haskell2010
