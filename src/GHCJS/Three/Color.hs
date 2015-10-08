@@ -1,11 +1,18 @@
 {-# LANGUAGE JavaScriptFFI #-}
-module GHCJS.Three.Color where
+module GHCJS.Three.Color (
+    Color(..), mkColor, IsColor(..), HasColor(..)
+    ) where
 
 import GHCJS.Types
 import GHCJS.Three.Monad
 
-data CColor a
-type Color a = Object (CColor a)
+newtype Color a = Color {
+    getObject :: Object a
+}
+
+instance ThreeJSRef (Color a) where
+    toJSRef = toJSRef . getObject
+    fromJSRef = Color . fromJSRef
 
 type Red = Double
 type Green = Double
@@ -13,47 +20,74 @@ type Blue = Double
 
 -- | create a new color object with r,g,b values
 foreign import javascript unsafe "new window.THREE.Color($1, $2, $3)"
-    mkColor :: Red -> Green -> Blue -> Three (Color ())
+    thr_mkColor :: Red -> Green -> Blue -> Three JSRef
+
+mkColor :: Red -> Green -> Blue -> Three (Color ())
+mkColor r g b = fromJSRef <$> thr_mkColor r g b
 
 -- | get red
 foreign import javascript safe "($1).r"
-    red :: Color a -> Red
+    thr_red :: JSRef -> Red
 
 -- | set red
 foreign import javascript unsafe "($2).r = $1"
-    setRed :: Red -> Color a -> Three ()
+    thr_setRed :: Red -> JSRef -> Three ()
 
 -- | get green
 foreign import javascript safe "($1).g"
-    green :: Color a -> Green
+    thr_green :: JSRef -> Green
 
 -- | set green
 foreign import javascript unsafe "($2).g = $1"
-    setGreen :: Green -> Color a -> Three ()
+    thr_setGreen :: Green -> JSRef -> Three ()
 
 -- | get blue
 foreign import javascript safe "($1).b"
-    blue :: Color a -> Blue
+    thr_blue :: JSRef -> Blue
 
 -- | set blue
 foreign import javascript unsafe "($2).b = $1"
-    setBlue :: Blue -> Color a -> Three ()
+    thr_setBlue :: Blue -> JSRef -> Three ()
 
 -- | setRGB
 foreign import javascript unsafe "($4).setRGB($1, $2, $3)"
-    setRGB :: Red -> Green -> Blue -> Color a -> Three ()
+    thr_setRGB :: Red -> Green -> Blue -> JSRef -> Three ()
 
 -- generic function to get/set color for objects
 foreign import javascript safe "($1).color"
-    objColor :: JSRef -> Color ()
+    thr_color :: JSRef -> JSRef
 
 foreign import javascript unsafe "($2).color = $1"
-    objSetColor :: Color a -> JSRef -> Three ()
+    thr_setColor :: JSRef -> JSRef -> Three ()
 
-class IsJSRef o =>  HasColor o where
+class ThreeJSRef c => IsColor c where
+    red :: c -> Red
+    red = thr_red . toJSRef
+
+    setRed :: Red -> c -> Three ()
+    setRed r c = thr_setRed r $ toJSRef c
+
+    green :: c -> Green
+    green = thr_green . toJSRef
+
+    setGreen :: Green -> c -> Three ()
+    setGreen g c = thr_setGreen g $ toJSRef c
+
+    blue :: c -> Blue
+    blue = thr_blue . toJSRef
+
+    setBlue :: Blue -> c -> Three ()
+    setBlue b c = thr_setBlue b $ toJSRef c
+
+    setRGB :: Red -> Green -> Blue -> c -> Three ()
+    setRGB r g b c = thr_setRGB r g b $ toJSRef c
+
+instance IsColor (Color a)
+
+class ThreeJSRef o =>  HasColor o where
     -- | get color object
     color :: o -> Color ()
-    color = objColor . jsref
+    color = fromJSRef . thr_color . toJSRef
 
     setColor :: Color a -> o -> Three ()
-    setColor c o = objSetColor c (jsref o)
+    setColor c o = thr_setColor (toJSRef c) (toJSRef o)

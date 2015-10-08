@@ -21,6 +21,8 @@ library
                      , GHCJS.Three.Camera
                      , GHCJS.Three.Color
                      , GHCJS.Three.Disposable
+                     , GHCJS.Three.HasXYZ
+                     , GHCJS.Three.Euler
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
   default-language:    Haskell2010
