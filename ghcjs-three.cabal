@@ -27,6 +27,7 @@ library
                      , GHCJS.Three.HasChildren
                      , GHCJS.Three.Light
                      , GHCJS.Three.Material
+                     , GHCJS.Three.Visible
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
   default-language:    Haskell2010

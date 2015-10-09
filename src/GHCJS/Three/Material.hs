@@ -11,6 +11,7 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 import GHCJS.Three.Color
 import GHCJS.Three.Disposable
+import GHCJS.Three.Visible
 
 -- | generic Material
 newtype Material = Material {
@@ -57,6 +58,7 @@ class ThreeJSRef m => IsMaterial m where
 instance IsMaterial Material
 instance IsMaterial m => HasColor m
 instance IsMaterial m => Disposable m
+instance IsMaterial m => Visible m
 
 -- | MeshBasicMaterial
 newtype MeshBasicMaterial = MeshBasicMaterial {
