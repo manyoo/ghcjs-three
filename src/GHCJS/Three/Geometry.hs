@@ -1,6 +1,7 @@
 {-# LANGUAGE JavaScriptFFI #-}
 module GHCJS.Three.Geometry (
-
+    Geometry(..), mkGeometry,
+    IsGeometry(..)
     ) where
 
 import GHCJS.Types
