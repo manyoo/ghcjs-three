@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Camera (
     Camera(..), IsCamera(..),
     OrthographicCamera(..), IsOrthoGraphicCamera(..),
@@ -13,13 +13,7 @@ import GHCJS.Three.Object3D
 
 newtype Camera = Camera {
     getObject3D :: Object3D
-}
-
-instance ThreeJSRef Camera where
-    toJSRef = toJSRef . getObject3D
-    fromJSRef = Camera . fromJSRef
-
-instance IsObject3D Camera
+} deriving (ThreeJSRef, IsObject3D)
 
 -- | common camera operations
 -- | get near
@@ -60,15 +54,10 @@ class (ThreeJSRef c) => IsCamera c where
 
 instance IsCamera Camera
 
-
 -- | OrthographicCamera definition and APIs
 newtype OrthographicCamera = OrthographicCamera {
     getOrthoCamera :: Camera
-}
-
-instance ThreeJSRef OrthographicCamera where
-    toJSRef = toJSRef . getOrthoCamera
-    fromJSRef = OrthographicCamera . fromJSRef
+} deriving (ThreeJSRef, IsObject3D, IsCamera)
 
 type Left = Double
 type Right = Double
@@ -144,17 +133,12 @@ class (ThreeJSRef c) => IsOrthoGraphicCamera c where
     setBottom :: Bottom -> c -> Three ()
     setBottom b c = thr_setBottom b $ toJSRef c
 
-instance IsCamera OrthographicCamera
 instance IsOrthoGraphicCamera OrthographicCamera
 
 -- | PerspectiveCamera definition and APIs
 newtype PerspectiveCamera = PerspectiveCamera {
     getPersCamera :: Camera
-}
-
-instance ThreeJSRef PerspectiveCamera where
-    toJSRef = toJSRef . getPersCamera
-    fromJSRef = PerspectiveCamera . fromJSRef
+} deriving (ThreeJSRef, IsObject3D, IsCamera)
 
 type Fov = Double
 type Aspect = Double
@@ -206,5 +190,4 @@ class (ThreeJSRef c) => IsPerspectiveCamera c where
     setLens :: FocalLength -> FrameSize -> c -> Three ()
     setLens l s c = thr_setLens l s $ toJSRef c
 
-instance IsCamera PerspectiveCamera
 instance IsPerspectiveCamera PerspectiveCamera

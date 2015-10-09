@@ -5,14 +5,14 @@ module GHCJS.Three.Mesh (
 
 import GHCJS.Types
 import GHCJS.Three.Monad
-import GHCJS.Three.Object3D (Object3D)
+import GHCJS.Three.Object3D (Object3D, IsObject3D)
 import GHCJS.Three.Geometry
 import GHCJS.Three.Material
 
 -- | Mesh type definition
 newtype Mesh = Mesh {
     getObject3D :: Object3D
-} deriving (ThreeJSRef)
+} deriving (ThreeJSRef, IsObject3D)
 
 foreign import javascript unsafe "new window.THREE.Mesh($1, $2)"
     thr_mkMesh :: JSRef -> JSRef -> Three JSRef

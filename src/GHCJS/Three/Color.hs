@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Color (
     Color(..), mkColor, IsColor(..), HasColor(..)
     ) where
@@ -8,11 +8,7 @@ import GHCJS.Three.Monad
 
 newtype Color = Color {
     getObject :: Object
-}
-
-instance ThreeJSRef Color where
-    toJSRef = toJSRef . getObject
-    fromJSRef = Color . fromJSRef
+} deriving (ThreeJSRef)
 
 type Red = Double
 type Green = Double

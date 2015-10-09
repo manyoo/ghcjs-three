@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
     IsGeometry(..)
@@ -15,11 +15,7 @@ import GHCJS.Three.Disposable
 
 newtype Geometry = Geometry {
     getObject :: Object
-}
-
-instance ThreeJSRef Geometry where
-    toJSRef = toJSRef . getObject
-    fromJSRef = Geometry . fromJSRef
+} deriving (ThreeJSRef)
 
 foreign import javascript unsafe "new window.THREE.Geometry()"
     thr_mkGeometry :: Three JSRef

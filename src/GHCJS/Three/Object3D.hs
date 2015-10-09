@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Object3D (
     Object3D(..),
     mkObject3D,
@@ -13,11 +13,7 @@ import GHCJS.Three.Vector hiding (getObject)
 
 newtype Object3D = Object3D {
     getObject :: Object
-}
-
-instance ThreeJSRef Object3D where
-    toJSRef = toJSRef . getObject
-    fromJSRef = Object3D . fromJSRef
+} deriving (ThreeJSRef)
 
 
 -- | create a new Object3D object

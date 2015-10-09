@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, FlexibleInstances, UndecidableInstances #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Material (
     Material(..), mkMaterial, IsMaterial(..),
     MeshBasicMaterial(..), mkMeshBasicMaterial,
@@ -56,16 +56,14 @@ class ThreeJSRef m => IsMaterial m where
     setTransparent t m = thr_setTransparent t $ toJSRef m
 
 instance IsMaterial Material
-instance IsMaterial m => HasColor m
-instance IsMaterial m => Disposable m
-instance IsMaterial m => Visible m
+instance HasColor Material
+instance Disposable Material
+instance Visible Material
 
 -- | MeshBasicMaterial
 newtype MeshBasicMaterial = MeshBasicMaterial {
     basicMaterial :: Material
-} deriving (ThreeJSRef)
-
-instance IsMaterial MeshBasicMaterial
+} deriving (ThreeJSRef, IsMaterial, HasColor, Disposable, Visible)
 
 foreign import javascript unsafe "new window.THREE.MeshBasicMaterial()"
     thr_mkMeshBasicMaterial :: Three JSRef
@@ -77,9 +75,7 @@ mkMeshBasicMaterial = fromJSRef <$> thr_mkMeshBasicMaterial
 -- | MeshNormalMaterial
 newtype MeshNormalMaterial = MeshNormalMaterial {
     normalMaterial :: Material
-} deriving (ThreeJSRef)
-
-instance IsMaterial MeshNormalMaterial
+} deriving (ThreeJSRef, IsMaterial, HasColor, Disposable, Visible)
 
 foreign import javascript unsafe "new window.THREE.MeshNormalMaterial()"
     thr_mkMeshNormalMaterial :: Three JSRef
@@ -91,9 +87,7 @@ mkMeshNormalMaterial = fromJSRef <$> thr_mkMeshNormalMaterial
 -- | MeshLambertMaterial
 newtype MeshLambertMaterial = MeshLambertMaterial {
     lambertMaterial :: Material
-} deriving (ThreeJSRef)
-
-instance IsMaterial MeshLambertMaterial
+} deriving (ThreeJSRef, IsMaterial, HasColor, Disposable, Visible)
 
 foreign import javascript unsafe "new window.THREE.MeshLambertMaterial()"
     thr_mkMeshLambertMaterial :: Three JSRef
@@ -105,9 +99,7 @@ mkMeshLambertMaterial = fromJSRef <$> thr_mkMeshLambertMaterial
 -- | MeshPhongMaterial
 newtype MeshPhongMaterial = MeshPhongMaterial {
     phongMaterial :: Material
-} deriving (ThreeJSRef)
-
-instance IsMaterial MeshPhongMaterial
+} deriving (ThreeJSRef, IsMaterial, HasColor, Disposable, Visible)
 
 foreign import javascript unsafe "new window.THREE.MeshPhongMaterial()"
     thr_mkMeshPhongMaterial :: Three JSRef

@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Vector (
     TVector(..), Vector(..), NormalVector(..),
     mkVector, toTVector
@@ -17,11 +17,7 @@ data TVector = TVector {
 
 newtype Vector = Vector {
     getObject :: Object
-}
-
-instance ThreeJSRef Vector where
-    toJSRef = toJSRef . getObject
-    fromJSRef = Vector . fromJSRef
+} deriving (ThreeJSRef)
 
 -- normal vector is a special type of vector
 type NormalVector = Vector

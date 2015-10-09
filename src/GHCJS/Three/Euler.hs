@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, TypeSynonymInstances #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Euler (
     Euler(..), mkEuler
     ) where
@@ -11,10 +11,7 @@ import GHCJS.Three.HasXYZ
 
 newtype Euler = Euler {
     getObject :: Object
-}
-instance ThreeJSRef Euler where
-    toJSRef = toJSRef . getObject
-    fromJSRef = Euler . fromJSRef
+} deriving (ThreeJSRef)
 
 instance HasXYZ Euler
 
