@@ -12,7 +12,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
 
 newtype Camera = Camera {
-    getObject3D :: Object3D
+    cameraObject3D :: Object3D
 } deriving (ThreeJSRef, IsObject3D)
 
 -- | common camera operations

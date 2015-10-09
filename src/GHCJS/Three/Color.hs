@@ -7,7 +7,7 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 
 newtype Color = Color {
-    getObject :: Object
+    colorObject :: Object
 } deriving (ThreeJSRef)
 
 type Red = Double

@@ -11,7 +11,7 @@ import GHCJS.Three.Material
 
 -- | Mesh type definition
 newtype Mesh = Mesh {
-    getObject3D :: Object3D
+    meshObject3D :: Object3D
 } deriving (ThreeJSRef, IsObject3D)
 
 foreign import javascript unsafe "new window.THREE.Mesh($1, $2)"

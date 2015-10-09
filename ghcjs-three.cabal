@@ -32,9 +32,11 @@ library
                      , GHCJS.Three.Raycaster
                      , GHCJS.Three.Scene
                      , GHCJS.Three.WebGLRenderer
+                     , GHCJS.Three
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
                      , ghcjs-dom
+                     , transformers
   default-language:    Haskell2010
 
 test-suite ghcjs-three-test

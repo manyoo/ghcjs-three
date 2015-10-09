@@ -9,7 +9,7 @@ import GHCJS.Three.Object3D
 
 -- | scene definition
 newtype Scene = Scene {
-    getObject3D :: Object3D
+    sceneObject3D :: Object3D
 } deriving (ThreeJSRef, IsObject3D)
 
 foreign import javascript unsafe "new window.Three.Scene()"

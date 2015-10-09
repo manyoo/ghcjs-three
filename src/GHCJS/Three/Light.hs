@@ -12,7 +12,7 @@ import GHCJS.Three.Object3D
 -- | generic Light
 
 newtype Light = Light {
-    getObject3D :: Object3D
+    lightObject3D :: Object3D
 } deriving (ThreeJSRef, IsObject3D)
 
 foreign import javascript unsafe "new window.THREE.Light($1)"

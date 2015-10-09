@@ -16,7 +16,7 @@ data TVector = TVector {
 } deriving (Show, Eq)
 
 newtype Vector = Vector {
-    getObject :: Object
+    vectorObject :: Object
 } deriving (ThreeJSRef)
 
 -- normal vector is a special type of vector

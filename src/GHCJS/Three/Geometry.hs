@@ -14,7 +14,7 @@ import GHCJS.Three.Vector hiding (getObject)
 import GHCJS.Three.Disposable
 
 newtype Geometry = Geometry {
-    getObject :: Object
+    geometryObject :: Object
 } deriving (ThreeJSRef)
 
 foreign import javascript unsafe "new window.THREE.Geometry()"

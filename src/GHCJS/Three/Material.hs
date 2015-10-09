@@ -15,7 +15,7 @@ import GHCJS.Three.Visible
 
 -- | generic Material
 newtype Material = Material {
-    getObject :: Object
+    materialObject :: Object
 } deriving (ThreeJSRef)
 
 foreign import javascript unsafe "new window.THREE.Material()"

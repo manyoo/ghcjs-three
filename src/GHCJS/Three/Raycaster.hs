@@ -13,7 +13,7 @@ import GHCJS.Three.Vector
 
 -- | Raycaster definition
 newtype Raycaster = Raycaster {
-    getObject :: Object
+    raycasterObject :: Object
 } deriving (ThreeJSRef)
 
 -- | RaycastResult definition

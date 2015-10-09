@@ -10,7 +10,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.HasXYZ
 
 newtype Euler = Euler {
-    getObject :: Object
+    eulerObject :: Object
 } deriving (ThreeJSRef)
 
 instance HasXYZ Euler

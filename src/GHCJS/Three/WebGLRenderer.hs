@@ -14,7 +14,7 @@ import GHCJS.Three.Camera
 
 -- | webgl renderer definition
 newtype WebGLRenderer = WebGLRenderer {
-    getObject :: Object
+    glRendererObject :: Object
 } deriving (ThreeJSRef)
 
 foreign import javascript unsafe "new window.THREE.WebGLRenderer()"
