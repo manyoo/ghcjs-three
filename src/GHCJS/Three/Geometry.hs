@@ -1,7 +1,8 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
-    IsGeometry(..)
+    IsGeometry(..),
+    BoxGeometry(..), mkBoxGeometry
     ) where
 
 import GHCJS.Types
@@ -42,3 +43,15 @@ class ThreeJSRef g => IsGeometry g where
 
 instance IsGeometry Geometry
 instance Disposable Geometry
+
+-- | BoxGeometry
+newtype BoxGeometry = BoxGeometry {
+    getGeometry :: Geometry
+} deriving (ThreeJSRef, IsGeometry, Disposable)
+
+foreign import javascript unsafe "new window.THREE.BoxGeometry($1, $2, $3)"
+    thr_mkBoxGeometry :: Double -> Double -> Double -> Three JSRef
+
+-- | create a new BoxGeometry
+mkBoxGeometry :: Double -> Double -> Double -> Three BoxGeometry
+mkBoxGeometry w h d = fromJSRef <$> thr_mkBoxGeometry w h d
