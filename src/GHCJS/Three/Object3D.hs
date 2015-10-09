@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, MultiParamTypeClasses #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, MultiParamTypeClasses, FlexibleInstances #-}
 module GHCJS.Three.Object3D (
     Object3D(..),
     mkObject3D,
@@ -16,7 +16,7 @@ newtype Object3D = Object3D {
     getObject :: Object
 } deriving (ThreeJSRef)
 
-instance HasChildren Object3D Object3D
+instance (IsObject3D p, IsObject3D c) => HasChildren p c
 
 -- | create a new Object3D object
 foreign import javascript unsafe "new window.THREE.Object3D()"
