@@ -6,11 +6,11 @@ module GHCJS.Three.Color (
 import GHCJS.Types
 import GHCJS.Three.Monad
 
-newtype Color a = Color {
-    getObject :: Object a
+newtype Color = Color {
+    getObject :: Object
 }
 
-instance ThreeJSRef (Color a) where
+instance ThreeJSRef Color where
     toJSRef = toJSRef . getObject
     fromJSRef = Color . fromJSRef
 
@@ -22,7 +22,7 @@ type Blue = Double
 foreign import javascript unsafe "new window.THREE.Color($1, $2, $3)"
     thr_mkColor :: Red -> Green -> Blue -> Three JSRef
 
-mkColor :: Red -> Green -> Blue -> Three (Color ())
+mkColor :: Red -> Green -> Blue -> Three Color
 mkColor r g b = fromJSRef <$> thr_mkColor r g b
 
 -- | get red
@@ -82,12 +82,12 @@ class ThreeJSRef c => IsColor c where
     setRGB :: Red -> Green -> Blue -> c -> Three ()
     setRGB r g b c = thr_setRGB r g b $ toJSRef c
 
-instance IsColor (Color a)
+instance IsColor Color
 
 class ThreeJSRef o =>  HasColor o where
     -- | get color object
-    color :: o -> Color ()
+    color :: o -> Color
     color = fromJSRef . thr_color . toJSRef
 
-    setColor :: Color a -> o -> Three ()
+    setColor :: Color -> o -> Three ()
     setColor c o = thr_setColor (toJSRef c) (toJSRef o)

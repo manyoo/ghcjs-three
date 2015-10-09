@@ -8,12 +8,12 @@ import GHCJS.Types
 
 type Three = IO
 
-newtype Object a = Object JSRef
+newtype Object = Object JSRef
 
 class ThreeJSRef o where
     toJSRef :: o -> JSRef
     fromJSRef :: JSRef -> o
 
-instance ThreeJSRef (Object a) where
+instance ThreeJSRef Object where
     toJSRef (Object r) = r
     fromJSRef = Object

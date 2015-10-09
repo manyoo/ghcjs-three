@@ -11,11 +11,11 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector hiding (getObject)
 
-newtype Object3D a = Object3D {
-    getObject :: Object a
+newtype Object3D = Object3D {
+    getObject :: Object
 }
 
-instance ThreeJSRef (Object3D a) where
+instance ThreeJSRef Object3D where
     toJSRef = toJSRef . getObject
     fromJSRef = Object3D . fromJSRef
 
@@ -24,7 +24,7 @@ instance ThreeJSRef (Object3D a) where
 foreign import javascript unsafe "new window.THREE.Object3D()"
     thr_mkObject3D :: Three JSRef
 
-mkObject3D :: Three (Object3D a)
+mkObject3D :: Three Object3D
 mkObject3D = fromJSRef <$> thr_mkObject3D
 
 -- | get scale
@@ -88,28 +88,28 @@ foreign import javascript unsafe "($3).rotateOnAxis($1, $2)"
 
 class (ThreeJSRef o) => IsObject3D o where
     -- functions with default implementations
-    scale :: o -> Vector ()
+    scale :: o -> Vector
     scale = fromJSRef . thr_scale . toJSRef
 
-    setScale :: Vector a -> o -> Three ()
+    setScale :: Vector -> o -> Three ()
     setScale s o = thr_setScale (toJSRef s) (toJSRef o)
 
-    position :: o -> Vector ()
+    position :: o -> Vector
     position = fromJSRef . thr_position . toJSRef
 
-    setPosition :: Vector a -> o -> Three ()
+    setPosition :: Vector -> o -> Three ()
     setPosition p o = thr_setPosition (toJSRef p) (toJSRef o)
 
-    rotation :: o -> Vector ()
+    rotation :: o -> Vector
     rotation = fromJSRef . thr_rotation . toJSRef
 
-    setRotation :: Vector a -> o -> Three ()
+    setRotation :: Vector -> o -> Three ()
     setRotation r o = thr_setRotation (toJSRef r) (toJSRef o)
 
-    up :: o -> Vector ()
+    up :: o -> Vector
     up = fromJSRef . thr_up . toJSRef
 
-    setUp :: Vector a -> o -> Three ()
+    setUp :: Vector -> o -> Three ()
     setUp u o = thr_setUp (toJSRef u) (toJSRef o)
 
     translateX :: Double -> o -> Three ()
@@ -121,19 +121,19 @@ class (ThreeJSRef o) => IsObject3D o where
     translateZ :: Double -> o -> Three ()
     translateZ z o = thr_translateZ z $ toJSRef o
 
-    translateOnAxis :: NormalVector a -> Double -> o -> Three ()
+    translateOnAxis :: NormalVector -> Double -> o -> Three ()
     translateOnAxis v d o = thr_translateOnAxis (toJSRef v) d (toJSRef o)
 
-    localToWorld :: Vector a -> o -> Three (Vector ())
+    localToWorld :: Vector -> o -> Three Vector
     localToWorld v o = fromJSRef <$> thr_localToWorld (toJSRef v) (toJSRef o)
 
-    worldToLocal :: Vector a -> o -> Three (Vector ())
+    worldToLocal :: Vector -> o -> Three Vector
     worldToLocal v o = fromJSRef <$> thr_worldToLocal (toJSRef v) (toJSRef o)
 
-    lookAt :: Vector a -> o -> Three ()
+    lookAt :: Vector -> o -> Three ()
     lookAt v o = thr_lookAt (toJSRef v) (toJSRef o)
 
-    rotateOnAxis :: NormalVector a -> Double -> o -> Three ()
+    rotateOnAxis :: NormalVector -> Double -> o -> Three ()
     rotateOnAxis v d o = thr_rotateOnAxis (toJSRef v) d (toJSRef o)
 
-instance IsObject3D (Object3D a)
+instance IsObject3D Object3D

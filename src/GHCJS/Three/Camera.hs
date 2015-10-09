@@ -11,15 +11,15 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
 
-newtype Camera a = Camera {
-    getObject3D :: Object3D a
+newtype Camera = Camera {
+    getObject3D :: Object3D
 }
 
-instance ThreeJSRef (Camera a) where
+instance ThreeJSRef Camera where
     toJSRef = toJSRef . getObject3D
     fromJSRef = Camera . fromJSRef
 
-instance IsObject3D (Camera a)
+instance IsObject3D Camera
 
 -- | common camera operations
 -- | get near
@@ -58,15 +58,15 @@ class (ThreeJSRef c) => IsCamera c where
     updateProjectionMatrix :: c -> Three ()
     updateProjectionMatrix = thr_updateProjectionMatrix . toJSRef
 
-instance IsCamera (Camera a)
+instance IsCamera Camera
 
 
 -- | OrthographicCamera definition and APIs
-newtype OrthographicCamera a = OrthographicCamera {
-    getOrthoCamera :: Camera a
+newtype OrthographicCamera = OrthographicCamera {
+    getOrthoCamera :: Camera
 }
 
-instance ThreeJSRef (OrthographicCamera a) where
+instance ThreeJSRef OrthographicCamera where
     toJSRef = toJSRef . getOrthoCamera
     fromJSRef = OrthographicCamera . fromJSRef
 
@@ -82,7 +82,7 @@ type Far = Double
 foreign import javascript unsafe "new window.THREE.OrthographicCamera($1, $2, $3, $4, $5, $6)"
     thr_mkOrthographicCamera :: Left -> Right -> Top -> Bottom -> Near -> Far -> Three JSRef
 
-mkOrthographicCamera :: Left -> Right -> Top -> Bottom -> Near -> Far -> Three (OrthographicCamera ())
+mkOrthographicCamera :: Left -> Right -> Top -> Bottom -> Near -> Far -> Three OrthographicCamera
 mkOrthographicCamera l r t b n f = fromJSRef <$> thr_mkOrthographicCamera l r t b n f
 
 -- | orthographic camera operations
@@ -144,15 +144,15 @@ class (ThreeJSRef c) => IsOrthoGraphicCamera c where
     setBottom :: Bottom -> c -> Three ()
     setBottom b c = thr_setBottom b $ toJSRef c
 
-instance IsCamera (OrthographicCamera a)
-instance IsOrthoGraphicCamera (OrthographicCamera a)
+instance IsCamera OrthographicCamera
+instance IsOrthoGraphicCamera OrthographicCamera
 
 -- | PerspectiveCamera definition and APIs
-newtype PerspectiveCamera a = PerspectiveCamera {
-    getPersCamera :: Camera a
+newtype PerspectiveCamera = PerspectiveCamera {
+    getPersCamera :: Camera
 }
 
-instance ThreeJSRef (PerspectiveCamera a) where
+instance ThreeJSRef PerspectiveCamera where
     toJSRef = toJSRef . getPersCamera
     fromJSRef = PerspectiveCamera . fromJSRef
 
@@ -165,7 +165,7 @@ type FrameSize = Double
 foreign import javascript unsafe "new window.THREE.PerspectiveCamera($1, $2, $3, $4)"
     thr_mkPerspectiveCamera :: Fov -> Aspect -> Near -> Far -> Three JSRef
 
-mkPerspectiveCamera :: Fov -> Aspect -> Near -> Far -> Three (PerspectiveCamera ())
+mkPerspectiveCamera :: Fov -> Aspect -> Near -> Far -> Three PerspectiveCamera
 mkPerspectiveCamera fov a n f = fromJSRef <$> thr_mkPerspectiveCamera fov a n f
 
 -- | perspective camera operations
@@ -206,5 +206,5 @@ class (ThreeJSRef c) => IsPerspectiveCamera c where
     setLens :: FocalLength -> FrameSize -> c -> Three ()
     setLens l s c = thr_setLens l s $ toJSRef c
 
-instance IsCamera (PerspectiveCamera a)
-instance IsPerspectiveCamera (PerspectiveCamera a)
+instance IsCamera PerspectiveCamera
+instance IsPerspectiveCamera PerspectiveCamera
