@@ -25,6 +25,7 @@ library
                      , GHCJS.Three.Euler
                      , GHCJS.Three.Geometry
                      , GHCJS.Three.HasChildren
+                     , GHCJS.Three.Light
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
   default-language:    Haskell2010
