@@ -30,6 +30,7 @@ library
                      , GHCJS.Three.Visible
                      , GHCJS.Three.Mesh
                      , GHCJS.Three.Raycaster
+                     , GHCJS.Three.Scene
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
   default-language:    Haskell2010
