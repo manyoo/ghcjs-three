@@ -41,6 +41,15 @@ library
   js-sources:        three/three.js
   ghcjs-options:     -O2
 
+executable ghcjs-three-demo
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  build-depends:       base
+                     , ghcjs-three
+                     , ghcjs-dom
+  default-language:    Haskell2010
+  ghcjs-options:      -O2 -DGHCJS_BROWSER
+
 test-suite ghcjs-three-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
