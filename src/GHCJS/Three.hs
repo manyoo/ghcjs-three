@@ -45,4 +45,4 @@ import GHCJS.Foreign.Callback (OnBlocked(..))
 import Control.Monad.IO.Class
 
 runThree :: MonadIO m => Three () -> m ()
-runThree t = liftIO $ inAnimationFrame ContinueAsync t >> return ()
+runThree t = liftIO $ inAnimationFrame ThrowWouldBlock t >> return ()
