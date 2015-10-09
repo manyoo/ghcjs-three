@@ -12,7 +12,7 @@ newtype Scene = Scene {
     sceneObject3D :: Object3D
 } deriving (ThreeJSRef, IsObject3D)
 
-foreign import javascript unsafe "new window.Three.Scene()"
+foreign import javascript unsafe "new window.THREE.Scene()"
     thr_mkScene :: Three JSRef
 
 -- | create a new Scene
