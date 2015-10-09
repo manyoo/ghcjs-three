@@ -15,9 +15,9 @@ foreign import javascript unsafe "($2).remove($1)"
 
 class (ThreeJSRef p, ThreeJSRef c) => HasChildren p c where
     -- | add child object c to parent p
-    add :: c -> p -> Three ()
-    add c p = thr_add (toJSRef c) (toJSRef p)
+    addChild :: c -> p -> Three ()
+    addChild c p = thr_add (toJSRef c) (toJSRef p)
 
     -- | remove child object c from parent p
-    remove :: c -> p -> Three ()
-    remove c p = thr_remove (toJSRef c) (toJSRef p)
+    removeChild :: c -> p -> Three ()
+    removeChild c p = thr_remove (toJSRef c) (toJSRef p)

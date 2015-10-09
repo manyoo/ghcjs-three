@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, MultiParamTypeClasses #-}
 module GHCJS.Three.Object3D (
     Object3D(..),
     mkObject3D,
@@ -9,12 +9,14 @@ import Data.Functor
 import GHCJS.Types
 
 import GHCJS.Three.Monad
-import GHCJS.Three.Vector hiding (getObject)
+import GHCJS.Three.Vector
+import GHCJS.Three.HasChildren
 
 newtype Object3D = Object3D {
     getObject :: Object
 } deriving (ThreeJSRef)
 
+instance HasChildren Object3D Object3D
 
 -- | create a new Object3D object
 foreign import javascript unsafe "new window.THREE.Object3D()"
