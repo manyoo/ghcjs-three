@@ -8,6 +8,7 @@ import Data.Functor
 import GHCJS.Types
 
 import GHCJS.Three.Monad
+import GHCJS.Three.HasXYZ
 
 data TVector = TVector {
     x :: Double,
@@ -18,6 +19,8 @@ data TVector = TVector {
 newtype Vector = Vector {
     vectorObject :: Object
 } deriving (ThreeJSRef)
+
+instance HasXYZ Vector
 
 -- normal vector is a special type of vector
 type NormalVector = Vector
