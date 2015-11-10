@@ -47,4 +47,4 @@ import Control.Monad.IO.Class
 -- | runThree will run a Three () action in each AnimationFrame and register for the next one
 -- so it will rerender the scene on every animation frame.
 runThree :: MonadIO m => Three () -> m ()
-runThree t = liftIO $ inAnimationFrame ThrowWouldBlock (t >> runThree t) >> return ()
+runThree t = liftIO $ inAnimationFrame ThrowWouldBlock (\ft -> t >> runThree t) >> return ()
