@@ -16,30 +16,30 @@ import GHCJS.Three.Disposable
 
 newtype Geometry = Geometry {
     geometryObject :: Object
-} deriving (ThreeJSRef)
+} deriving (ThreeJSVal)
 
 foreign import javascript unsafe "new window.THREE.Geometry()"
-    thr_mkGeometry :: Three JSRef
+    thr_mkGeometry :: Three JSVal
 
 mkGeometry :: Three Geometry
-mkGeometry = fromJSRef <$> thr_mkGeometry
+mkGeometry = fromJSVal <$> thr_mkGeometry
 
 -- | get vertices
 foreign import javascript safe "($1).vertices"
-    thr_vertices :: JSRef -> JSRef
+    thr_vertices :: JSVal -> JSVal
 
 -- | set vertices
 foreign import javascript unsafe "($2).vertices = $1"
-    thr_setVectices :: JSRef -> JSRef -> Three ()
+    thr_setVectices :: JSVal -> JSVal -> Three ()
 
--- use Marshal.fromJSRef to convert JSRef -> IO (Maybe [JSRef])
--- and Marshal.toJSRef to convert [JSRef] -> IO JSRef
-class ThreeJSRef g => IsGeometry g where
+-- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
+-- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
+class ThreeJSVal g => IsGeometry g where
     vertices :: g -> Three [Vector]
-    vertices g = (map fromJSRef . fromMaybe []) <$> (Marshal.fromJSRef $ thr_vertices $ toJSRef g)
+    vertices g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
 
     setVertices :: [Vector] -> g -> Three ()
-    setVertices vs g = (Marshal.toJSRef $ map toJSRef vs) >>= flip thr_setVectices (toJSRef g)
+    setVertices vs g = (Marshal.toJSVal $ map toJSVal vs) >>= flip thr_setVectices (toJSVal g)
 
 instance IsGeometry Geometry
 instance Disposable Geometry
@@ -47,11 +47,11 @@ instance Disposable Geometry
 -- | BoxGeometry
 newtype BoxGeometry = BoxGeometry {
     getGeometry :: Geometry
-} deriving (ThreeJSRef, IsGeometry, Disposable)
+} deriving (ThreeJSVal, IsGeometry, Disposable)
 
 foreign import javascript unsafe "new window.THREE.BoxGeometry($1, $2, $3)"
-    thr_mkBoxGeometry :: Double -> Double -> Double -> Three JSRef
+    thr_mkBoxGeometry :: Double -> Double -> Double -> Three JSVal
 
 -- | create a new BoxGeometry
 mkBoxGeometry :: Double -> Double -> Double -> Three BoxGeometry
-mkBoxGeometry w h d = fromJSRef <$> thr_mkBoxGeometry w h d
+mkBoxGeometry w h d = fromJSVal <$> thr_mkBoxGeometry w h d

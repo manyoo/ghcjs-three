@@ -12,42 +12,42 @@ import GHCJS.Three.Material
 -- | Mesh type definition
 newtype Mesh = Mesh {
     meshObject3D :: Object3D
-} deriving (ThreeJSRef, IsObject3D)
+} deriving (ThreeJSVal, IsObject3D)
 
 foreign import javascript unsafe "new window.THREE.Mesh($1, $2)"
-    thr_mkMesh :: JSRef -> JSRef -> Three JSRef
+    thr_mkMesh :: JSVal -> JSVal -> Three JSVal
 
 -- | create a new Mesh with Geometry and Material
 mkMesh :: (IsGeometry g, IsMaterial m) => g -> m -> Three Mesh
-mkMesh g m = fromJSRef <$> thr_mkMesh (toJSRef g) (toJSRef m)
+mkMesh g m = fromJSVal <$> thr_mkMesh (toJSVal g) (toJSVal m)
 
 foreign import javascript safe "($1).geometry"
-    thr_geometry :: JSRef -> JSRef
+    thr_geometry :: JSVal -> JSVal
 
 foreign import javascript unsafe "($2).geometry = $1"
-    thr_setGeometry :: JSRef -> JSRef -> Three ()
+    thr_setGeometry :: JSVal -> JSVal -> Three ()
 
 foreign import javascript safe "($1).material"
-    thr_material :: JSRef -> JSRef
+    thr_material :: JSVal -> JSVal
 
 foreign import javascript unsafe "($2).material = $1"
-    thr_setMaterial :: JSRef -> JSRef -> Three ()
+    thr_setMaterial :: JSVal -> JSVal -> Three ()
 
-class ThreeJSRef m => IsMesh m where
+class ThreeJSVal m => IsMesh m where
     -- | get geometry
     geometry :: m -> Geometry
-    geometry = fromJSRef . thr_geometry . toJSRef
+    geometry = fromJSVal . thr_geometry . toJSVal
 
     -- | set geometry
     setGeometry :: IsGeometry g => g -> m -> Three ()
-    setGeometry g m = thr_setGeometry (toJSRef g) (toJSRef m)
+    setGeometry g m = thr_setGeometry (toJSVal g) (toJSVal m)
 
     -- | get material
     material :: m -> Material
-    material = fromJSRef . thr_material . toJSRef
+    material = fromJSVal . thr_material . toJSVal
 
     -- | set material
     setMaterial :: IsMaterial mat => mat -> m -> Three ()
-    setMaterial mat m = thr_setMaterial (toJSRef mat) (toJSRef m)
+    setMaterial mat m = thr_setMaterial (toJSVal mat) (toJSVal m)
 
 instance IsMesh Mesh

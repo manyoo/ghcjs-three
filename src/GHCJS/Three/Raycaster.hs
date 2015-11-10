@@ -14,48 +14,48 @@ import GHCJS.Three.Vector
 -- | Raycaster definition
 newtype Raycaster = Raycaster {
     raycasterObject :: Object
-} deriving (ThreeJSRef)
+} deriving (ThreeJSVal)
 
 -- | RaycastResult definition
 newtype RaycastResult = RaycastResult {
     rcResObject :: Object
-} deriving (ThreeJSRef)
+} deriving (ThreeJSVal)
 
 foreign import javascript unsafe "($2).intersectObject($1)"
-    thr_intersectObject :: JSRef -> JSRef -> Three JSRef
+    thr_intersectObject :: JSVal -> JSVal -> Three JSVal
 foreign import javascript unsafe "($2).intersectObjects($1)"
-    thr_intersectObjects :: JSRef -> JSRef -> Three JSRef
+    thr_intersectObjects :: JSVal -> JSVal -> Three JSVal
 
-getResult :: Maybe [JSRef] -> [RaycastResult]
-getResult = map fromJSRef . fromMaybe []
+getResult :: Maybe [JSVal] -> [RaycastResult]
+getResult = map fromJSVal . fromMaybe []
 
 -- | intersectObject
 intersectObject :: IsObject3D obj => obj -> Raycaster -> Three [RaycastResult]
-intersectObject obj ray = getResult <$> (thr_intersectObject (toJSRef obj) (toJSRef ray) >>= Marshal.fromJSRef)
+intersectObject obj ray = getResult <$> (thr_intersectObject (toJSVal obj) (toJSVal ray) >>= Marshal.fromJSVal)
 
 -- | intersectObjects
 intersectObjects :: IsObject3D obj => [obj] -> Raycaster -> Three [RaycastResult]
-intersectObjects objs ray = getResult <$> ((Marshal.toJSRef $ map toJSRef objs) >>= flip thr_intersectObjects (toJSRef ray) >>= Marshal.fromJSRef)
+intersectObjects objs ray = getResult <$> ((Marshal.toJSVal $ map toJSVal objs) >>= flip thr_intersectObjects (toJSVal ray) >>= Marshal.fromJSVal)
 
 -- | create a new raycaster
 foreign import javascript unsafe "new window.THREE.Raycaster($1, $2, $3, $4)"
-    thr_mkRaycaster :: JSRef -> JSRef -> Double -> Double -> Three JSRef
+    thr_mkRaycaster :: JSVal -> JSVal -> Double -> Double -> Three JSVal
 
 type Near = Double
 type Far = Double
 
 mkRaycaster :: Vector -> Vector -> Near -> Far -> Three Raycaster
-mkRaycaster origin direction near far = fromJSRef <$> thr_mkRaycaster (toJSRef origin) (toJSRef direction) near far
+mkRaycaster origin direction near far = fromJSVal <$> thr_mkRaycaster (toJSVal origin) (toJSVal direction) near far
 
 -- | get raycast point and object from the result
 foreign import javascript safe "($1).point"
-    thr_point :: JSRef -> JSRef
+    thr_point :: JSVal -> JSVal
 
 foreign import javascript safe "($1).object"
-    thr_object :: JSRef -> JSRef
+    thr_object :: JSVal -> JSVal
 
 getCastPoint :: RaycastResult -> Vector
-getCastPoint = fromJSRef <$> thr_point . toJSRef
+getCastPoint = fromJSVal <$> thr_point . toJSVal
 
 getCastObject :: RaycastResult -> Object3D
-getCastObject = fromJSRef <$> thr_object . toJSRef
+getCastObject = fromJSVal <$> thr_object . toJSVal

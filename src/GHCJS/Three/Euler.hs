@@ -11,12 +11,12 @@ import GHCJS.Three.HasXYZ
 
 newtype Euler = Euler {
     eulerObject :: Object
-} deriving (ThreeJSRef)
+} deriving (ThreeJSVal)
 
 instance HasXYZ Euler
 
 foreign import javascript unsafe "new window.THREE.Euler($1, $2, $3, $4)"
-    thr_mkEuler :: Double -> Double -> Double -> JSString -> Three JSRef
+    thr_mkEuler :: Double -> Double -> Double -> JSString -> Three JSVal
 
 mkEuler :: Double -> Double -> Double -> JSString -> Three Euler
-mkEuler x y z o = fromJSRef <$> thr_mkEuler x y z o
+mkEuler x y z o = fromJSVal <$> thr_mkEuler x y z o

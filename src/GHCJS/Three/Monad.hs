@@ -1,19 +1,19 @@
 module GHCJS.Three.Monad (
     Three,
     Object(..),
-    ThreeJSRef(..)
+    ThreeJSVal(..)
 ) where
 
 import GHCJS.Types
 
 type Three = IO
 
-newtype Object = Object JSRef
+newtype Object = Object JSVal
 
-class ThreeJSRef o where
-    toJSRef :: o -> JSRef
-    fromJSRef :: JSRef -> o
+class ThreeJSVal o where
+    toJSVal :: o -> JSVal
+    fromJSVal :: JSVal -> o
 
-instance ThreeJSRef Object where
-    toJSRef (Object r) = r
-    fromJSRef = Object
+instance ThreeJSVal Object where
+    toJSVal (Object r) = r
+    fromJSVal = Object

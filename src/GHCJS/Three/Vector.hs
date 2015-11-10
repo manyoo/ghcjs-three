@@ -18,7 +18,7 @@ data TVector = TVector {
 
 newtype Vector = Vector {
     vectorObject :: Object
-} deriving (ThreeJSRef)
+} deriving (ThreeJSVal)
 
 instance HasXYZ Vector
 
@@ -26,27 +26,27 @@ instance HasXYZ Vector
 type NormalVector = Vector
 
 foreign import javascript unsafe "new window.THREE.Vector3($1, $2, $3)"
-    thr_mkVector :: Double -> Double -> Double -> Three JSRef
+    thr_mkVector :: Double -> Double -> Double -> Three JSVal
 
 foreign import javascript safe "($1).x"
-    thr_vecX :: JSRef -> Double
+    thr_vecX :: JSVal -> Double
 foreign import javascript safe "($1).y"
-    thr_vecY :: JSRef -> Double
+    thr_vecY :: JSVal -> Double
 foreign import javascript safe "($1).z"
-    thr_vecZ :: JSRef -> Double
+    thr_vecZ :: JSVal -> Double
 
 vecX :: Vector -> Double
-vecX = thr_vecX . toJSRef
+vecX = thr_vecX . toJSVal
 
 vecY :: Vector -> Double
-vecY = thr_vecY . toJSRef
+vecY = thr_vecY . toJSVal
 
 vecZ :: Vector -> Double
-vecZ = thr_vecZ . toJSRef
+vecZ = thr_vecZ . toJSVal
 
 -- | create a new Three Vector3 object with TVector
 mkVector :: TVector -> Three Vector
-mkVector v = fromJSRef <$> thr_mkVector (x v) (y v) (z v)
+mkVector v = fromJSVal <$> thr_mkVector (x v) (y v) (z v)
 
 -- | convert Vector to TVector
 toTVector :: Vector -> TVector

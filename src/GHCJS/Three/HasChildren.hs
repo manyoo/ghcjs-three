@@ -8,16 +8,16 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 
 foreign import javascript unsafe "($2).add($1)"
-    thr_add :: JSRef -> JSRef -> Three ()
+    thr_add :: JSVal -> JSVal -> Three ()
 
 foreign import javascript unsafe "($2).remove($1)"
-    thr_remove :: JSRef -> JSRef -> Three ()
+    thr_remove :: JSVal -> JSVal -> Three ()
 
-class (ThreeJSRef p, ThreeJSRef c) => HasChildren p c where
+class (ThreeJSVal p, ThreeJSVal c) => HasChildren p c where
     -- | add child object c to parent p
     add :: c -> p -> Three ()
-    add c p = thr_add (toJSRef c) (toJSRef p)
+    add c p = thr_add (toJSVal c) (toJSVal p)
 
     -- | remove child object c from parent p
     remove :: c -> p -> Three ()
-    remove c p = thr_remove (toJSRef c) (toJSRef p)
+    remove c p = thr_remove (toJSVal c) (toJSVal p)

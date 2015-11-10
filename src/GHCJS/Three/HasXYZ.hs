@@ -7,38 +7,38 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 
 foreign import javascript safe "($1).x"
-    objGetX :: JSRef -> Double
+    objGetX :: JSVal -> Double
 
 foreign import javascript unsafe "($2).x = $1"
-    objSetX :: Double -> JSRef -> Three ()
+    objSetX :: Double -> JSVal -> Three ()
 
 foreign import javascript safe "($1).y"
-    objGetY :: JSRef -> Double
+    objGetY :: JSVal -> Double
 
 foreign import javascript unsafe "($2).y = $1"
-    objSetY :: Double -> JSRef -> Three ()
+    objSetY :: Double -> JSVal -> Three ()
 
 foreign import javascript safe "($1).z"
-    objGetZ :: JSRef -> Double
+    objGetZ :: JSVal -> Double
 
 foreign import javascript unsafe "($2).z = $1"
-    objSetZ :: Double -> JSRef -> Three ()
+    objSetZ :: Double -> JSVal -> Three ()
 
-class (ThreeJSRef o) => HasXYZ o where
+class (ThreeJSVal o) => HasXYZ o where
     getX :: o -> Double
-    getX = objGetX . toJSRef
+    getX = objGetX . toJSVal
 
     setX :: Double -> o -> Three ()
-    setX x o = objSetX x (toJSRef o)
+    setX x o = objSetX x (toJSVal o)
 
     getY :: o -> Double
-    getY = objGetY . toJSRef
+    getY = objGetY . toJSVal
 
     setY :: Double -> o -> Three ()
-    setY y o = objSetY y (toJSRef o)
+    setY y o = objSetY y (toJSVal o)
 
     getZ :: o -> Double
-    getZ = objGetZ . toJSRef
+    getZ = objGetZ . toJSVal
 
     setZ :: Double -> o -> Three ()
-    setZ z o = objSetZ z (toJSRef o)
+    setZ z o = objSetZ z (toJSVal o)

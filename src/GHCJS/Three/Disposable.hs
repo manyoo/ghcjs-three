@@ -6,8 +6,8 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 
 foreign import javascript unsafe "($1).dispose()"
-    oDispose :: JSRef -> Three ()
+    oDispose :: JSVal -> Three ()
 
-class (ThreeJSRef o) => Disposable o where
+class (ThreeJSVal o) => Disposable o where
     dispose :: o -> Three ()
-    dispose = oDispose . toJSRef
+    dispose = oDispose . toJSVal

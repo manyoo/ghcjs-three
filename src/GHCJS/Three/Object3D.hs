@@ -14,124 +14,124 @@ import GHCJS.Three.HasChildren
 
 newtype Object3D = Object3D {
     getObject :: Object
-} deriving (ThreeJSRef)
+} deriving (ThreeJSVal)
 
 instance (IsObject3D p, IsObject3D c) => HasChildren p c
 
 -- | create a new Object3D object
 foreign import javascript unsafe "new window.THREE.Object3D()"
-    thr_mkObject3D :: Three JSRef
+    thr_mkObject3D :: Three JSVal
 
 mkObject3D :: Three Object3D
-mkObject3D = fromJSRef <$> thr_mkObject3D
+mkObject3D = fromJSVal <$> thr_mkObject3D
 
 -- | get scale
 foreign import javascript safe "($1).scale"
-    thr_scale :: JSRef -> JSRef
+    thr_scale :: JSVal -> JSVal
 
 -- | set scale
 foreign import javascript unsafe "($2).scale = $1"
-    thr_setScale :: JSRef -> JSRef -> Three ()
+    thr_setScale :: JSVal -> JSVal -> Three ()
 
 -- | get position
 foreign import javascript safe "($1).position"
-    thr_position :: JSRef -> JSRef
+    thr_position :: JSVal -> JSVal
 
 -- | set position
 foreign import javascript unsafe "($2).position = $1"
-    thr_setPosition :: JSRef -> JSRef -> Three ()
+    thr_setPosition :: JSVal -> JSVal -> Three ()
 
 -- | get rotation
 foreign import javascript safe "($1).rotation"
-    thr_rotation :: JSRef -> JSRef
+    thr_rotation :: JSVal -> JSVal
 
 -- | set rotation
 foreign import javascript unsafe "($2).rotation = $1"
-    thr_setRotation :: JSRef -> JSRef -> Three ()
+    thr_setRotation :: JSVal -> JSVal -> Three ()
 
 -- | get up direction
 foreign import javascript safe "($1).up"
-    thr_up :: JSRef -> JSRef
+    thr_up :: JSVal -> JSVal
 
 -- | set up direction
 foreign import javascript unsafe "($2).up = $1"
-    thr_setUp :: JSRef -> JSRef -> Three ()
+    thr_setUp :: JSVal -> JSVal -> Three ()
 
 -- | translate along the X, Y, Z axises
 foreign import javascript unsafe "($2).translateX($1)"
-    thr_translateX :: Double -> JSRef -> Three ()
+    thr_translateX :: Double -> JSVal -> Three ()
 foreign import javascript unsafe "($2).translateY($1)"
-    thr_translateY :: Double -> JSRef -> Three ()
+    thr_translateY :: Double -> JSVal -> Three ()
 foreign import javascript unsafe "($2).translateZ($1)"
-    thr_translateZ :: Double -> JSRef -> Three ()
+    thr_translateZ :: Double -> JSVal -> Three ()
 
 -- | translate along an axis, the axis should be a normalized vector
 foreign import javascript unsafe "($3).translateOnAxis($1, $2)"
-    thr_translateOnAxis :: JSRef -> Double -> JSRef -> Three ()
+    thr_translateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
 -- | translate between local and world coordinates
 foreign import javascript unsafe "($2).localToWorld($1)"
-    thr_localToWorld :: JSRef -> JSRef -> Three JSRef
+    thr_localToWorld :: JSVal -> JSVal -> Three JSVal
 foreign import javascript unsafe "($2).worldToLocal($1)"
-    thr_worldToLocal :: JSRef -> JSRef -> Three JSRef
+    thr_worldToLocal :: JSVal -> JSVal -> Three JSVal
 
 -- | lookAt a position, the vector should be in the world coordinate
 foreign import javascript unsafe "($2).lookAt($1)"
-    thr_lookAt :: JSRef -> JSRef -> Three ()
+    thr_lookAt :: JSVal -> JSVal -> Three ()
 
 -- | rotate on axis (which is normalized)
 foreign import javascript unsafe "($3).rotateOnAxis($1, $2)"
-    thr_rotateOnAxis :: JSRef -> Double -> JSRef -> Three ()
+    thr_rotateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
 
-class (ThreeJSRef o) => IsObject3D o where
+class (ThreeJSVal o) => IsObject3D o where
     -- functions with default implementations
     scale :: o -> Vector
-    scale = fromJSRef . thr_scale . toJSRef
+    scale = fromJSVal . thr_scale . toJSVal
 
     setScale :: Vector -> o -> Three ()
-    setScale s o = thr_setScale (toJSRef s) (toJSRef o)
+    setScale s o = thr_setScale (toJSVal s) (toJSVal o)
 
     position :: o -> Vector
-    position = fromJSRef . thr_position . toJSRef
+    position = fromJSVal . thr_position . toJSVal
 
     setPosition :: Vector -> o -> Three ()
-    setPosition p o = thr_setPosition (toJSRef p) (toJSRef o)
+    setPosition p o = thr_setPosition (toJSVal p) (toJSVal o)
 
     rotation :: o -> Vector
-    rotation = fromJSRef . thr_rotation . toJSRef
+    rotation = fromJSVal . thr_rotation . toJSVal
 
     setRotation :: Vector -> o -> Three ()
-    setRotation r o = thr_setRotation (toJSRef r) (toJSRef o)
+    setRotation r o = thr_setRotation (toJSVal r) (toJSVal o)
 
     up :: o -> Vector
-    up = fromJSRef . thr_up . toJSRef
+    up = fromJSVal . thr_up . toJSVal
 
     setUp :: Vector -> o -> Three ()
-    setUp u o = thr_setUp (toJSRef u) (toJSRef o)
+    setUp u o = thr_setUp (toJSVal u) (toJSVal o)
 
     translateX :: Double -> o -> Three ()
-    translateX x o = thr_translateX x $ toJSRef o
+    translateX x o = thr_translateX x $ toJSVal o
 
     translateY :: Double -> o -> Three ()
-    translateY y o = thr_translateY y $ toJSRef o
+    translateY y o = thr_translateY y $ toJSVal o
 
     translateZ :: Double -> o -> Three ()
-    translateZ z o = thr_translateZ z $ toJSRef o
+    translateZ z o = thr_translateZ z $ toJSVal o
 
     translateOnAxis :: NormalVector -> Double -> o -> Three ()
-    translateOnAxis v d o = thr_translateOnAxis (toJSRef v) d (toJSRef o)
+    translateOnAxis v d o = thr_translateOnAxis (toJSVal v) d (toJSVal o)
 
     localToWorld :: Vector -> o -> Three Vector
-    localToWorld v o = fromJSRef <$> thr_localToWorld (toJSRef v) (toJSRef o)
+    localToWorld v o = fromJSVal <$> thr_localToWorld (toJSVal v) (toJSVal o)
 
     worldToLocal :: Vector -> o -> Three Vector
-    worldToLocal v o = fromJSRef <$> thr_worldToLocal (toJSRef v) (toJSRef o)
+    worldToLocal v o = fromJSVal <$> thr_worldToLocal (toJSVal v) (toJSVal o)
 
     lookAt :: Vector -> o -> Three ()
-    lookAt v o = thr_lookAt (toJSRef v) (toJSRef o)
+    lookAt v o = thr_lookAt (toJSVal v) (toJSVal o)
 
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()
-    rotateOnAxis v d o = thr_rotateOnAxis (toJSRef v) d (toJSRef o)
+    rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
 
 instance IsObject3D Object3D
