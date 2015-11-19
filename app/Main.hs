@@ -12,7 +12,7 @@ main = runWebGUI $ \webview -> do
   -- setup scene, camera and renderer
   scene <- mkScene
   camera <- mkPerspectiveCamera 45 1 0.1 1000
-  renderer <- mkWebGLRenderer
+  renderer <- mkWebGLRenderer []
   setSize 500 500 renderer
   glElem <- domElement renderer
 

@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, OverloadedStrings #-}
 module GHCJS.Three.WebGLRenderer (
     WebGLRenderer(..), mkWebGLRenderer, domElement, setSize, setViewport,
     setClearColor, render
@@ -7,6 +7,9 @@ module GHCJS.Three.WebGLRenderer (
 import GHCJS.Types
 import qualified GHCJS.Marshal as Marshal
 import GHCJS.DOM.Types (Element)
+import JavaScript.Object
+
+import Control.Monad
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Scene
@@ -17,12 +20,33 @@ newtype WebGLRenderer = WebGLRenderer {
     glRendererObject :: BaseObject
 } deriving (ThreeJSVal)
 
-foreign import javascript unsafe "new window.THREE.WebGLRenderer()"
-    thr_mkWebGLRenderer :: Three JSVal
+type JSRendererOption = Object
+
+data RendererOptionItem = ROAlpha Bool
+                        | ROAntialias Bool
+                        | RODepth Bool
+
+type RendererOption = [RendererOptionItem]
+
+toJSVals :: RendererOptionItem -> IO (JSString, JSVal)
+toJSVals (ROAlpha b) = toJSValsHelper "alpha" b
+toJSVals (ROAntialias b) = toJSValsHelper "antialias" b
+toJSVals (RODepth b) = toJSValsHelper "depth" b
+
+toJSOption :: RendererOption -> IO JSRendererOption
+toJSOption opts = do
+    obj <- create
+    forM_ opts (\item -> do
+        (k, v) <- toJSVals item
+        setProp k v obj)
+    return obj
+
+foreign import javascript unsafe "new window.THREE.WebGLRenderer($1)"
+    thr_mkWebGLRenderer :: JSRendererOption -> Three JSVal
 
 -- | create a new webgl renderer
-mkWebGLRenderer :: Three WebGLRenderer
-mkWebGLRenderer = fromJSVal <$> thr_mkWebGLRenderer
+mkWebGLRenderer :: RendererOption -> Three WebGLRenderer
+mkWebGLRenderer opt = toJSOption opt >>= (fmap fromJSVal) . thr_mkWebGLRenderer
 
 foreign import javascript unsafe "($1).domElement"
     thr_domElement :: JSVal -> Three JSVal
