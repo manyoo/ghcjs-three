@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, OverloadedStrings #-}
 module GHCJS.Three.WebGLRenderer (
-    WebGLRenderer(..), mkWebGLRenderer, domElement, setSize, setViewport,
-    setClearColor, render
+    WebGLRenderer(..), RendererOptionItem(..), RendererOption, mkWebGLRenderer,
+    domElement, setSize, setViewport, setClearColor, render
 ) where
 
 import GHCJS.Types
