@@ -13,7 +13,7 @@ import GHCJS.Three.Vector
 import GHCJS.Three.HasChildren
 
 newtype Object3D = Object3D {
-    getObject :: Object
+    getObject :: BaseObject
 } deriving (ThreeJSVal)
 
 instance (IsObject3D p, IsObject3D c) => HasChildren p c

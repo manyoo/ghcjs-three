@@ -17,7 +17,7 @@ data TVector = TVector {
 } deriving (Show, Eq)
 
 newtype Vector = Vector {
-    vectorObject :: Object
+    vectorObject :: BaseObject
 } deriving (ThreeJSVal)
 
 instance HasXYZ Vector

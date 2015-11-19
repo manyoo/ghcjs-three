@@ -13,12 +13,12 @@ import GHCJS.Three.Vector
 
 -- | Raycaster definition
 newtype Raycaster = Raycaster {
-    raycasterObject :: Object
+    raycasterObject :: BaseObject
 } deriving (ThreeJSVal)
 
 -- | RaycastResult definition
 newtype RaycastResult = RaycastResult {
-    rcResObject :: Object
+    rcResObject :: BaseObject
 } deriving (ThreeJSVal)
 
 foreign import javascript unsafe "($2).intersectObject($1)"

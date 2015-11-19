@@ -1,6 +1,6 @@
 module GHCJS.Three.Monad (
     Three,
-    Object(..),
+    BaseObject(..),
     ThreeJSVal(..)
 ) where
 
@@ -8,12 +8,12 @@ import GHCJS.Types
 
 type Three = IO
 
-newtype Object = Object JSVal
+newtype BaseObject = BaseObject JSVal
 
 class ThreeJSVal o where
     toJSVal :: o -> JSVal
     fromJSVal :: JSVal -> o
 
-instance ThreeJSVal Object where
-    toJSVal (Object r) = r
-    fromJSVal = Object
+instance ThreeJSVal BaseObject where
+    toJSVal (BaseObject r) = r
+    fromJSVal = BaseObject
