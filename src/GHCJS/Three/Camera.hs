@@ -3,6 +3,7 @@ module GHCJS.Three.Camera (
     Camera(..), IsCamera(..),
     OrthographicCamera(..), IsOrthoGraphicCamera(..),
     PerspectiveCamera(..), IsPerspectiveCamera(..),
+    Left, Right, Top, Bottom, Fov, Aspect, Near, Far, Zoom, FocalLength, FrameSize,
     mkOrthographicCamera, mkPerspectiveCamera
     ) where
 
@@ -170,6 +171,14 @@ foreign import javascript safe "($1).aspect"
 foreign import javascript unsafe "($2).aspect = $1"
     thr_setAspect :: Aspect -> JSVal -> Three ()
 
+-- | get zoom
+foreign import javascript safe "($1).zoom"
+    thr_zoom :: JSVal -> Zoom
+
+-- | set zoom
+foreign import javascript unsafe "($2).zoom = $1"
+    thr_setZoom :: Zoom -> JSVal -> Three ()
+
 -- | set Lens
 foreign import javascript unsafe "($3).setLens($1, $2)"
     thr_setLens :: FocalLength -> FrameSize -> JSVal -> Three ()
@@ -186,6 +195,12 @@ class (ThreeJSVal c) => IsPerspectiveCamera c where
 
     setAspect :: Aspect -> c -> Three ()
     setAspect a c = thr_setAspect a $ toJSVal c
+
+    zoom :: c -> Zoom
+    zoom = thr_zoom . toJSVal
+
+    setZoom :: Zoom -> c -> Three ()
+    setZoom z c = thr_setZoom z $ toJSVal c
 
     setLens :: FocalLength -> FrameSize -> c -> Three ()
     setLens l s c = thr_setLens l s $ toJSVal c
