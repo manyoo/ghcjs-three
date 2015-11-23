@@ -33,6 +33,14 @@ foreign import javascript safe "($1).far"
 foreign import javascript unsafe "($2).far = $1"
     thr_setFar :: Far -> JSVal -> Three ()
 
+-- | get zoom
+foreign import javascript safe "($1).zoom"
+    thr_zoom :: JSVal -> Zoom
+
+-- | set zoom
+foreign import javascript unsafe "($2).zoom = $1"
+    thr_setZoom :: Zoom -> JSVal -> Three ()
+
 -- | update projection matrix
 foreign import javascript unsafe "($1).updateProjectionMatrix()"
     thr_updateProjectionMatrix :: JSVal -> Three ()
@@ -49,6 +57,12 @@ class (ThreeJSVal c) => IsCamera c where
 
     setFar :: Far -> c -> Three ()
     setFar f c = thr_setFar f $ toJSVal c
+
+    zoom :: c -> Zoom
+    zoom = thr_zoom . toJSVal
+
+    setZoom :: Zoom -> c -> Three ()
+    setZoom z c = thr_setZoom z $ toJSVal c
 
     updateProjectionMatrix :: c -> Three ()
     updateProjectionMatrix = thr_updateProjectionMatrix . toJSVal
@@ -171,14 +185,6 @@ foreign import javascript safe "($1).aspect"
 foreign import javascript unsafe "($2).aspect = $1"
     thr_setAspect :: Aspect -> JSVal -> Three ()
 
--- | get zoom
-foreign import javascript safe "($1).zoom"
-    thr_zoom :: JSVal -> Zoom
-
--- | set zoom
-foreign import javascript unsafe "($2).zoom = $1"
-    thr_setZoom :: Zoom -> JSVal -> Three ()
-
 -- | set Lens
 foreign import javascript unsafe "($3).setLens($1, $2)"
     thr_setLens :: FocalLength -> FrameSize -> JSVal -> Three ()
@@ -195,12 +201,6 @@ class (ThreeJSVal c) => IsPerspectiveCamera c where
 
     setAspect :: Aspect -> c -> Three ()
     setAspect a c = thr_setAspect a $ toJSVal c
-
-    zoom :: c -> Zoom
-    zoom = thr_zoom . toJSVal
-
-    setZoom :: Zoom -> c -> Three ()
-    setZoom z c = thr_setZoom z $ toJSVal c
 
     setLens :: FocalLength -> FrameSize -> c -> Three ()
     setLens l s c = thr_setLens l s $ toJSVal c
