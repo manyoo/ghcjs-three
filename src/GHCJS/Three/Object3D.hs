@@ -11,12 +11,14 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector
 import GHCJS.Three.HasChildren
+import GHCJS.Three.Visible
 
 newtype Object3D = Object3D {
     getObject :: BaseObject
 } deriving (ThreeJSVal)
 
 instance (IsObject3D p, IsObject3D c) => HasChildren p c
+instance Visible Object3D
 
 -- | create a new Object3D object
 foreign import javascript unsafe "new window.THREE.Object3D()"
