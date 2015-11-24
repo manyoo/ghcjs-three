@@ -24,7 +24,7 @@ library
                      , GHCJS.Three.HasXYZ
                      , GHCJS.Three.Euler
                      , GHCJS.Three.Geometry
-                     , GHCJS.Three.HasChildren
+                     , GHCJS.Three.GLNode
                      , GHCJS.Three.Light
                      , GHCJS.Three.Material
                      , GHCJS.Three.Visible

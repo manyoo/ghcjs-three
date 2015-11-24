@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances #-}
 module GHCJS.Three.Object3D (
     Object3D(..),
     mkObject3D,
@@ -10,14 +10,13 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector
-import GHCJS.Three.HasChildren
+import GHCJS.Three.GLNode
 import GHCJS.Three.Visible
 
 newtype Object3D = Object3D {
     getObject :: BaseObject
 } deriving (ThreeJSVal)
 
-instance (IsObject3D p, IsObject3D c) => HasChildren p c
 instance Visible Object3D
 
 -- | create a new Object3D object
@@ -137,3 +136,4 @@ class (ThreeJSVal o) => IsObject3D o where
     rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
 
 instance IsObject3D Object3D
+instance IsObject3D o => IsGLNode o
