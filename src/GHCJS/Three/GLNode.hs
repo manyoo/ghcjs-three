@@ -23,9 +23,9 @@ class ThreeJSVal n => IsGLNode n where
     fromGLNode = fromJSVal . toJSVal
 
 -- | add child object c to parent p
-add :: (IsGLNode c, IsGLNode p) => c -> p -> Three ()
+add :: GLNode -> GLNode -> Three ()
 add c p = thr_add (toJSVal c) (toJSVal p)
 
 -- | remove child object c from parent p
-remove :: (IsGLNode c, IsGLNode p) => c -> p -> Three ()
+remove :: GLNode -> GLNode -> Three ()
 remove c p = thr_remove (toJSVal c) (toJSVal p)

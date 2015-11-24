@@ -27,7 +27,7 @@ main = runWebGUI $ \webview -> do
   c <- mkColor 0.2 0.3 0.5
   setColor c mat
   cube <- mkMesh geo mat
-  add cube scene
+  add (toGLNode cube) (toGLNode scene)
 
   let cp = position camera
   setZ 5 cp
