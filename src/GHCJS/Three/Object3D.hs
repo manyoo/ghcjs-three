@@ -17,8 +17,6 @@ newtype Object3D = Object3D {
     getObject :: BaseObject
 } deriving (ThreeJSVal)
 
-instance Visible Object3D
-
 -- | create a new Object3D object
 foreign import javascript unsafe "new window.THREE.Object3D()"
     thr_mkObject3D :: Three JSVal
@@ -140,3 +138,4 @@ class (ThreeJSVal o) => IsObject3D o where
 
 instance IsObject3D Object3D
 instance IsObject3D o => IsGLNode o
+instance IsObject3D o => Visible o

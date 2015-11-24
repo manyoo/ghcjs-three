@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, FlexibleInstances, UndecidableInstances #-}
 module GHCJS.Three.Material (
     Material(..), mkMaterial, IsMaterial(..),
     MeshBasicMaterial(..), mkMeshBasicMaterial,
@@ -39,6 +39,12 @@ foreign import javascript unsafe "($2).transparent = $1"
     thr_setTransparent :: Bool -> JSVal -> Three ()
 
 class ThreeJSVal m => IsMaterial m where
+    toMaterial :: m -> Material
+    toMaterial = fromJSVal . toJSVal
+
+    fromMaterial :: Material -> m
+    fromMaterial = fromJSVal . toJSVal
+
     -- | get opacity
     opacity :: m -> Double
     opacity = thr_opacity . toJSVal
@@ -56,14 +62,13 @@ class ThreeJSVal m => IsMaterial m where
     setTransparent t m = thr_setTransparent t $ toJSVal m
 
 instance IsMaterial Material
-instance HasColor Material
-instance Disposable Material
-instance Visible Material
+instance IsMaterial m => HasColor m
+instance IsMaterial m => Disposable m
 
 -- | MeshBasicMaterial
 newtype MeshBasicMaterial = MeshBasicMaterial {
     basicMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial, HasColor, Disposable, Visible)
+} deriving (ThreeJSVal, IsMaterial)
 
 foreign import javascript unsafe "new window.THREE.MeshBasicMaterial()"
     thr_mkMeshBasicMaterial :: Three JSVal
@@ -75,7 +80,7 @@ mkMeshBasicMaterial = fromJSVal <$> thr_mkMeshBasicMaterial
 -- | MeshNormalMaterial
 newtype MeshNormalMaterial = MeshNormalMaterial {
     normalMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial, HasColor, Disposable, Visible)
+} deriving (ThreeJSVal, IsMaterial)
 
 foreign import javascript unsafe "new window.THREE.MeshNormalMaterial()"
     thr_mkMeshNormalMaterial :: Three JSVal
@@ -87,7 +92,7 @@ mkMeshNormalMaterial = fromJSVal <$> thr_mkMeshNormalMaterial
 -- | MeshLambertMaterial
 newtype MeshLambertMaterial = MeshLambertMaterial {
     lambertMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial, HasColor, Disposable, Visible)
+} deriving (ThreeJSVal, IsMaterial)
 
 foreign import javascript unsafe "new window.THREE.MeshLambertMaterial()"
     thr_mkMeshLambertMaterial :: Three JSVal
@@ -99,7 +104,7 @@ mkMeshLambertMaterial = fromJSVal <$> thr_mkMeshLambertMaterial
 -- | MeshPhongMaterial
 newtype MeshPhongMaterial = MeshPhongMaterial {
     phongMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial, HasColor, Disposable, Visible)
+} deriving (ThreeJSVal, IsMaterial)
 
 foreign import javascript unsafe "new window.THREE.MeshPhongMaterial()"
     thr_mkMeshPhongMaterial :: Three JSVal

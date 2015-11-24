@@ -11,11 +11,10 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
-import GHCJS.Three.Visible
 
 newtype Camera = Camera {
     cameraObject3D :: Object3D
-} deriving (ThreeJSVal, IsObject3D, Visible)
+} deriving (ThreeJSVal, IsObject3D)
 
 -- | common camera operations
 -- | get near
@@ -47,6 +46,12 @@ foreign import javascript unsafe "($1).updateProjectionMatrix()"
     thr_updateProjectionMatrix :: JSVal -> Three ()
 
 class (ThreeJSVal c) => IsCamera c where
+    toCamera :: c -> Camera
+    toCamera = fromJSVal . toJSVal
+
+    fromCamera :: Camera -> c
+    fromCamera = fromJSVal . toJSVal
+
     near :: c -> Near
     near = thr_near . toJSVal
 
@@ -73,7 +78,7 @@ instance IsCamera Camera
 -- | OrthographicCamera definition and APIs
 newtype OrthographicCamera = OrthographicCamera {
     getOrthoCamera :: Camera
-} deriving (ThreeJSVal, IsObject3D, IsCamera, Visible)
+} deriving (ThreeJSVal, IsObject3D, IsCamera)
 
 type Left = Double
 type Right = Double
@@ -154,7 +159,7 @@ instance IsOrthoGraphicCamera OrthographicCamera
 -- | PerspectiveCamera definition and APIs
 newtype PerspectiveCamera = PerspectiveCamera {
     getPersCamera :: Camera
-} deriving (ThreeJSVal, IsObject3D, IsCamera, Visible)
+} deriving (ThreeJSVal, IsObject3D, IsCamera)
 
 type Fov = Double
 type Aspect = Double
