@@ -18,9 +18,9 @@ newtype GLNode = GLNode BaseObject
 
 class ThreeJSVal n => IsGLNode n where
     toGLNode :: n -> GLNode
-    toNode = fromJSVal . toJSVal
+    toGLNode = fromJSVal . toJSVal
     fromGLNode :: GLNode -> n
-    fromNode = fromJSVal . toJSVal
+    fromGLNode = fromJSVal . toJSVal
 
 -- | add child object c to parent p
 add :: (IsGLNode c, IsGLNode p) => c -> p -> Three ()
