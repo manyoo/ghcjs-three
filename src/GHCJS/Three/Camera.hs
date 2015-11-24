@@ -11,10 +11,12 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
+import GHCJS.Three.Visible
+import GHCJS.Three.GLNode
 
 newtype Camera = Camera {
     cameraObject3D :: Object3D
-} deriving (ThreeJSVal, IsObject3D)
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
 -- | common camera operations
 -- | get near
@@ -78,7 +80,7 @@ instance IsCamera Camera
 -- | OrthographicCamera definition and APIs
 newtype OrthographicCamera = OrthographicCamera {
     getOrthoCamera :: Camera
-} deriving (ThreeJSVal, IsObject3D, IsCamera)
+} deriving (ThreeJSVal, IsObject3D, IsCamera, Visible, IsGLNode)
 
 type Left = Double
 type Right = Double
@@ -159,7 +161,7 @@ instance IsOrthoGraphicCamera OrthographicCamera
 -- | PerspectiveCamera definition and APIs
 newtype PerspectiveCamera = PerspectiveCamera {
     getPersCamera :: Camera
-} deriving (ThreeJSVal, IsObject3D, IsCamera)
+} deriving (ThreeJSVal, IsObject3D, IsCamera, Visible, IsGLNode)
 
 type Fov = Double
 type Aspect = Double

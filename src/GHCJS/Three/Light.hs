@@ -8,12 +8,14 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
+import GHCJS.Three.Visible
+import GHCJS.Three.GLNode
 
 -- | generic Light
 
 newtype Light = Light {
     lightObject3D :: Object3D
-} deriving (ThreeJSVal, IsObject3D)
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
 foreign import javascript unsafe "new window.THREE.Light($1)"
     thr_mkLight :: Int -> Three JSVal
@@ -26,7 +28,7 @@ mkLight c = fromJSVal <$> thr_mkLight c
 -- | Ambient Light
 newtype AmbientLight = AmbientLight {
     getLight :: Light
-} deriving (ThreeJSVal, IsObject3D)
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
 foreign import javascript unsafe "new window.THREE.AmbientLight($1)"
     thr_mkAmbientLight :: Int -> Three JSVal

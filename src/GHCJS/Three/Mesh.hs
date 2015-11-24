@@ -9,13 +9,12 @@ import GHCJS.Three.Object3D (Object3D, IsObject3D)
 import GHCJS.Three.Geometry
 import GHCJS.Three.Material
 import GHCJS.Three.Visible
+import GHCJS.Three.GLNode
 
 -- | Mesh type definition
 newtype Mesh = Mesh {
     meshObject3D :: Object3D
-} deriving (ThreeJSVal, IsObject3D)
-
-instance Visible Mesh
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
 foreign import javascript unsafe "new window.THREE.Mesh($1, $2)"
     thr_mkMesh :: JSVal -> JSVal -> Three JSVal

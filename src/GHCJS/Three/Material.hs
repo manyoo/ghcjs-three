@@ -18,6 +18,10 @@ newtype Material = Material {
     materialObject :: BaseObject
 } deriving (ThreeJSVal)
 
+instance HasColor Material
+instance Visible Material
+instance Disposable Material
+
 foreign import javascript unsafe "new window.THREE.Material()"
     thr_mkMaterial :: Three JSVal
 
@@ -62,13 +66,11 @@ class ThreeJSVal m => IsMaterial m where
     setTransparent t m = thr_setTransparent t $ toJSVal m
 
 instance IsMaterial Material
-instance IsMaterial m => HasColor m
-instance IsMaterial m => Disposable m
 
 -- | MeshBasicMaterial
 newtype MeshBasicMaterial = MeshBasicMaterial {
     basicMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial)
+} deriving (ThreeJSVal, IsMaterial, Visible, HasColor, Disposable)
 
 foreign import javascript unsafe "new window.THREE.MeshBasicMaterial()"
     thr_mkMeshBasicMaterial :: Three JSVal
@@ -80,7 +82,7 @@ mkMeshBasicMaterial = fromJSVal <$> thr_mkMeshBasicMaterial
 -- | MeshNormalMaterial
 newtype MeshNormalMaterial = MeshNormalMaterial {
     normalMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial)
+} deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
 foreign import javascript unsafe "new window.THREE.MeshNormalMaterial()"
     thr_mkMeshNormalMaterial :: Three JSVal
@@ -92,7 +94,7 @@ mkMeshNormalMaterial = fromJSVal <$> thr_mkMeshNormalMaterial
 -- | MeshLambertMaterial
 newtype MeshLambertMaterial = MeshLambertMaterial {
     lambertMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial)
+} deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
 foreign import javascript unsafe "new window.THREE.MeshLambertMaterial()"
     thr_mkMeshLambertMaterial :: Three JSVal
@@ -104,7 +106,7 @@ mkMeshLambertMaterial = fromJSVal <$> thr_mkMeshLambertMaterial
 -- | MeshPhongMaterial
 newtype MeshPhongMaterial = MeshPhongMaterial {
     phongMaterial :: Material
-} deriving (ThreeJSVal, IsMaterial)
+} deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
 foreign import javascript unsafe "new window.THREE.MeshPhongMaterial()"
     thr_mkMeshPhongMaterial :: Three JSVal
