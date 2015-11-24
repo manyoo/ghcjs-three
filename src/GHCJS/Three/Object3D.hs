@@ -86,6 +86,9 @@ foreign import javascript unsafe "($3).rotateOnAxis($1, $2)"
 
 
 class (ThreeJSVal o) => IsObject3D o where
+    getObject3D :: o -> Object3D
+    getObject3D = fromJSVal . toJSVal
+
     -- functions with default implementations
     scale :: o -> Vector
     scale = fromJSVal . thr_scale . toJSVal
