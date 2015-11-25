@@ -13,7 +13,9 @@ newtype Euler = Euler {
     eulerObject :: BaseObject
 } deriving (ThreeJSVal)
 
-instance HasXYZ Euler
+instance HasX Euler
+instance HasY Euler
+instance HasZ Euler
 
 foreign import javascript unsafe "new window.THREE.Euler($1, $2, $3, $4)"
     thr_mkEuler :: Double -> Double -> Double -> JSString -> Three JSVal
