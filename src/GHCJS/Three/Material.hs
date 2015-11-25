@@ -114,3 +114,42 @@ foreign import javascript unsafe "new window.THREE.MeshPhongMaterial()"
 -- | create a new MeshPhongMaterial
 mkMeshPhongMaterial :: Three MeshPhongMaterial
 mkMeshPhongMaterial = fromJSVal <$> thr_mkMeshPhongMaterial
+
+-- | LineBasicMaterial
+newtype LineBasicMaterial = LineBasicMaterial {
+    lineBasicMaterial :: Material
+} deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
+
+foreign import javascript unsafe "new window.THREE.LineBasicMaterial()"
+    thr_mkLineBasicMaterial :: Three JSVal
+
+mkLineBasicMaterial :: Three LineBasicMaterial
+mkLineBasicMaterial = fromJSVal <$> thr_mkLineBasicMaterial
+
+-- | LineDashedMaterial
+newtype LineDashedMaterial = LineDashedMaterial {
+    legalineDashedMaterial :: Material
+} deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
+
+foreign import javascript unsafe "new window.THREE.LineDashedMaterial()"
+    thr_mkLineDashedMaterial :: Three JSVal
+
+mkLineDashedMaterial :: Three LineDashedMaterial
+mkLineDashedMaterial = fromJSVal <$> thr_mkLineDashedMaterial
+
+-- private functions
+foreign import javascript unsafe "($1).linewidth"
+    thr_lineWidth :: JSVal -> Int
+
+foreign import javascript unsafe "($2).linewidth = $1"
+    thr_setLineWidth :: Int -> JSVal -> Three ()
+
+class (ThreeJSVal l) => IsLineMaterial l where
+    lineWidth :: l -> Int
+    lineWidth = thr_lineWidth . toJSVal
+
+    setLineWidth :: Int -> l -> Three ()
+    setLineWidth w l = thr_setLineWidth w $ toJSVal l
+
+instance IsLineMaterial LineBasicMaterial
+instance IsLineMaterial LineDashedMaterial
