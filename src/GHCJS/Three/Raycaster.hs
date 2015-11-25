@@ -10,6 +10,7 @@ import Data.Maybe (fromMaybe)
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
 import GHCJS.Three.Vector
+import GHCJS.Three.Camera
 
 -- | Raycaster definition
 newtype Raycaster = Raycaster {
@@ -29,6 +30,14 @@ foreign import javascript unsafe "($2).intersectObjects($1)"
 getResult :: Maybe [JSVal] -> [RaycastResult]
 getResult = map fromJSVal . fromMaybe []
 
+foreign import javascript unsafe "($3).setFromCamera($1, $2)"
+    thr_setFromCamera :: JSVal -> JSVal -> JSVal -> Three ()
+
+setFromCamera :: (IsCamera c) => TVector2 -> c -> Raycaster -> Three ()
+setFromCamera v c r = do
+    vecVal <- toJSVal <$> mkVector2 v
+    thr_setFromCamera vecVal (toJSVal c) (toJSVal r)
+
 -- | intersectObject
 intersectObject :: IsObject3D obj => obj -> Raycaster -> Three [RaycastResult]
 intersectObject obj ray = getResult <$> (thr_intersectObject (toJSVal obj) (toJSVal ray) >>= Marshal.fromJSVal)
@@ -40,9 +49,6 @@ intersectObjects objs ray = getResult <$> ((Marshal.toJSVal $ map toJSVal objs) 
 -- | create a new raycaster
 foreign import javascript unsafe "new window.THREE.Raycaster($1, $2, $3, $4)"
     thr_mkRaycaster :: JSVal -> JSVal -> Double -> Double -> Three JSVal
-
-type Near = Double
-type Far = Double
 
 mkRaycaster :: Vector -> Vector -> Near -> Far -> Three Raycaster
 mkRaycaster origin direction near far = fromJSVal <$> thr_mkRaycaster (toJSVal origin) (toJSVal direction) near far

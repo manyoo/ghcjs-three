@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Vector (
-    TVector(..), Vector(..), NormalVector(..),
-    mkVector, toTVector
+    TVector(..), TVector2(..), Vector(..), Vector2(..), NormalVector(..),
+    mkVector, toTVector, mkVector2, toTVector2, vector3To2
     ) where
 
 import Data.Functor
