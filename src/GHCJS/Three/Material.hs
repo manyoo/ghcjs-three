@@ -128,7 +128,7 @@ mkLineBasicMaterial = fromJSVal <$> thr_mkLineBasicMaterial
 
 -- | LineDashedMaterial
 newtype LineDashedMaterial = LineDashedMaterial {
-    legalineDashedMaterial :: Material
+    lineDashedMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
 foreign import javascript unsafe "new window.THREE.LineDashedMaterial()"
