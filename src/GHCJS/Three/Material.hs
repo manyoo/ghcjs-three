@@ -4,7 +4,10 @@ module GHCJS.Three.Material (
     MeshBasicMaterial(..), mkMeshBasicMaterial,
     MeshNormalMaterial(..), mkMeshNormalMaterial,
     MeshLambertMaterial(..), mkMeshLambertMaterial,
-    MeshPhongMaterial(..), mkMeshPhongMaterial
+    MeshPhongMaterial(..), mkMeshPhongMaterial,
+    LineBasicMaterial(..), mkLineBasicMaterial,
+    LineDashedMaterial(..), mkLineDashedMaterial,
+    IsLineMaterial(..)
 ) where
 
 import GHCJS.Types
