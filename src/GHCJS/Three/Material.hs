@@ -7,7 +7,7 @@ module GHCJS.Three.Material (
     MeshPhongMaterial(..), mkMeshPhongMaterial,
     LineBasicMaterial(..), mkLineBasicMaterial,
     LineDashedMaterial(..), mkLineDashedMaterial,
-    IsLineMaterial(..)
+    LineMaterial(..), IsLineMaterial(..)
 ) where
 
 import GHCJS.Types
@@ -147,12 +147,21 @@ foreign import javascript unsafe "($1).linewidth"
 foreign import javascript unsafe "($2).linewidth = $1"
     thr_setLineWidth :: Int -> JSVal -> Three ()
 
-class (ThreeJSVal l) => IsLineMaterial l where
+newtype LineMaterial = LineMaterial Material deriving (ThreeJSVal, IsMaterial)
+
+class (ThreeJSVal l, IsMaterial l) => IsLineMaterial l where
+    toLineMaterial :: l -> LineMaterial
+    toLineMaterial = fromMaterial . toMaterial
+
+    fromLineMaterial :: LineMaterial -> l
+    fromLineMaterial = fromMaterial . toMaterial
+
     lineWidth :: l -> Int
     lineWidth = thr_lineWidth . toJSVal
 
     setLineWidth :: Int -> l -> Three ()
     setLineWidth w l = thr_setLineWidth w $ toJSVal l
 
+instance IsLineMaterial LineMaterial
 instance IsLineMaterial LineBasicMaterial
 instance IsLineMaterial LineDashedMaterial
