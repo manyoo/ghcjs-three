@@ -10,6 +10,7 @@ module GHCJS.Three
      module GHCJS.Three.Geometry,
      module GHCJS.Three.Material,
      module GHCJS.Three.Mesh,
+     module GHCJS.Three.Line,
      module GHCJS.Three.Color,
      module GHCJS.Three.Light,
      module GHCJS.Three.Raycaster,
@@ -31,6 +32,7 @@ import GHCJS.Three.Scene
 import GHCJS.Three.Geometry
 import GHCJS.Three.Material
 import GHCJS.Three.Mesh
+import GHCJS.Three.Line
 import GHCJS.Three.Color
 import GHCJS.Three.Light
 import GHCJS.Three.Raycaster
