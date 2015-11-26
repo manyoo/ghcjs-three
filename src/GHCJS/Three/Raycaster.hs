@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Raycaster (
-    Raycaster(..), RaycastResult(..),
+    Raycaster(..), RaycastResult(..), setFromCamera, mkBaseRaycaster,
     mkRaycaster, intersectObject, intersectObjects, getCastPoint, getCastObject
 ) where
 
@@ -50,8 +50,14 @@ intersectObjects objs ray = getResult <$> ((Marshal.toJSVal $ map toJSVal objs) 
 foreign import javascript unsafe "new window.THREE.Raycaster($1, $2, $3, $4)"
     thr_mkRaycaster :: JSVal -> JSVal -> Double -> Double -> Three JSVal
 
+foreign import javascript unsafe "new window.THREE.Raycaster()"
+    thr_mkBaseRaycaster :: Three JSVal
+
 mkRaycaster :: Vector -> Vector -> Near -> Far -> Three Raycaster
 mkRaycaster origin direction near far = fromJSVal <$> thr_mkRaycaster (toJSVal origin) (toJSVal direction) near far
+
+mkBaseRaycaster :: Three Raycaster
+mkBaseRaycaster = fromJSVal <$> thr_mkBaseRaycaster
 
 -- | get raycast point and object from the result
 foreign import javascript safe "($1).point"
