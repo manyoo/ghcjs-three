@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Color (
-    Color(..), mkColor, IsColor(..), HasColor(..)
+    Color(..), mkColor, IsColor(..), HasColor(..), TColor(..), toColor, fromColor
     ) where
 
 import GHCJS.Types
@@ -87,3 +87,13 @@ class ThreeJSVal o =>  HasColor o where
 
     setColor :: Color -> o -> Three ()
     setColor c o = thr_setColor (toJSVal c) (toJSVal o)
+
+
+-- | define a TColor type to be used by users easily
+data TColor = TColor Red Green Blue
+
+toColor :: TColor -> Three Color
+toColor (TColor r g b) = mkColor r g b
+
+fromColor :: Color -> TColor
+fromColor c = TColor (red c) (green c) (blue c)
