@@ -32,7 +32,7 @@ foreign import javascript safe "($1).scale"
     thr_scale :: JSVal -> JSVal
 
 -- | set scale
-foreign import javascript unsafe "($2).scale = $1"
+foreign import javascript unsafe "($2).scale.copy($1)"
     thr_setScale :: JSVal -> JSVal -> Three ()
 
 -- | get position
@@ -40,7 +40,7 @@ foreign import javascript safe "($1).position"
     thr_position :: JSVal -> JSVal
 
 -- | set position
-foreign import javascript unsafe "($2).position = $1"
+foreign import javascript unsafe "($2).position.copy($1)"
     thr_setPosition :: JSVal -> JSVal -> Three ()
 
 -- | get rotation
@@ -48,7 +48,7 @@ foreign import javascript safe "($1).rotation"
     thr_rotation :: JSVal -> JSVal
 
 -- | set rotation
-foreign import javascript unsafe "($2).rotation = $1"
+foreign import javascript unsafe "($2).rotation.copy($1)"
     thr_setRotation :: JSVal -> JSVal -> Three ()
 
 -- | get up direction
@@ -56,7 +56,7 @@ foreign import javascript safe "($1).up"
     thr_up :: JSVal -> JSVal
 
 -- | set up direction
-foreign import javascript unsafe "($2).up = $1"
+foreign import javascript unsafe "($2).up.copy($1)"
     thr_setUp :: JSVal -> JSVal -> Three ()
 
 -- | translate along the X, Y, Z axises
