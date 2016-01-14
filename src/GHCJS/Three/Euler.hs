@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Euler (
-  TEuler, Euler(..), mkEuler, toTEuler
+  TEuler(..), Euler(..), mkEuler, toTEuler
   ) where
 
 import Data.JSString
@@ -11,10 +11,10 @@ import GHCJS.Three.HasXYZ
 
 -- haskell version of Euler
 data TEuler = TEuler {
-  x     :: Double,
-  y     :: Double,
-  z     :: Double,
-  order :: JSString
+  eX     :: Double,
+  eY     :: Double,
+  eZ     :: Double,
+  eOrder :: JSString
   } deriving (Show, Eq)
 
 -- JS version of Euler value
