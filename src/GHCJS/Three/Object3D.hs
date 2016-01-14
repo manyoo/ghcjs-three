@@ -10,6 +10,7 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector
+import GHCJS.Three.Euler
 import GHCJS.Three.GLNode
 import GHCJS.Three.Visible
 
@@ -103,10 +104,10 @@ class (ThreeJSVal o) => IsObject3D o where
     setPosition :: Vector -> o -> Three ()
     setPosition p o = thr_setPosition (toJSVal p) (toJSVal o)
 
-    rotation :: o -> Vector
+    rotation :: o -> Euler
     rotation = fromJSVal . thr_rotation . toJSVal
 
-    setRotation :: Vector -> o -> Three ()
+    setRotation :: Euler -> o -> Three ()
     setRotation r o = thr_setRotation (toJSVal r) (toJSVal o)
 
     up :: o -> Vector
