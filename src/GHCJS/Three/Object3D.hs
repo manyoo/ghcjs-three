@@ -60,6 +60,10 @@ foreign import javascript safe "($1).up"
 foreign import javascript unsafe "($2).up.copy($1)"
     thr_setUp :: JSVal -> JSVal -> Three ()
 
+-- | set renderOrder
+foreign import javascript unsafe "($2).renderOrder = $1"
+    thr_setRenderOrder :: Int -> JSVal -> Three ()
+
 -- | translate along the X, Y, Z axises
 foreign import javascript unsafe "($2).translateX($1)"
     thr_translateX :: Double -> JSVal -> Three ()
@@ -115,6 +119,9 @@ class (ThreeJSVal o) => IsObject3D o where
 
     setUp :: Vector -> o -> Three ()
     setUp u o = thr_setUp (toJSVal u) (toJSVal o)
+
+    setRenderOrder :: Int -> o -> Three ()
+    setRenderOrder r o = thr_setRenderOrder r $ toJSVal o
 
     translateX :: Double -> o -> Three ()
     translateX x o = thr_translateX x $ toJSVal o
