@@ -5,7 +5,7 @@
  */
 
 var THREE = { REVISION: '72' };
-window.THREE = THREE;
+this.THREE = THREE;
 //
 
 if ( typeof define === 'function' && define.amd ) {
