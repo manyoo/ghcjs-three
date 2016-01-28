@@ -18,11 +18,10 @@ if ( typeof define === 'function' && define.amd ) {
 
 }
 
-if (!self)
-    var self = this;
+var threeSelf = this;
 // polyfills
 
-if ( self.requestAnimationFrame === undefined || self.cancelAnimationFrame === undefined ) {
+if ( threeSelf.requestAnimationFrame === undefined || threeSelf.cancelAnimationFrame === undefined ) {
 
 	// Missing in Android stock browser.
 
@@ -31,19 +30,19 @@ if ( self.requestAnimationFrame === undefined || self.cancelAnimationFrame === u
 		var lastTime = 0;
 		var vendors = [ 'ms', 'moz', 'webkit', 'o' ];
 
-		for ( var x = 0; x < vendors.length && ! self.requestAnimationFrame; ++ x ) {
+		for ( var x = 0; x < vendors.length && ! threeSelf.requestAnimationFrame; ++ x ) {
 
-			self.requestAnimationFrame = self[ vendors[ x ] + 'RequestAnimationFrame' ];
-			self.cancelAnimationFrame = self[ vendors[ x ] + 'CancelAnimationFrame' ] || self[ vendors[ x ] + 'CancelRequestAnimationFrame' ];
+			threeSelf.requestAnimationFrame = threeSelf[ vendors[ x ] + 'RequestAnimationFrame' ];
+			threeSelf.cancelAnimationFrame = threeSelf[ vendors[ x ] + 'CancelAnimationFrame' ] || threeSelf[ vendors[ x ] + 'CancelRequestAnimationFrame' ];
 
 		}
 
-		if ( self.requestAnimationFrame === undefined && self.setTimeout !== undefined ) {
+		if ( threeSelf.requestAnimationFrame === undefined && threeSelf.setTimeout !== undefined ) {
 
-			self.requestAnimationFrame = function ( callback ) {
+			threeSelf.requestAnimationFrame = function ( callback ) {
 
 				var currTime = Date.now(), timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
-				var id = self.setTimeout( function () {
+				var id = threeSelf.setTimeout( function () {
 
 					callback( currTime + timeToCall );
 
@@ -55,11 +54,11 @@ if ( self.requestAnimationFrame === undefined || self.cancelAnimationFrame === u
 
 		}
 
-		if ( self.cancelAnimationFrame === undefined && self.clearTimeout !== undefined ) {
+		if ( threeSelf.cancelAnimationFrame === undefined && threeSelf.clearTimeout !== undefined ) {
 
-			self.cancelAnimationFrame = function ( id ) {
+			threeSelf.cancelAnimationFrame = function ( id ) {
 
-				self.clearTimeout( id );
+				threeSelf.clearTimeout( id );
 
 			};
 
@@ -7467,8 +7466,8 @@ THREE.Clock.prototype = {
 
 	start: function () {
 
-		this.startTime = self.performance !== undefined && self.performance.now !== undefined
-					 ? self.performance.now()
+		this.startTime = threeSelf.performance !== undefined && threeSelf.performance.now !== undefined
+					 ? threeSelf.performance.now()
 					 : Date.now();
 
 		this.oldTime = this.startTime;
@@ -7502,8 +7501,8 @@ THREE.Clock.prototype = {
 
 		if ( this.running ) {
 
-			var newTime = self.performance !== undefined && self.performance.now !== undefined
-					 ? self.performance.now()
+			var newTime = threeSelf.performance !== undefined && threeSelf.performance.now !== undefined
+					 ? threeSelf.performance.now()
 					 : Date.now();
 
 			diff = 0.001 * ( newTime - this.oldTime );
@@ -13719,7 +13718,7 @@ THREE.BufferGeometryLoader.prototype = {
 
 		if ( index !== undefined ) {
 
-			var typedArray = new self[ index.type ]( index.array );
+			var typedArray = new threeSelf[ index.type ]( index.array );
 			geometry.setIndex( new THREE.BufferAttribute( typedArray, 1 ) );
 
 		}
@@ -13729,7 +13728,7 @@ THREE.BufferGeometryLoader.prototype = {
 		for ( var key in attributes ) {
 
 			var attribute = attributes[ key ];
-			var typedArray = new self[ attribute.type ]( attribute.array );
+			var typedArray = new threeSelf[ attribute.type ]( attribute.array );
 
 			geometry.addAttribute( key, new THREE.BufferAttribute( typedArray, attribute.itemSize ) );
 
@@ -27167,7 +27166,7 @@ THREE.FontUtils.generateShapes = function ( text, parameters ) {
 // To use the typeface.js face files, hook up the API
 
 THREE.typeface_js = { faces: THREE.FontUtils.faces, loadFace: THREE.FontUtils.loadFace };
-if ( typeof self !== 'undefined' ) self._typeface_js = THREE.typeface_js;
+if ( typeof threeSelf !== 'undefined' ) threeSelf._typeface_js = THREE.typeface_js;
 
 // File:src/extras/audio/Audio.js
 
