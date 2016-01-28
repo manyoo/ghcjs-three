@@ -18,7 +18,8 @@ if ( typeof define === 'function' && define.amd ) {
 
 }
 
-var self = this;
+if (!self)
+    var self = this;
 // polyfills
 
 if ( self.requestAnimationFrame === undefined || self.cancelAnimationFrame === undefined ) {
