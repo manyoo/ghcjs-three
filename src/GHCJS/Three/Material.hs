@@ -42,8 +42,8 @@ foreign import javascript unsafe "($2).opacity = $1"
 foreign import javascript safe "($1).transparent"
     thr_transparent :: JSVal -> Bool
 
-foreign import javascript unsafe "($2).transparent = $1"
-    thr_setTransparent :: Bool -> JSVal -> Three ()
+foreign import javascript unsafe "($2).transparent = $1 === 1"
+    thr_setTransparent :: Int -> JSVal -> Three ()
 
 class ThreeJSVal m => IsMaterial m where
     toMaterial :: m -> Material
@@ -66,7 +66,7 @@ class ThreeJSVal m => IsMaterial m where
 
     -- | set transparent
     setTransparent :: Bool -> m -> Three ()
-    setTransparent t m = thr_setTransparent t $ toJSVal m
+    setTransparent t m = thr_setTransparent (if t then 1 else 0) $ toJSVal m
 
 instance IsMaterial Material
 

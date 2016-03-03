@@ -9,8 +9,10 @@ import GHCJS.Three.Monad
 foreign import javascript safe "($1).visible"
     thr_visible :: JSVal -> Bool
 
-foreign import javascript unsafe "($2).visible = $1"
-    thr_setVisible :: Bool -> JSVal -> Three ()
+-- NOTE: ghcjs/ghc has a bug that Bool values are not translated to JS
+-- correctly at the time. So we use an Int here to bypass the bug
+foreign import javascript unsafe "($2).visible = $1 === 1"
+    thr_setVisible :: Int -> JSVal -> Three ()
 
 class ThreeJSVal v => Visible v where
     -- | get Visible
@@ -19,4 +21,4 @@ class ThreeJSVal v => Visible v where
 
     -- | set visible
     setVisible :: Bool -> v -> Three ()
-    setVisible b v = thr_setVisible b $ toJSVal v
+    setVisible b v = thr_setVisible (if b then 1 else 0) $ toJSVal v
