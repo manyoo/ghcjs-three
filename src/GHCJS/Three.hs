@@ -1,9 +1,11 @@
 module GHCJS.Three
     (
      module GHCJS.Three.Monad,
+     module GHCJS.Three.Matrix,
      module GHCJS.Three.Vector,
      module GHCJS.Three.Euler,
      module GHCJS.Three.Camera,
+     module GHCJS.Three.Projection,
      module GHCJS.Three.Object3D,
      module GHCJS.Three.WebGLRenderer,
      module GHCJS.Three.Scene,
@@ -23,9 +25,11 @@ module GHCJS.Three
     where
 
 import GHCJS.Three.Monad
+import GHCJS.Three.Matrix
 import GHCJS.Three.Vector
 import GHCJS.Three.Euler
 import GHCJS.Three.Camera
+import GHCJS.Three.Projection
 import GHCJS.Three.Object3D
 import GHCJS.Three.WebGLRenderer
 import GHCJS.Three.Scene

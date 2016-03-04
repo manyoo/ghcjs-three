@@ -9,6 +9,7 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.HasXYZ
+import GHCJS.Three.Matrix
 
 -- empty class only used for restricting data types below
 class ThreeJSVal v => IsJSVector v
@@ -29,6 +30,15 @@ instance IsJSVector Vector
 instance HasX Vector
 instance HasY Vector
 instance HasZ Vector
+
+foreign import javascript unsafe "($2).setFromMatrixPosition($1)"
+    thr_setFromMatrixPosition :: JSVal -> JSVal -> Three ()
+
+fromMatrixPosition :: Matrix -> Three TVector
+fromMatrixPosition m = do
+    jv <- thr_mkVector 0 0 0
+    thr_setFromMatrixPosition (toJSVal m) jv
+    return $ toTVector $ fromJSVal jv
 
 -- haskell version of 2D vector
 data TVector2 = TVector2 Double Double

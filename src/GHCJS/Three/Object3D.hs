@@ -10,6 +10,7 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector
+import GHCJS.Three.Matrix
 import GHCJS.Three.Euler
 import GHCJS.Three.GLNode
 import GHCJS.Three.Visible
@@ -90,6 +91,10 @@ foreign import javascript unsafe "($2).lookAt($1)"
 foreign import javascript unsafe "($3).rotateOnAxis($1, $2)"
     thr_rotateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
+-- | The global transform of the object. If the Object3d has no parent,
+-- then it's identical to the local transform.
+foreign import javascript safe "($1).matrixWorld"
+    thr_matrixWorld :: JSVal -> JSVal
 
 class (ThreeJSVal o) => IsObject3D o where
     getObject3D :: o -> Object3D
@@ -146,5 +151,8 @@ class (ThreeJSVal o) => IsObject3D o where
 
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()
     rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
+
+    matrixWorld :: o -> Matrix
+    matrixWorld = fromJSVal . thr_matrixWorld . toJSVal
 
 instance IsObject3D Object3D

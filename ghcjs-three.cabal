@@ -16,9 +16,11 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     GHCJS.Three.Monad
+                     , GHCJS.Three.Matrix
                      , GHCJS.Three.Vector
                      , GHCJS.Three.Object3D
                      , GHCJS.Three.Camera
+                     , GHCJS.Three.Projection
                      , GHCJS.Three.Color
                      , GHCJS.Three.Disposable
                      , GHCJS.Three.HasXYZ
