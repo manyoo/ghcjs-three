@@ -1,5 +1,5 @@
 {-# LANGUAGE JavaScriptFFI #-}
-module GHCJS.Three.Projection where
+module GHCJS.Three.Projection (project, unproject) where
 
 import Data.Functor
 import GHCJS.Types
