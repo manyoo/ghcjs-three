@@ -96,6 +96,10 @@ foreign import javascript unsafe "($3).rotateOnAxis($1, $2)"
 foreign import javascript safe "($1).matrixWorld"
     thr_matrixWorld :: JSVal -> JSVal
 
+-- | updatesglobal transform of the object and its children
+foreign import javascript unsafe "($1).updateMatrixWorld()"
+    thr_updateMatrixWorld :: JSVal -> Three ()
+
 class (ThreeJSVal o) => IsObject3D o where
     getObject3D :: o -> Object3D
     getObject3D = fromJSVal . toJSVal
@@ -154,5 +158,8 @@ class (ThreeJSVal o) => IsObject3D o where
 
     matrixWorld :: o -> Matrix
     matrixWorld = fromJSVal . thr_matrixWorld . toJSVal
+
+    updateMatrixWorld :: o -> Three ()
+    updateMatrixWorld = thr_updateMatrixWorld . toJSVal
 
 instance IsObject3D Object3D
