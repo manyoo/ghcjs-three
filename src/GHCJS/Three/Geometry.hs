@@ -35,11 +35,11 @@ foreign import javascript unsafe "($2).vertices = $1"
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
-    vertices :: g -> Three [Vector]
-    vertices g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
+    vertices :: g -> Three [TVector]
+    vertices g = (map (toTVector . fromJSVal) . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
 
-    setVertices :: [Vector] -> g -> Three ()
-    setVertices vs g = (Marshal.toJSVal $ map toJSVal vs) >>= flip thr_setVectices (toJSVal g)
+    setVertices :: [TVector] -> g -> Three ()
+    setVertices vs g = mapM mkVector vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g)
 
 instance IsGeometry Geometry
 instance Disposable Geometry

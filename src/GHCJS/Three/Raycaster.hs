@@ -53,8 +53,11 @@ foreign import javascript unsafe "new window.THREE.Raycaster($1, $2, $3, $4)"
 foreign import javascript unsafe "new window.THREE.Raycaster()"
     thr_mkBaseRaycaster :: Three JSVal
 
-mkRaycaster :: Vector -> Vector -> Near -> Far -> Three Raycaster
-mkRaycaster origin direction near far = fromJSVal <$> thr_mkRaycaster (toJSVal origin) (toJSVal direction) near far
+mkRaycaster :: TVector -> TVector -> Near -> Far -> Three Raycaster
+mkRaycaster origin direction near far = do
+    ov <- mkVector origin
+    dv <- mkVector direction
+    fromJSVal <$> thr_mkRaycaster (toJSVal ov) (toJSVal dv) near far
 
 mkBaseRaycaster :: Three Raycaster
 mkBaseRaycaster = fromJSVal <$> thr_mkBaseRaycaster

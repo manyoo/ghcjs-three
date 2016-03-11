@@ -30,14 +30,12 @@ main = runWebGUI $ \webview -> do
   add (toGLNode cube) (toGLNode scene)
 
   let cp = position camera
-  setZ 5 cp
-  setPosition cp camera
+  setPosition cp {z = 5} camera
 
   -- this is the action for each animation frame, change the rotation of the
   -- cube and render it.
   let rf = do
          let cubeR = rotation cube
-         setX (getX cubeR + 0.01) cubeR
-         setY (getY cubeR + 0.01) cubeR
+         setRotation cubeR {eX = eX cubeR + 0.01, eY = eY cubeR + 0.01} cube
          render scene camera renderer
   runThree rf
