@@ -32,6 +32,9 @@ foreign import javascript safe "($1).vertices"
 foreign import javascript unsafe "($2).vertices = $1"
     thr_setVectices :: JSVal -> JSVal -> Three ()
 
+foreign import javascript unsafe "($2).verticesNeedUpdate = $1 === 1"
+    thr_setVerticesNeedUpdate :: Int -> JSVal -> Three ()
+
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
@@ -39,7 +42,7 @@ class ThreeJSVal g => IsGeometry g where
     vertices g = (map (toTVector . fromJSVal) . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
 
     setVertices :: [TVector] -> g -> Three ()
-    setVertices vs g = mapM mkVector vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g)
+    setVertices vs g = mapM mkVector vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g) >> thr_setVerticesNeedUpdate 1 (toJSVal g)
 
 instance IsGeometry Geometry
 instance Disposable Geometry
