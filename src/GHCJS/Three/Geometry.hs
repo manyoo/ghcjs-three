@@ -2,7 +2,8 @@
 module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
     IsGeometry(..),
-    BoxGeometry(..), mkBoxGeometry
+    BoxGeometry(..), mkBoxGeometry,
+    CircleGeometry(..), mkCircleGeometry
     ) where
 
 import GHCJS.Types
@@ -58,3 +59,15 @@ foreign import javascript unsafe "new window.THREE.BoxGeometry($1, $2, $3)"
 -- | create a new BoxGeometry
 mkBoxGeometry :: Double -> Double -> Double -> Three BoxGeometry
 mkBoxGeometry w h d = fromJSVal <$> thr_mkBoxGeometry w h d
+
+-- | CircleGeometry
+newtype CircleGeometry = CircleGeometry {
+    getCircleGeometry :: Geometry
+} deriving (ThreeJSVal, IsGeometry, Disposable)
+
+foreign import javascript unsafe "new window.THREE.CircleGeometry($1, $2)"
+    thr_mkCircleGeometry :: Double -> Int -> Three JSVal
+
+-- | create a new CircleGeometry
+mkCircleGeometry :: Double -> Int -> Three CircleGeometry
+mkCircleGeometry radius segments = fromJSVal <$> thr_mkCircleGeometry radius segments
