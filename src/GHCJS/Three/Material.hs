@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, FlexibleInstances, UndecidableInstances #-}
 module GHCJS.Three.Material (
     Material(..), mkMaterial, IsMaterial(..),
-    MeshBasicMaterial(..), mkMeshBasicMaterial,
+    MeshBasicMaterial(..), mkMeshBasicMaterial, setWireFrame, setWireFrameLineWidth,
     MeshNormalMaterial(..), mkMeshNormalMaterial,
     MeshLambertMaterial(..), mkMeshLambertMaterial,
     MeshPhongMaterial(..), mkMeshPhongMaterial,
@@ -81,6 +81,18 @@ foreign import javascript unsafe "new window.THREE.MeshBasicMaterial()"
 -- | create a new MeshBasicMaterial
 mkMeshBasicMaterial :: Three MeshBasicMaterial
 mkMeshBasicMaterial = fromJSVal <$> thr_mkMeshBasicMaterial
+
+foreign import javascript unsafe "($2).wireframe = $1 === 1"
+    thr_setWireFrame :: Int -> JSVal -> Three ()
+
+setWireFrame :: Bool -> MeshBasicMaterial -> Three ()
+setWireFrame b mesh = thr_setWireFrame (if b then 1 else 0) $ toJSVal mesh
+
+foreign import javascript unsafe "($2).wireframeLineWidth = $1"
+    thr_setWireFrameLineWidth :: Int -> JSVal -> Three ()
+
+setWireFrameLineWidth :: Int -> MeshBasicMaterial -> Three ()
+setWireFrameLineWidth w mesh = thr_setWireFrameLineWidth w $ toJSVal mesh
 
 -- | MeshNormalMaterial
 newtype MeshNormalMaterial = MeshNormalMaterial {
