@@ -70,6 +70,18 @@ class ThreeJSVal m => IsMaterial m where
 
 instance IsMaterial Material
 
+foreign import javascript unsafe "($2).wireframe = $1 === 1"
+    thr_setWireFrame :: Int -> JSVal -> Three ()
+
+setWireFrame :: IsMaterial m => Bool -> m -> Three ()
+setWireFrame b mesh = thr_setWireFrame (if b then 1 else 0) $ toJSVal mesh
+
+foreign import javascript unsafe "($2).wireframeLineWidth = $1"
+    thr_setWireFrameLineWidth :: Int -> JSVal -> Three ()
+
+setWireFrameLineWidth :: IsMaterial m => Int -> m -> Three ()
+setWireFrameLineWidth w mesh = thr_setWireFrameLineWidth w $ toJSVal mesh
+
 -- | MeshBasicMaterial
 newtype MeshBasicMaterial = MeshBasicMaterial {
     basicMaterial :: Material
@@ -81,18 +93,6 @@ foreign import javascript unsafe "new window.THREE.MeshBasicMaterial()"
 -- | create a new MeshBasicMaterial
 mkMeshBasicMaterial :: Three MeshBasicMaterial
 mkMeshBasicMaterial = fromJSVal <$> thr_mkMeshBasicMaterial
-
-foreign import javascript unsafe "($2).wireframe = $1 === 1"
-    thr_setWireFrame :: Int -> JSVal -> Three ()
-
-setWireFrame :: Bool -> MeshBasicMaterial -> Three ()
-setWireFrame b mesh = thr_setWireFrame (if b then 1 else 0) $ toJSVal mesh
-
-foreign import javascript unsafe "($2).wireframeLineWidth = $1"
-    thr_setWireFrameLineWidth :: Int -> JSVal -> Three ()
-
-setWireFrameLineWidth :: Int -> MeshBasicMaterial -> Three ()
-setWireFrameLineWidth w mesh = thr_setWireFrameLineWidth w $ toJSVal mesh
 
 -- | MeshNormalMaterial
 newtype MeshNormalMaterial = MeshNormalMaterial {
