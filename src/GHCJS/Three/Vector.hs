@@ -1,6 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Vector (
     TVector(..), TVector2(..), Vector(..), Vector2(..), NormalVector(..),
+    (#+), (#-),
     mkVector, toTVector, mkVector2, toTVector2, vector3To2
     ) where
 
@@ -20,6 +21,12 @@ data TVector = TVector {
     y :: Double,
     z :: Double
 } deriving (Show, Eq)
+
+(#+) :: TVector -> TVector -> TVector
+TVector x1 y1 z1 #+ TVector x2 y2 z2 = TVector (x1 + x2) (y1 + y2) (z1 + z2)
+
+(#-) :: TVector -> TVector -> TVector
+TVector x1 y1 z1 #- TVector x2 y2 z2 = TVector (x1 - x2) (y1 - y2) (z1 - z2)
 
 -- JS version of 3D Vector
 newtype Vector = Vector {
