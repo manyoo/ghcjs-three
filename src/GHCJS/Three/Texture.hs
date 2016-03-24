@@ -1,5 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
-module GHCJS.Three.Texture where
+module GHCJS.Three.Texture (Texture(..), mkTexture, ImageLoader(..), mkImageLoader,
+    setCrossOrigin, loadImage) where
 
 import Data.Functor
 import GHCJS.Types
