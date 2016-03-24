@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
-module GHCJS.Three.Texture (Texture(..), mkTexture, ImageLoader(..), mkImageLoader,
-    setCrossOrigin, loadImage) where
+module GHCJS.Three.Texture (Texture(..), mkTexture, setNeedsUpdate,
+    ImageLoader(..), mkImageLoader, setCrossOrigin, loadImage) where
 
 import Data.Functor
 import GHCJS.Types
@@ -21,6 +21,12 @@ foreign import javascript unsafe "new window.THREE.Texture($1)"
 
 mkTexture :: JSVal -> Three Texture
 mkTexture img = fromJSVal <$> thr_mkTexture img
+
+foreign import javascript unsafe "($2).needsUpdate = $1 === 1"
+    thr_setNeedsUpdate :: Int -> JSVal -> Three ()
+
+setNeedsUpdate :: Bool -> Texture -> Three ()
+setNeedsUpdate u t = thr_setNeedsUpdate (if u then 1 else 0) $ toJSVal t
 
 newtype ImageLoader = ImageLoader {
     getImageLoaderObject :: BaseObject
