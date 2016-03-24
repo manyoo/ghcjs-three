@@ -20,6 +20,7 @@ module GHCJS.Three
      module GHCJS.Three.Disposable,
      module GHCJS.Three.Visible,
      module GHCJS.Three.HasXYZ,
+     module GHCJS.Three.Texture,
      runThree
     )
     where
@@ -44,6 +45,7 @@ import GHCJS.Three.GLNode
 import GHCJS.Three.Disposable
 import GHCJS.Three.Visible
 import GHCJS.Three.HasXYZ
+import GHCJS.Three.Texture
 
 import JavaScript.Web.AnimationFrame
 import GHCJS.Foreign.Callback (OnBlocked(..))
