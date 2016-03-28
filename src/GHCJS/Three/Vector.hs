@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Vector (
     TVector3(..), TVector2(..), NormalVector,
-    mkTVector3, toVector3, mkTVector2, toVector2, vector3To2,
+    mkTVector3, toVector3, mkTVector2, toVector2, vector3To2, (#+), (#-),
     module Data.Vector.V2,
     module Data.Vector.V3
     ) where
@@ -71,6 +71,12 @@ vecY = thr_vecY . toJSVal
 
 vecZ :: IsJSVector v => v -> Double
 vecZ = thr_vecZ . toJSVal
+
+(#+) :: Vector3 -> Vector3 -> Vector3
+(Vector3 x1 y1 z1) #+ (Vector3 x2 y2 z2) = Vector3 (x1 + x2) (y1 + y2) (z1 + z2)
+
+(#-) :: Vector3 -> Vector3 -> Vector3
+(Vector3 x1 y1 z1) #- (Vector3 x2 y2 z2) = Vector3 (x1 - x2) (y1 - y2) (z1 - z2)
 
 -- | create a new Three Vector3 object with TVector
 mkTVector3 :: Vector3 -> Three TVector3
