@@ -33,9 +33,9 @@ getResult = map fromJSVal . fromMaybe []
 foreign import javascript unsafe "($3).setFromCamera($1, $2)"
     thr_setFromCamera :: JSVal -> JSVal -> JSVal -> Three ()
 
-setFromCamera :: (IsCamera c) => TVector2 -> c -> Raycaster -> Three ()
+setFromCamera :: (IsCamera c) => Vector2 -> c -> Raycaster -> Three ()
 setFromCamera v c r = do
-    vecVal <- toJSVal <$> mkVector2 v
+    vecVal <- toJSVal <$> mkTVector2 v
     thr_setFromCamera vecVal (toJSVal c) (toJSVal r)
 
 -- | intersectObject
@@ -53,10 +53,10 @@ foreign import javascript unsafe "new window.THREE.Raycaster($1, $2, $3, $4)"
 foreign import javascript unsafe "new window.THREE.Raycaster()"
     thr_mkBaseRaycaster :: Three JSVal
 
-mkRaycaster :: TVector -> TVector -> Near -> Far -> Three Raycaster
+mkRaycaster :: Vector3 -> Vector3 -> Near -> Far -> Three Raycaster
 mkRaycaster origin direction near far = do
-    ov <- mkVector origin
-    dv <- mkVector direction
+    ov <- mkTVector3 origin
+    dv <- mkTVector3 direction
     fromJSVal <$> thr_mkRaycaster (toJSVal ov) (toJSVal dv) near far
 
 mkBaseRaycaster :: Three Raycaster
@@ -69,8 +69,8 @@ foreign import javascript safe "($1).point"
 foreign import javascript safe "($1).object"
     thr_object :: JSVal -> JSVal
 
-getCastPoint :: RaycastResult -> Vector
-getCastPoint = fromJSVal <$> thr_point . toJSVal
+getCastPoint :: RaycastResult -> Vector3
+getCastPoint = (toVector3 . fromJSVal) <$> thr_point . toJSVal
 
 getCastObject :: RaycastResult -> Object3D
 getCastObject = fromJSVal <$> thr_object . toJSVal

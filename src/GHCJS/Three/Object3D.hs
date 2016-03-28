@@ -105,20 +105,20 @@ class (ThreeJSVal o) => IsObject3D o where
     getObject3D = fromJSVal . toJSVal
 
     -- functions with default implementations
-    scale :: o -> TVector
-    scale = toTVector . fromJSVal . thr_scale . toJSVal
+    scale :: o -> Vector3
+    scale = toVector3 . fromJSVal . thr_scale . toJSVal
 
-    setScale :: TVector -> o -> Three ()
+    setScale :: Vector3 -> o -> Three ()
     setScale s o = do
-        sv <- mkVector s
+        sv <- mkTVector3 s
         thr_setScale (toJSVal sv) (toJSVal o)
 
-    position :: o -> TVector
-    position = toTVector . fromJSVal . thr_position . toJSVal
+    position :: o -> Vector3
+    position = toVector3 . fromJSVal . thr_position . toJSVal
 
-    setPosition :: TVector -> o -> Three ()
+    setPosition :: Vector3 -> o -> Three ()
     setPosition p o = do
-        pv <- mkVector p
+        pv <- mkTVector3 p
         thr_setPosition (toJSVal pv) (toJSVal o)
 
     rotation :: o -> TEuler
@@ -129,12 +129,12 @@ class (ThreeJSVal o) => IsObject3D o where
         re <- mkEuler r
         thr_setRotation (toJSVal re) (toJSVal o)
 
-    up :: o -> TVector
-    up = toTVector . fromJSVal . thr_up . toJSVal
+    up :: o -> Vector3
+    up = toVector3 . fromJSVal . thr_up . toJSVal
 
-    setUp :: TVector -> o -> Three ()
+    setUp :: Vector3 -> o -> Three ()
     setUp u o = do
-        uv <- mkVector u
+        uv <- mkTVector3 u
         thr_setUp (toJSVal uv) (toJSVal o)
 
     setRenderOrder :: Int -> o -> Three ()
@@ -152,19 +152,19 @@ class (ThreeJSVal o) => IsObject3D o where
     translateOnAxis :: NormalVector -> Double -> o -> Three ()
     translateOnAxis v d o = thr_translateOnAxis (toJSVal v) d (toJSVal o)
 
-    localToWorld :: TVector -> o -> Three TVector
+    localToWorld :: Vector3 -> o -> Three Vector3
     localToWorld v o = do
-        vv <- mkVector v
-        (toTVector . fromJSVal) <$> thr_localToWorld (toJSVal vv) (toJSVal o)
+        vv <- mkTVector3 v
+        (toVector3 . fromJSVal) <$> thr_localToWorld (toJSVal vv) (toJSVal o)
 
-    worldToLocal :: TVector -> o -> Three TVector
+    worldToLocal :: Vector3 -> o -> Three Vector3
     worldToLocal v o = do
-        vv <- mkVector v
-        (toTVector . fromJSVal) <$> thr_worldToLocal (toJSVal vv) (toJSVal o)
+        vv <- mkTVector3 v
+        (toVector3 . fromJSVal) <$> thr_worldToLocal (toJSVal vv) (toJSVal o)
 
-    lookAt :: TVector -> o -> Three ()
+    lookAt :: Vector3 -> o -> Three ()
     lookAt v o = do
-        vv <- mkVector v
+        vv <- mkTVector3 v
         thr_lookAt (toJSVal vv) (toJSVal o)
 
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()

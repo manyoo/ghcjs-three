@@ -41,6 +41,7 @@ library
                      , ghcjs-base
                      , ghcjs-dom
                      , transformers
+                     , AC-Vector
   default-language:    Haskell2010
   js-sources:        three/three.js
   ghcjs-options:     -O2
