@@ -14,6 +14,7 @@ import Data.Maybe (fromMaybe)
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector hiding (getObject)
 import GHCJS.Three.Disposable
+import GHCJS.Three.Face3
 
 newtype Geometry = Geometry {
     geometryObject :: BaseObject
@@ -36,6 +37,17 @@ foreign import javascript unsafe "($2).vertices = $1"
 foreign import javascript unsafe "($2).verticesNeedUpdate = $1 === 1"
     thr_setVerticesNeedUpdate :: Int -> JSVal -> Three ()
 
+-- | get faces
+foreign import javascript safe "($1).faces"
+    thr_faces :: JSVal -> JSVal
+
+-- | set vertices
+foreign import javascript unsafe "($2).faces = $1"
+    thr_setFaces :: JSVal -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2).elementsNeedUpdate = $1 === 1"
+    thr_setElementsNeedUpdate :: Int -> JSVal -> Three ()
+
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
@@ -44,6 +56,12 @@ class ThreeJSVal g => IsGeometry g where
 
     setVertices :: [Vector3] -> g -> Three ()
     setVertices vs g = mapM mkTVector3 vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g) >> thr_setVerticesNeedUpdate 1 (toJSVal g)
+
+    faces :: g -> Three [Face3]
+    faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
+
+    setFaces :: [Face3] -> g -> Three ()
+    setFaces fs g = Marshal.toJSVal (map toJSVal fs) >>= flip thr_setFaces (toJSVal g) >> thr_setElementsNeedUpdate 1 (toJSVal g)
 
 instance IsGeometry Geometry
 instance Disposable Geometry
