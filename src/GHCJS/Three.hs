@@ -4,6 +4,7 @@ module GHCJS.Three
      module GHCJS.Three.Matrix,
      module GHCJS.Three.Vector,
      module GHCJS.Three.Euler,
+     module GHCJS.Three.Face3,
      module GHCJS.Three.Camera,
      module GHCJS.Three.Projection,
      module GHCJS.Three.Object3D,
@@ -29,6 +30,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.Matrix
 import GHCJS.Three.Vector
 import GHCJS.Three.Euler
+import GHCJS.Three.Face3
 import GHCJS.Three.Camera
 import GHCJS.Three.Projection
 import GHCJS.Three.Object3D

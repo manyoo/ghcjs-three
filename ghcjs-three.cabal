@@ -18,6 +18,7 @@ library
   exposed-modules:     GHCJS.Three.Monad
                      , GHCJS.Three.Matrix
                      , GHCJS.Three.Vector
+                     , GHCJS.Three.Face3
                      , GHCJS.Three.Object3D
                      , GHCJS.Three.Camera
                      , GHCJS.Three.Projection
