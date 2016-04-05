@@ -1,5 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
-module GHCJS.Three.Face3 where
+module GHCJS.Three.Face3 (
+    Face3(..), mkFace3, verticeA, verticeB, verticeC, faceNormal, faceColor
+    ) where
 
 import Data.Functor
 import GHCJS.Types
