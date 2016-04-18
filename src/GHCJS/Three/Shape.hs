@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Shape
-    (
+    (Shape(..), mkShape, holes, setHoles
     ) where
 
 import GHCJS.Types
