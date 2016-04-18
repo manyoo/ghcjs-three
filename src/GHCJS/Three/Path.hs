@@ -42,19 +42,19 @@ class ThreeJSVal p => IsPath p where
     pathFromPoints points path = mapM mkTVector2 points >>= Marshal.toJSVal . map toJSVal >>= flip thr_fromPoints (toJSVal path)
 
     -- | This moves the offset to x and y
-    pathMoveTo :: Double -> Double -> p -> Three ()
-    pathMoveTo x y p = thr_moveTo x y (toJSVal p)
+    pathMoveTo :: Vector2 -> p -> Three ()
+    pathMoveTo v p = thr_moveTo (v2x v) (v2y v) (toJSVal p)
 
     -- | This creates a line from the offset to X and Y and updates the offset to X and Y.
-    pathLineTo :: Double -> Double -> p -> Three ()
-    pathLineTo x y p = thr_lineTo x y (toJSVal p)
+    pathLineTo :: Vector2 -> p -> Three ()
+    pathLineTo v p = thr_lineTo (v2x v) (v2y v) (toJSVal p)
 
     -- | This creates a quadratic curve from the offset to x and y with cpX and cpY as control point and updates the offset to x and y.
-    quadraticCurveTo :: Double -> Double -> Double -> Double -> p -> Three ()
-    quadraticCurveTo cpX cpY x y p = thr_quadraticCurveTo cpX cpY x y (toJSVal p)
+    quadraticCurveTo :: Vector2 -> Vector2 -> p -> Three ()
+    quadraticCurveTo cpV v p = thr_quadraticCurveTo (v2x cpV) (v2y cpV) (v2x v) (v2y v) (toJSVal p)
 
     -- | This creates a bezier curve from the last offset to x and y with cp1X, cp1Y and cp1X, cp1Y as control points and updates the offset to x and y.
-    bezierCurveTo :: Double -> Double -> Double -> Double -> Double -> Double -> p -> Three ()
-    bezierCurveTo cp1X cp1Y cp2X cp2Y x y p = thr_bezierCurveTo cp1X cp1Y cp2X cp2Y x y (toJSVal p)
+    bezierCurveTo :: Vector2 -> Vector2 -> Vector2 -> p -> Three ()
+    bezierCurveTo cpV1 cpV2 v p = thr_bezierCurveTo (v2x cpV1) (v2y cpV1) (v2x cpV2) (v2y cpV2) (v2x v) (v2y v) (toJSVal p)
 
 instance IsPath Path
