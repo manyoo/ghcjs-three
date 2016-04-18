@@ -24,6 +24,7 @@ module GHCJS.Three
      module GHCJS.Three.Texture,
      module GHCJS.Three.Path,
      module GHCJS.Three.Shape,
+     module GHCJS.Three.ShapeGeometry,
      runThree
     )
     where
@@ -52,6 +53,7 @@ import GHCJS.Three.HasXYZ
 import GHCJS.Three.Texture
 import GHCJS.Three.Path
 import GHCJS.Three.Shape
+import GHCJS.Three.ShapeGeometry
 
 import JavaScript.Web.AnimationFrame
 import GHCJS.Foreign.Callback (OnBlocked(..))

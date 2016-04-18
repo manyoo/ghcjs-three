@@ -39,6 +39,7 @@ library
                      , GHCJS.Three.Texture
                      , GHCJS.Three.Path
                      , GHCJS.Three.Shape
+                     , GHCJS.Three.ShapeGeometry
                      , GHCJS.Three
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
