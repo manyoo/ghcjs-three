@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.ShapeGeometry
-    (ShapeGeometry(..), ShapeParam(..), ShapeGeometry
+    (ShapeGeometry(..), ShapeParam(..), mkShapeGeometry
     ) where
 
 import GHCJS.Types
