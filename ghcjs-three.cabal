@@ -40,12 +40,15 @@ library
                      , GHCJS.Three.Path
                      , GHCJS.Three.Shape
                      , GHCJS.Three.ShapeGeometry
+                     , GHCJS.Three.CylinderGeometry
                      , GHCJS.Three
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
                      , ghcjs-dom
                      , transformers
                      , AC-Vector
+                     , lens
+                     , data-default
   default-language:    Haskell2010
   js-sources:        three/three.js
   ghcjs-options:     -O2

@@ -25,6 +25,7 @@ module GHCJS.Three
      module GHCJS.Three.Path,
      module GHCJS.Three.Shape,
      module GHCJS.Three.ShapeGeometry,
+     module GHCJS.Three.CylinderGeometry,
      runThree
     )
     where
@@ -54,6 +55,7 @@ import GHCJS.Three.Texture
 import GHCJS.Three.Path
 import GHCJS.Three.Shape
 import GHCJS.Three.ShapeGeometry
+import GHCJS.Three.CylinderGeometry
 
 import JavaScript.Web.AnimationFrame
 import GHCJS.Foreign.Callback (OnBlocked(..))
