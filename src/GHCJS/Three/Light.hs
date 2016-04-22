@@ -1,7 +1,9 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Light (
     Light(..), mkLight,
-    AmbientLight(..), mkAmbientLight
+    AmbientLight(..), mkAmbientLight,
+    DirectionalLight(..), mkDirectionalLight,
+    PointLight(..), mkPointLight
 ) where
 
 import GHCJS.Types
@@ -36,3 +38,28 @@ foreign import javascript unsafe "new window.THREE.AmbientLight($1)"
 -- | create a new ambient light
 mkAmbientLight :: Int -> Three AmbientLight
 mkAmbientLight c = fromJSVal <$> thr_mkAmbientLight c
+
+
+-- | Directional Light
+newtype DirectionalLight = DirectionalLight {
+    getDirectionLight :: Light
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
+
+foreign import javascript unsafe "new window.THREE.DirectionalLight($1, $2)"
+    thr_mkDirectionalLight :: Int -> Double -> Three JSVal
+
+-- | create a new directional light
+mkDirectionalLight :: Int -> Double -> Three DirectionalLight
+mkDirectionalLight c i = fromJSVal <$> thr_mkDirectionalLight c i
+
+-- | Point Light
+newtype PointLight = PointLight {
+    getPointLight :: Light
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
+
+foreign import javascript unsafe "new window.THREE.PointLight($1, $2, $3)"
+    thr_mkPointLight :: Int -> Double -> Double -> Three JSVal
+
+-- | create a new point light
+mkPointLight :: Int -> Double -> Double -> Three PointLight
+mkPointLight c i d = fromJSVal <$> thr_mkPointLight c i d
