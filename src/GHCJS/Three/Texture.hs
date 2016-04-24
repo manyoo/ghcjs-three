@@ -1,5 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Texture (Texture(..), mkTexture, setNeedsUpdate,
+                            TextureLoader(..), mkTextureLoader, loadTexture,
     ImageLoader(..), mkImageLoader, setCrossOrigin, loadImage) where
 
 import Data.Functor
@@ -27,6 +28,24 @@ foreign import javascript unsafe "($2).needsUpdate = $1 === 1"
 
 setNeedsUpdate :: Bool -> Texture -> Three ()
 setNeedsUpdate u t = thr_setNeedsUpdate (if u then 1 else 0) $ toJSVal t
+
+newtype TextureLoader = TextureLoader {
+    getTextureLoaderObject :: BaseObject
+} deriving (ThreeJSVal)
+
+foreign import javascript unsafe "new window.THREE.TextureLoader()"
+    thr_mkTextureLoader :: Three JSVal
+
+mkTextureLoader :: Three TextureLoader
+mkTextureLoader = fromJSVal <$> thr_mkTextureLoader
+
+foreign import javascript interruptible "($2).load($1, $c);"
+    thr_loadTexture :: JSString -> JSVal -> Three JSVal
+
+loadTexture :: JSString -> TextureLoader -> Three Texture
+loadTexture url loader = fromJSVal <$> thr_loadTexture url (toJSVal loader)
+
+
 
 newtype ImageLoader = ImageLoader {
     getImageLoaderObject :: BaseObject
