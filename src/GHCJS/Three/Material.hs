@@ -5,6 +5,7 @@ module GHCJS.Three.Material (
     MeshNormalMaterial(..), mkMeshNormalMaterial,
     MeshLambertMaterial(..), mkMeshLambertMaterial,
     MeshPhongMaterial(..), mkMeshPhongMaterial,
+    TexturedMaterial(..),
     LineBasicMaterial(..), mkLineBasicMaterial,
     LineDashedMaterial(..), mkLineDashedMaterial,
     LineMaterial(..), IsLineMaterial(..)
@@ -13,6 +14,7 @@ module GHCJS.Three.Material (
 import GHCJS.Types
 import GHCJS.Three.Monad
 import GHCJS.Three.Color
+import GHCJS.Three.Texture
 import GHCJS.Three.Disposable
 import GHCJS.Three.Visible
 
@@ -106,10 +108,22 @@ foreign import javascript unsafe "new window.THREE.MeshNormalMaterial()"
 mkMeshNormalMaterial :: Three MeshNormalMaterial
 mkMeshNormalMaterial = fromJSVal <$> thr_mkMeshNormalMaterial
 
+
+-- | class for materials that can set textures
+foreign import javascript unsafe "($2).map = $1"
+    thr_setTextureMap :: JSVal -> JSVal -> Three ()
+
+class IsMaterial m => TexturedMaterial m where
+    setTextureMap :: Texture -> m -> Three ()
+    setTextureMap t m = thr_setTextureMap (toJSVal t) (toJSVal m)
+
+
 -- | MeshLambertMaterial
 newtype MeshLambertMaterial = MeshLambertMaterial {
     lambertMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
+
+instance TexturedMaterial MeshLambertMaterial
 
 foreign import javascript unsafe "new window.THREE.MeshLambertMaterial()"
     thr_mkMeshLambertMaterial :: Three JSVal
@@ -122,6 +136,8 @@ mkMeshLambertMaterial = fromJSVal <$> thr_mkMeshLambertMaterial
 newtype MeshPhongMaterial = MeshPhongMaterial {
     phongMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
+
+instance TexturedMaterial MeshPhongMaterial
 
 foreign import javascript unsafe "new window.THREE.MeshPhongMaterial()"
     thr_mkMeshPhongMaterial :: Three JSVal
