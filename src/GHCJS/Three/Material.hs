@@ -1,6 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, FlexibleInstances, UndecidableInstances #-}
 module GHCJS.Three.Material (
     Material(..), mkMaterial, IsMaterial(..),
+    MaterialRenderFace, materialFrontSide, materialBackSide, materialDoubleSide,
     MeshBasicMaterial(..), mkMeshBasicMaterial, setWireFrame, setWireFrameLineWidth,
     MeshNormalMaterial(..), mkMeshNormalMaterial,
     MeshLambertMaterial(..), mkMeshLambertMaterial,
@@ -47,6 +48,25 @@ foreign import javascript safe "($1).transparent"
 foreign import javascript unsafe "($2).transparent = $1 === 1"
     thr_setTransparent :: Int -> JSVal -> Three ()
 
+
+type MaterialRenderFace = Int
+
+foreign import javascript safe "window.THREE.FrontSide"
+    materialFrontSide :: MaterialRenderFace
+
+foreign import javascript safe "window.THREE.BackSide"
+    materialBackSide :: MaterialRenderFace
+
+foreign import javascript safe "window.THREE.DoubleSide"
+    materialDoubleSide :: MaterialRenderFace
+
+
+foreign import javascript safe "($1).side"
+    thr_side :: JSVal -> MaterialRenderFace
+
+foreign import javascript unsafe "($2).side = $1"
+    thr_setSide :: MaterialRenderFace -> JSVal -> Three ()
+
 class ThreeJSVal m => IsMaterial m where
     toMaterial :: m -> Material
     toMaterial = fromJSVal . toJSVal
@@ -69,6 +89,12 @@ class ThreeJSVal m => IsMaterial m where
     -- | set transparent
     setTransparent :: Bool -> m -> Three ()
     setTransparent t m = thr_setTransparent (if t then 1 else 0) $ toJSVal m
+
+    side :: m -> MaterialRenderFace
+    side = thr_side . toJSVal
+
+    setSide :: MaterialRenderFace -> m -> Three ()
+    setSide s m = thr_setSide s $ toJSVal m
 
 instance IsMaterial Material
 
