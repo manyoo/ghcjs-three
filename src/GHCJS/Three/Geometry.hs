@@ -20,32 +20,32 @@ newtype Geometry = Geometry {
     geometryObject :: BaseObject
 } deriving (ThreeJSVal)
 
-foreign import javascript unsafe "new window.THREE.Geometry()"
+foreign import javascript unsafe "new window['THREE']['Geometry']()"
     thr_mkGeometry :: Three JSVal
 
 mkGeometry :: Three Geometry
 mkGeometry = fromJSVal <$> thr_mkGeometry
 
 -- | get vertices
-foreign import javascript safe "($1).vertices"
+foreign import javascript safe "($1)['vertices']"
     thr_vertices :: JSVal -> JSVal
 
 -- | set vertices
-foreign import javascript unsafe "($2).vertices = $1"
+foreign import javascript unsafe "($2)['vertices'] = $1"
     thr_setVectices :: JSVal -> JSVal -> Three ()
 
-foreign import javascript unsafe "($2).verticesNeedUpdate = $1 === 1"
+foreign import javascript unsafe "($2)['verticesNeedUpdate'] = $1 === 1"
     thr_setVerticesNeedUpdate :: Int -> JSVal -> Three ()
 
 -- | get faces
-foreign import javascript safe "($1).faces"
+foreign import javascript safe "($1)['faces']"
     thr_faces :: JSVal -> JSVal
 
 -- | set vertices
-foreign import javascript unsafe "($2).faces = $1"
+foreign import javascript unsafe "($2)['faces'] = $1"
     thr_setFaces :: JSVal -> JSVal -> Three ()
 
-foreign import javascript unsafe "($2).elementsNeedUpdate = $1 === 1"
+foreign import javascript unsafe "($2)['elementsNeedUpdate'] = $1 === 1"
     thr_setElementsNeedUpdate :: Int -> JSVal -> Three ()
 
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
@@ -71,7 +71,7 @@ newtype BoxGeometry = BoxGeometry {
     getGeometry :: Geometry
 } deriving (ThreeJSVal, IsGeometry, Disposable)
 
-foreign import javascript unsafe "new window.THREE.BoxGeometry($1, $2, $3)"
+foreign import javascript unsafe "new window['THREE']['BoxGeometry']($1, $2, $3)"
     thr_mkBoxGeometry :: Double -> Double -> Double -> Three JSVal
 
 -- | create a new BoxGeometry
@@ -83,7 +83,7 @@ newtype CircleGeometry = CircleGeometry {
     getCircleGeometry :: Geometry
 } deriving (ThreeJSVal, IsGeometry, Disposable)
 
-foreign import javascript unsafe "new window.THREE.CircleGeometry($1, $2)"
+foreign import javascript unsafe "new window['THREE']['CircleGeometry']($1, $2)"
     thr_mkCircleGeometry :: Double -> Int -> Three JSVal
 
 -- | create a new CircleGeometry

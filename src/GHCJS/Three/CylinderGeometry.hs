@@ -18,7 +18,7 @@ newtype CylinderGeometry = CylinderGeometry {
     getCylinderGeometry :: Geometry
 } deriving (ThreeJSVal, IsGeometry, Disposable)
 
-foreign import javascript unsafe "new window.THREE.CylinderGeometry($1, $2, $3, $4, $5, $6 === 1, $7, $8)"
+foreign import javascript unsafe "new window['THREE']['CylinderGeometry']($1, $2, $3, $4, $5, $6 === 1, $7, $8)"
     thr_mkCylinderGeometry :: Double -> Double -> Double -> Int -> Int -> Int -> Double -> Double -> Three JSVal
 
 -- parameter data type

@@ -7,10 +7,10 @@ import GHCJS.Types
 
 import GHCJS.Three.Monad
 
-foreign import javascript unsafe "($2).add($1)"
+foreign import javascript unsafe "($2)['add']($1)"
     thr_add :: JSVal -> JSVal -> Three ()
 
-foreign import javascript unsafe "($2).remove($1)"
+foreign import javascript unsafe "($2)['remove']($1)"
     thr_remove :: JSVal -> JSVal -> Three ()
 
 newtype GLNode = GLNode BaseObject

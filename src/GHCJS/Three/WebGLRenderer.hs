@@ -41,22 +41,22 @@ toJSOption opts = do
         setProp k v obj)
     return obj
 
-foreign import javascript unsafe "new window.THREE.WebGLRenderer($1)"
+foreign import javascript unsafe "new window['THREE']['WebGLRenderer']($1)"
     thr_mkWebGLRenderer :: JSRendererOption -> Three JSVal
 
 -- | create a new webgl renderer
 mkWebGLRenderer :: RendererOption -> Three WebGLRenderer
 mkWebGLRenderer opt = toJSOption opt >>= (fmap fromJSVal) . thr_mkWebGLRenderer
 
-foreign import javascript unsafe "($1).domElement"
+foreign import javascript unsafe "($1)['domElement']"
     thr_domElement :: JSVal -> Three JSVal
-foreign import javascript unsafe "($3).setSize($1, $2)"
+foreign import javascript unsafe "($3)['setSize']($1, $2)"
     thr_setSize :: Double -> Double -> JSVal -> Three ()
-foreign import javascript unsafe "($5).setViewport($1, $2, $3, $4)"
+foreign import javascript unsafe "($5)['setViewport']($1, $2, $3, $4)"
     thr_setViewport :: Double -> Double -> Double -> Double -> JSVal -> Three ()
-foreign import javascript unsafe "($3).setClearColor($1, $2)"
+foreign import javascript unsafe "($3)['setClearColor']($1, $2)"
     thr_setClearColor :: Double -> Double -> JSVal -> Three ()
-foreign import javascript unsafe "($3).render($1, $2)"
+foreign import javascript unsafe "($3)['render']($1, $2)"
     thr_render :: JSVal -> JSVal -> JSVal -> Three ()
 
 -- | get the dom element (canvas) of the output

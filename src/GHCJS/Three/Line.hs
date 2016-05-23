@@ -14,7 +14,7 @@ newtype Line = Line {
     lineObject3D :: Object3D
 } deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
-foreign import javascript unsafe "new window.THREE.Line($1, $2)"
+foreign import javascript unsafe "new window['THREE']['Line']($1, $2)"
     thr_mkLine :: JSVal -> JSVal -> Three JSVal
 
 -- | create a new Line with Geometry and line material

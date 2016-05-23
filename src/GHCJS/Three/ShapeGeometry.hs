@@ -15,7 +15,7 @@ newtype ShapeGeometry = ShapeGeometry {
     getShapeGeometry :: Geometry
 } deriving (ThreeJSVal, IsGeometry, Disposable)
 
-foreign import javascript unsafe "new window.THREE.ShapeGeometry($1)"
+foreign import javascript unsafe "new window['THREE']['ShapeGeometry']($1)"
     thr_mkShapeGeometry :: JSVal -> Three JSVal
 
 data ShapeParam = SingleShape Shape

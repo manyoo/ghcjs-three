@@ -6,12 +6,12 @@ module GHCJS.Three.Visible (
 import GHCJS.Types
 import GHCJS.Three.Monad
 
-foreign import javascript safe "($1).visible"
+foreign import javascript safe "($1)['visible']"
     thr_visible :: JSVal -> Bool
 
 -- NOTE: ghcjs/ghc has a bug that Bool values are not translated to JS
 -- correctly at the time. So we use an Int here to bypass the bug
-foreign import javascript unsafe "($2).visible = $1 === 1"
+foreign import javascript unsafe "($2)['visible'] = $1 === 1"
     thr_setVisible :: Int -> JSVal -> Three ()
 
 class ThreeJSVal v => Visible v where

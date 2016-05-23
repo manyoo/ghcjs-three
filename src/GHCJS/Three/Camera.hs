@@ -20,31 +20,31 @@ newtype Camera = Camera {
 
 -- | common camera operations
 -- | get near
-foreign import javascript safe "($1).near"
+foreign import javascript safe "($1)['near']"
     thr_near :: JSVal -> Near
 
 -- | set near
-foreign import javascript unsafe "($2).near = $1"
+foreign import javascript unsafe "($2)['near'] = $1"
     thr_setNear :: Near -> JSVal -> Three ()
 
 -- | get far
-foreign import javascript safe "($1).far"
+foreign import javascript safe "($1)['far']"
     thr_far :: JSVal -> Far
 
 -- | set far
-foreign import javascript unsafe "($2).far = $1"
+foreign import javascript unsafe "($2)['far'] = $1"
     thr_setFar :: Far -> JSVal -> Three ()
 
 -- | get zoom
-foreign import javascript safe "($1).zoom"
+foreign import javascript safe "($1)['zoom']"
     thr_zoom :: JSVal -> Zoom
 
 -- | set zoom
-foreign import javascript unsafe "($2).zoom = $1"
+foreign import javascript unsafe "($2)['zoom'] = $1"
     thr_setZoom :: Zoom -> JSVal -> Three ()
 
 -- | update projection matrix
-foreign import javascript unsafe "($1).updateProjectionMatrix()"
+foreign import javascript unsafe "($1)['updateProjectionMatrix']()"
     thr_updateProjectionMatrix :: JSVal -> Three ()
 
 class (ThreeJSVal c) => IsCamera c where
@@ -91,7 +91,7 @@ type Near = Double
 type Far = Double
 
 -- | create a new orthographic camera
-foreign import javascript unsafe "new window.THREE.OrthographicCamera($1, $2, $3, $4, $5, $6)"
+foreign import javascript unsafe "new window['THREE']['OrthographicCamera']($1, $2, $3, $4, $5, $6)"
     thr_mkOrthographicCamera :: Left -> Right -> Top -> Bottom -> Near -> Far -> Three JSVal
 
 mkOrthographicCamera :: Left -> Right -> Top -> Bottom -> Near -> Far -> Three OrthographicCamera
@@ -100,35 +100,35 @@ mkOrthographicCamera l r t b n f = fromJSVal <$> thr_mkOrthographicCamera l r t 
 -- | orthographic camera operations
 
 -- | get left
-foreign import javascript safe "($1).left"
+foreign import javascript safe "($1)['left']"
     thr_left :: JSVal -> Left
 
 -- | set left
-foreign import javascript unsafe "($2).left = $1"
+foreign import javascript unsafe "($2)['left'] = $1"
     thr_setLeft :: Left -> JSVal -> Three ()
 
 -- | get right
-foreign import javascript safe "($1).right"
+foreign import javascript safe "($1)['right']"
     thr_right :: JSVal -> Right
 
 -- | set right
-foreign import javascript unsafe "($2).right = $1"
+foreign import javascript unsafe "($2)['right'] = $1"
     thr_setRight :: Right -> JSVal -> Three ()
 
 -- | get top
-foreign import javascript safe "($1).top"
+foreign import javascript safe "($1)['top']"
     thr_top :: JSVal -> Top
 
 -- | set top
-foreign import javascript unsafe "($2).top = $1"
+foreign import javascript unsafe "($2)['top'] = $1"
     thr_setTop :: Top -> JSVal -> Three ()
 
 -- | get bottom
-foreign import javascript safe "($1).bottom"
+foreign import javascript safe "($1)['bottom']"
     thr_bottom :: JSVal -> Bottom
 
 -- | set bottom
-foreign import javascript unsafe "($2).bottom = $1"
+foreign import javascript unsafe "($2)['bottom'] = $1"
     thr_setBottom :: Bottom -> JSVal -> Three ()
 
 class (ThreeJSVal c) => IsOrthoGraphicCamera c where
@@ -169,7 +169,7 @@ type FocalLength = Double
 type FrameSize = Double
 
 -- | create a new perspective camera
-foreign import javascript unsafe "new window.THREE.PerspectiveCamera($1, $2, $3, $4)"
+foreign import javascript unsafe "new window['THREE']['PerspectiveCamera']($1, $2, $3, $4)"
     thr_mkPerspectiveCamera :: Fov -> Aspect -> Near -> Far -> Three JSVal
 
 mkPerspectiveCamera :: Fov -> Aspect -> Near -> Far -> Three PerspectiveCamera
@@ -178,23 +178,23 @@ mkPerspectiveCamera fov a n f = fromJSVal <$> thr_mkPerspectiveCamera fov a n f
 -- | perspective camera operations
 
 -- | get field of view
-foreign import javascript safe "($1).fov"
+foreign import javascript safe "($1)['fov']"
     thr_fov :: JSVal -> Fov
 
 -- | set field of view
-foreign import javascript unsafe "($2).fov = $1"
+foreign import javascript unsafe "($2)['fov'] = $1"
     thr_setFov :: Fov -> JSVal -> Three ()
 
 -- | get aspect
-foreign import javascript safe "($1).aspect"
+foreign import javascript safe "($1)['aspect']"
     thr_aspect :: JSVal -> Aspect
 
 -- | set aspect
-foreign import javascript unsafe "($2).aspect = $1"
+foreign import javascript unsafe "($2)['aspect'] = $1"
     thr_setAspect :: Aspect -> JSVal -> Three ()
 
 -- | set Lens
-foreign import javascript unsafe "($3).setLens($1, $2)"
+foreign import javascript unsafe "($3)['setLens']($1, $2)"
     thr_setLens :: FocalLength -> FrameSize -> JSVal -> Three ()
 
 class (ThreeJSVal c) => IsPerspectiveCamera c where

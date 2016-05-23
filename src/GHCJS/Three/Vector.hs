@@ -29,7 +29,7 @@ instance HasX TVector3
 instance HasY TVector3
 instance HasZ TVector3
 
-foreign import javascript unsafe "($2).setFromMatrixPosition($1)"
+foreign import javascript unsafe "($2)['setFromMatrixPosition']($1)"
     thr_setFromMatrixPosition :: JSVal -> JSVal -> Three ()
 
 fromMatrixPosition :: Matrix -> Three Vector3
@@ -50,17 +50,17 @@ instance HasY TVector2
 -- normal vector is a special type of vector
 type NormalVector = TVector3
 
-foreign import javascript unsafe "new window.THREE.Vector3($1, $2, $3)"
+foreign import javascript unsafe "new window['THREE']['Vector3']($1, $2, $3)"
     thr_mkVector3 :: Double -> Double -> Double -> Three JSVal
 
-foreign import javascript unsafe "new window.THREE.Vector2($1, $2)"
+foreign import javascript unsafe "new window['THREE']['Vector2']($1, $2)"
     thr_mkVector2 :: Double -> Double -> Three JSVal
 
-foreign import javascript safe "($1).x"
+foreign import javascript safe "($1)['x']"
     thr_vecX :: JSVal -> Double
-foreign import javascript safe "($1).y"
+foreign import javascript safe "($1)['y']"
     thr_vecY :: JSVal -> Double
-foreign import javascript safe "($1).z"
+foreign import javascript safe "($1)['z']"
     thr_vecZ :: JSVal -> Double
 
 vecX :: IsJSVector v => v -> Double

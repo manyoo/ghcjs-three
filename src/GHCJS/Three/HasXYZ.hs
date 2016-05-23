@@ -6,22 +6,22 @@ module GHCJS.Three.HasXYZ (
 import GHCJS.Types
 import GHCJS.Three.Monad
 
-foreign import javascript safe "($1).x"
+foreign import javascript safe "($1)['x']"
     objGetX :: JSVal -> Double
 
-foreign import javascript unsafe "($2).x = $1"
+foreign import javascript unsafe "($2)['x'] = $1"
     objSetX :: Double -> JSVal -> Three ()
 
-foreign import javascript safe "($1).y"
+foreign import javascript safe "($1)['y']"
     objGetY :: JSVal -> Double
 
-foreign import javascript unsafe "($2).y = $1"
+foreign import javascript unsafe "($2)['y'] = $1"
     objSetY :: Double -> JSVal -> Three ()
 
-foreign import javascript safe "($1).z"
+foreign import javascript safe "($1)['z']"
     objGetZ :: JSVal -> Double
 
-foreign import javascript unsafe "($2).z = $1"
+foreign import javascript unsafe "($2)['z'] = $1"
     objSetZ :: Double -> JSVal -> Three ()
 
 class (ThreeJSVal o) => HasX o where

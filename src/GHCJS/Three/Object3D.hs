@@ -23,81 +23,81 @@ instance IsGLNode Object3D
 instance Visible Object3D
 
 -- | create a new Object3D object
-foreign import javascript unsafe "new window.THREE.Object3D()"
+foreign import javascript unsafe "new window['THREE']['Object3D']()"
     thr_mkObject3D :: Three JSVal
 
 mkObject3D :: Three Object3D
 mkObject3D = fromJSVal <$> thr_mkObject3D
 
 -- | get scale
-foreign import javascript safe "($1).scale"
+foreign import javascript safe "($1)['scale']"
     thr_scale :: JSVal -> JSVal
 
 -- | set scale
-foreign import javascript unsafe "($2).scale.copy($1)"
+foreign import javascript unsafe "($2)['scale']['copy']($1)"
     thr_setScale :: JSVal -> JSVal -> Three ()
 
 -- | get position
-foreign import javascript safe "($1).position"
+foreign import javascript safe "($1)['position']"
     thr_position :: JSVal -> JSVal
 
 -- | set position
-foreign import javascript unsafe "($2).position.copy($1)"
+foreign import javascript unsafe "($2)['position']['copy']($1)"
     thr_setPosition :: JSVal -> JSVal -> Three ()
 
 -- | get rotation
-foreign import javascript safe "($1).rotation"
+foreign import javascript safe "($1)['rotation']"
     thr_rotation :: JSVal -> JSVal
 
 -- | set rotation
-foreign import javascript unsafe "($2).rotation.copy($1)"
+foreign import javascript unsafe "($2)['rotation']['copy']($1)"
     thr_setRotation :: JSVal -> JSVal -> Three ()
 
 -- | get up direction
-foreign import javascript safe "($1).up"
+foreign import javascript safe "($1)['up']"
     thr_up :: JSVal -> JSVal
 
 -- | set up direction
-foreign import javascript unsafe "($2).up.copy($1)"
+foreign import javascript unsafe "($2)['up']['copy']($1)"
     thr_setUp :: JSVal -> JSVal -> Three ()
 
 -- | set renderOrder
-foreign import javascript unsafe "($2).renderOrder = $1"
+foreign import javascript unsafe "($2)['renderOrder'] = $1"
     thr_setRenderOrder :: Int -> JSVal -> Three ()
 
 -- | translate along the X, Y, Z axises
-foreign import javascript unsafe "($2).translateX($1)"
+foreign import javascript unsafe "($2)['translateX']($1)"
     thr_translateX :: Double -> JSVal -> Three ()
-foreign import javascript unsafe "($2).translateY($1)"
+foreign import javascript unsafe "($2)['translateY']($1)"
     thr_translateY :: Double -> JSVal -> Three ()
-foreign import javascript unsafe "($2).translateZ($1)"
+foreign import javascript unsafe "($2)['translateZ']($1)"
     thr_translateZ :: Double -> JSVal -> Three ()
 
 -- | translate along an axis, the axis should be a normalized vector
-foreign import javascript unsafe "($3).translateOnAxis($1, $2)"
+foreign import javascript unsafe "($3)['translateOnAxis']($1, $2)"
     thr_translateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
 -- | translate between local and world coordinates
-foreign import javascript unsafe "($2).localToWorld($1)"
+foreign import javascript unsafe "($2)['localToWorld']($1)"
     thr_localToWorld :: JSVal -> JSVal -> Three JSVal
-foreign import javascript unsafe "($2).worldToLocal($1)"
+foreign import javascript unsafe "($2)['worldToLocal']($1)"
     thr_worldToLocal :: JSVal -> JSVal -> Three JSVal
 
 -- | lookAt a position, the vector should be in the world coordinate
-foreign import javascript unsafe "($2).lookAt($1)"
+foreign import javascript unsafe "($2)['lookAt']($1)"
     thr_lookAt :: JSVal -> JSVal -> Three ()
 
 -- | rotate on axis (which is normalized)
-foreign import javascript unsafe "($3).rotateOnAxis($1, $2)"
+foreign import javascript unsafe "($3)['rotateOnAxis']($1, $2)"
     thr_rotateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
 -- | The global transform of the object. If the Object3d has no parent,
 -- then it's identical to the local transform.
-foreign import javascript safe "($1).matrixWorld"
+foreign import javascript safe "($1)['matrixWorld']"
     thr_matrixWorld :: JSVal -> JSVal
 
 -- | updatesglobal transform of the object and its children
-foreign import javascript unsafe "($1).updateMatrixWorld()"
+foreign import javascript unsafe "($1)['updateMatrixWorld']()"
     thr_updateMatrixWorld :: JSVal -> Three ()
 
 class (ThreeJSVal o) => IsObject3D o where

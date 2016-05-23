@@ -16,23 +16,23 @@ newtype Mesh = Mesh {
     meshObject3D :: Object3D
 } deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
-foreign import javascript unsafe "new window.THREE.Mesh($1, $2)"
+foreign import javascript unsafe "new window['THREE']['Mesh']($1, $2)"
     thr_mkMesh :: JSVal -> JSVal -> Three JSVal
 
 -- | create a new Mesh with Geometry and Material
 mkMesh :: (IsGeometry g, IsMaterial m) => g -> m -> Three Mesh
 mkMesh g m = fromJSVal <$> thr_mkMesh (toJSVal g) (toJSVal m)
 
-foreign import javascript safe "($1).geometry"
+foreign import javascript safe "($1)['geometry']"
     thr_geometry :: JSVal -> JSVal
 
-foreign import javascript unsafe "($2).geometry = $1"
+foreign import javascript unsafe "($2)['geometry'] = $1"
     thr_setGeometry :: JSVal -> JSVal -> Three ()
 
-foreign import javascript safe "($1).material"
+foreign import javascript safe "($1)['material']"
     thr_material :: JSVal -> JSVal
 
-foreign import javascript unsafe "($2).material = $1"
+foreign import javascript unsafe "($2)['material'] = $1"
     thr_setMaterial :: JSVal -> JSVal -> Three ()
 
 class ThreeJSVal m => IsMesh m where

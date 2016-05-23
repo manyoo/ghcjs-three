@@ -14,7 +14,7 @@ newtype Scene = Scene {
     sceneObject3D :: Object3D
 } deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
 
-foreign import javascript unsafe "new window.THREE.Scene()"
+foreign import javascript unsafe "new window['THREE']['Scene']()"
     thr_mkScene :: Three JSVal
 
 -- | create a new Scene

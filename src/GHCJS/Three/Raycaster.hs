@@ -22,15 +22,15 @@ newtype RaycastResult = RaycastResult {
     rcResObject :: BaseObject
 } deriving (ThreeJSVal)
 
-foreign import javascript unsafe "($2).intersectObject($1)"
+foreign import javascript unsafe "($2)['intersectObject']($1)"
     thr_intersectObject :: JSVal -> JSVal -> Three JSVal
-foreign import javascript unsafe "($2).intersectObjects($1)"
+foreign import javascript unsafe "($2)['intersectObjects']($1)"
     thr_intersectObjects :: JSVal -> JSVal -> Three JSVal
 
 getResult :: Maybe [JSVal] -> [RaycastResult]
 getResult = map fromJSVal . fromMaybe []
 
-foreign import javascript unsafe "($3).setFromCamera($1, $2)"
+foreign import javascript unsafe "($3)['setFromCamera']($1, $2)"
     thr_setFromCamera :: JSVal -> JSVal -> JSVal -> Three ()
 
 setFromCamera :: (IsCamera c) => Vector2 -> c -> Raycaster -> Three ()
@@ -47,10 +47,10 @@ intersectObjects :: IsObject3D obj => [obj] -> Raycaster -> Three [RaycastResult
 intersectObjects objs ray = getResult <$> ((Marshal.toJSVal $ map toJSVal objs) >>= flip thr_intersectObjects (toJSVal ray) >>= Marshal.fromJSVal)
 
 -- | create a new raycaster
-foreign import javascript unsafe "new window.THREE.Raycaster($1, $2, $3, $4)"
+foreign import javascript unsafe "new window['THREE']['Raycaster']($1, $2, $3, $4)"
     thr_mkRaycaster :: JSVal -> JSVal -> Double -> Double -> Three JSVal
 
-foreign import javascript unsafe "new window.THREE.Raycaster()"
+foreign import javascript unsafe "new window['THREE']['Raycaster']()"
     thr_mkBaseRaycaster :: Three JSVal
 
 mkRaycaster :: Vector3 -> Vector3 -> Near -> Far -> Three Raycaster

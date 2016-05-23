@@ -14,7 +14,7 @@ newtype Matrix = Matrix {
 } deriving ThreeJSVal
 
 -- create an identity matrix
-foreign import javascript unsafe "new window.THREE.Matrix4()"
+foreign import javascript unsafe "new window['THREE']['Matrix4']()"
     thr_mkMatrix :: Three JSVal
 
 mkMatrix :: Three Matrix

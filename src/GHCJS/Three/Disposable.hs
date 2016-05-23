@@ -5,7 +5,7 @@ module GHCJS.Three.Disposable (Disposable(..))
 import GHCJS.Types
 import GHCJS.Three.Monad
 
-foreign import javascript unsafe "($1).dispose()"
+foreign import javascript unsafe "($1)['dispose']()"
     oDispose :: JSVal -> Three ()
 
 class (ThreeJSVal o) => Disposable o where

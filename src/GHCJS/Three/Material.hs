@@ -28,7 +28,7 @@ instance HasColor Material
 instance Visible Material
 instance Disposable Material
 
-foreign import javascript unsafe "new window.THREE.Material()"
+foreign import javascript unsafe "new window['THREE']['Material']()"
     thr_mkMaterial :: Three JSVal
 
 -- | create a new Material instance
@@ -36,35 +36,35 @@ mkMaterial :: Three Material
 mkMaterial = fromJSVal <$> thr_mkMaterial
 
 -- private imported functions
-foreign import javascript safe "($1).opacity"
+foreign import javascript safe "($1)['opacity']"
     thr_opacity :: JSVal -> Double
 
-foreign import javascript unsafe "($2).opacity = $1"
+foreign import javascript unsafe "($2)['opacity'] = $1"
     thr_setOpacity :: Double -> JSVal -> Three ()
 
-foreign import javascript safe "($1).transparent"
+foreign import javascript safe "($1)['transparent']"
     thr_transparent :: JSVal -> Bool
 
-foreign import javascript unsafe "($2).transparent = $1 === 1"
+foreign import javascript unsafe "($2)['transparent'] = $1 === 1"
     thr_setTransparent :: Int -> JSVal -> Three ()
 
 
 type MaterialRenderFace = Int
 
-foreign import javascript safe "window.THREE.FrontSide"
+foreign import javascript safe "window['THREE']['FrontSide']"
     materialFrontSide :: MaterialRenderFace
 
-foreign import javascript safe "window.THREE.BackSide"
+foreign import javascript safe "window['THREE']['BackSide']"
     materialBackSide :: MaterialRenderFace
 
-foreign import javascript safe "window.THREE.DoubleSide"
+foreign import javascript safe "window['THREE']['DoubleSide']"
     materialDoubleSide :: MaterialRenderFace
 
 
-foreign import javascript safe "($1).side"
+foreign import javascript safe "($1)['side']"
     thr_side :: JSVal -> MaterialRenderFace
 
-foreign import javascript unsafe "($2).side = $1"
+foreign import javascript unsafe "($2)['side'] = $1"
     thr_setSide :: MaterialRenderFace -> JSVal -> Three ()
 
 class ThreeJSVal m => IsMaterial m where
@@ -98,13 +98,13 @@ class ThreeJSVal m => IsMaterial m where
 
 instance IsMaterial Material
 
-foreign import javascript unsafe "($2).wireframe = $1 === 1"
+foreign import javascript unsafe "($2)['wireframe'] = $1 === 1"
     thr_setWireFrame :: Int -> JSVal -> Three ()
 
 setWireFrame :: IsMaterial m => Bool -> m -> Three ()
 setWireFrame b mesh = thr_setWireFrame (if b then 1 else 0) $ toJSVal mesh
 
-foreign import javascript unsafe "($2).wireframeLineWidth = $1"
+foreign import javascript unsafe "($2)['wireframeLineWidth'] = $1"
     thr_setWireFrameLineWidth :: Int -> JSVal -> Three ()
 
 setWireFrameLineWidth :: IsMaterial m => Int -> m -> Three ()
@@ -115,7 +115,7 @@ newtype MeshBasicMaterial = MeshBasicMaterial {
     basicMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, Visible, HasColor, Disposable)
 
-foreign import javascript unsafe "new window.THREE.MeshBasicMaterial()"
+foreign import javascript unsafe "new window['THREE']['MeshBasicMaterial']()"
     thr_mkMeshBasicMaterial :: Three JSVal
 
 -- | create a new MeshBasicMaterial
@@ -127,7 +127,7 @@ newtype MeshNormalMaterial = MeshNormalMaterial {
     normalMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
-foreign import javascript unsafe "new window.THREE.MeshNormalMaterial()"
+foreign import javascript unsafe "new window['THREE']['MeshNormalMaterial']()"
     thr_mkMeshNormalMaterial :: Three JSVal
 
 -- | create a new MeshNormalMaterial
@@ -136,7 +136,7 @@ mkMeshNormalMaterial = fromJSVal <$> thr_mkMeshNormalMaterial
 
 
 -- | class for materials that can set textures
-foreign import javascript unsafe "($2).map = $1"
+foreign import javascript unsafe "($2)['map'] = $1"
     thr_setTextureMap :: JSVal -> JSVal -> Three ()
 
 class IsMaterial m => TexturedMaterial m where
@@ -151,7 +151,7 @@ newtype MeshLambertMaterial = MeshLambertMaterial {
 
 instance TexturedMaterial MeshLambertMaterial
 
-foreign import javascript unsafe "new window.THREE.MeshLambertMaterial()"
+foreign import javascript unsafe "new window['THREE']['MeshLambertMaterial']()"
     thr_mkMeshLambertMaterial :: Three JSVal
 
 -- | create a new MeshLambertMaterial
@@ -165,7 +165,7 @@ newtype MeshPhongMaterial = MeshPhongMaterial {
 
 instance TexturedMaterial MeshPhongMaterial
 
-foreign import javascript unsafe "new window.THREE.MeshPhongMaterial()"
+foreign import javascript unsafe "new window['THREE']['MeshPhongMaterial']()"
     thr_mkMeshPhongMaterial :: Three JSVal
 
 -- | create a new MeshPhongMaterial
@@ -177,7 +177,7 @@ newtype LineBasicMaterial = LineBasicMaterial {
     lineBasicMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
-foreign import javascript unsafe "new window.THREE.LineBasicMaterial()"
+foreign import javascript unsafe "new window['THREE']['LineBasicMaterial']()"
     thr_mkLineBasicMaterial :: Three JSVal
 
 mkLineBasicMaterial :: Three LineBasicMaterial
@@ -188,17 +188,17 @@ newtype LineDashedMaterial = LineDashedMaterial {
     lineDashedMaterial :: Material
 } deriving (ThreeJSVal, IsMaterial, HasColor, Visible, Disposable)
 
-foreign import javascript unsafe "new window.THREE.LineDashedMaterial()"
+foreign import javascript unsafe "new window['THREE']['LineDashedMaterial']()"
     thr_mkLineDashedMaterial :: Three JSVal
 
 mkLineDashedMaterial :: Three LineDashedMaterial
 mkLineDashedMaterial = fromJSVal <$> thr_mkLineDashedMaterial
 
 -- private functions
-foreign import javascript unsafe "($1).linewidth"
+foreign import javascript unsafe "($1)['linewidth']"
     thr_lineWidth :: JSVal -> Int
 
-foreign import javascript unsafe "($2).linewidth = $1"
+foreign import javascript unsafe "($2)['linewidth'] = $1"
     thr_setLineWidth :: Int -> JSVal -> Three ()
 
 newtype LineMaterial = LineMaterial Material deriving (ThreeJSVal, IsMaterial)

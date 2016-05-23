@@ -15,25 +15,25 @@ newtype Path = Path {
     pathObject :: BaseObject
 } deriving (ThreeJSVal)
 
-foreign import javascript unsafe "new window.THREE.Path($1)"
+foreign import javascript unsafe "new window['THREE']['Path']($1)"
     thr_mkPath :: JSVal -> Three JSVal
 
 mkPath :: [Vector2] -> Three Path
 mkPath points = mapM mkTVector2 points >>= Marshal.toJSVal . map toJSVal >>= fmap fromJSVal . thr_mkPath
 
-foreign import javascript unsafe "($2).fromPoints($1)"
+foreign import javascript unsafe "($2)['fromPoints']($1)"
     thr_fromPoints :: JSVal -> JSVal -> Three ()
 
-foreign import javascript unsafe "($3).moveTo($1, $2)"
+foreign import javascript unsafe "($3)['moveTo']($1, $2)"
     thr_moveTo :: Double -> Double -> JSVal -> Three ()
 
-foreign import javascript unsafe "($3).lineTo($1, $2)"
+foreign import javascript unsafe "($3)['lineTo']($1, $2)"
     thr_lineTo :: Double -> Double -> JSVal -> Three ()
 
-foreign import javascript unsafe "($5).quadraticCurveTo($1, $2, $3, $4)"
+foreign import javascript unsafe "($5)['quadraticCurveTo']($1, $2, $3, $4)"
     thr_quadraticCurveTo :: Double -> Double -> Double -> Double -> JSVal -> Three ()
 
-foreign import javascript unsafe "($7).bezierCurveTo($1, $2, $3, $4, $5, $6)"
+foreign import javascript unsafe "($7)['bezierCurveTo']($1, $2, $3, $4, $5, $6)"
     thr_bezierCurveTo :: Double -> Double -> Double -> Double -> Double -> Double -> JSVal -> Three ()
 
 class ThreeJSVal p => IsPath p where
