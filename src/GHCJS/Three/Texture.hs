@@ -8,6 +8,8 @@ import GHCJS.Types
 import GHCJS.Foreign.Callback
 import GHCJS.Concurrent
 
+import GHCJS.DOM.Types
+
 import GHCJS.Three.Monad
 import GHCJS.Three.Disposable
 
@@ -20,8 +22,8 @@ instance Disposable Texture
 foreign import javascript unsafe "new window['THREE']['Texture']($1)"
     thr_mkTexture :: JSVal -> Three JSVal
 
-mkTexture :: JSVal -> Three Texture
-mkTexture img = fromJSVal <$> thr_mkTexture img
+mkTexture :: HTMLCanvasElement -> Three Texture
+mkTexture img = fromJSVal <$> thr_mkTexture (unGObject $ toGObject img)
 
 foreign import javascript unsafe "($2)['needsUpdate'] = $1 === 1"
     thr_setNeedsUpdate :: Int -> JSVal -> Three ()
