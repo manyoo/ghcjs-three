@@ -3,7 +3,8 @@ module GHCJS.Three.Light (
     Light(..), mkLight,
     AmbientLight(..), mkAmbientLight,
     DirectionalLight(..), mkDirectionalLight,
-    PointLight(..), mkPointLight
+    PointLight(..), mkPointLight,
+    SpotLight(..), mkSpotLight
 ) where
 
 import GHCJS.Types
@@ -63,3 +64,15 @@ foreign import javascript unsafe "new window['THREE']['PointLight']($1, $2, $3)"
 -- | create a new point light
 mkPointLight :: Int -> Double -> Double -> Three PointLight
 mkPointLight c i d = fromJSVal <$> thr_mkPointLight c i d
+
+
+-- | Spot Light
+newtype SpotLight = SpotLight {
+    getSpotLight :: Light
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
+
+foreign import javascript unsafe "new window['THREE']['SpotLight']($1, $2, $3)"
+    thr_mkSpotLight :: Int -> Double -> Double -> Three JSVal
+
+mkSpotLight :: Int -> Double -> Double -> Three SpotLight
+mkSpotLight c i d = fromJSVal <$> thr_mkSpotLight c i d
