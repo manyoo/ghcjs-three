@@ -91,6 +91,14 @@ foreign import javascript unsafe "($2)['lookAt']($1)"
 foreign import javascript unsafe "($3)['rotateOnAxis']($1, $2)"
     thr_rotateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
+-- | Gets rendered into shadow map.
+foreign import javascript unsafe "($2)['castShadow'] = $1 === 1"
+    thr_setCastShadow :: Int -> JSVal -> Three ()
+
+-- | Material gets baked in shadow receiving
+foreign import javascript unsafe "($2)['receiveShadow'] = $1 === 1"
+    thr_setReceiveShadow :: Int -> JSVal -> Three ()
+
 -- | The global transform of the object. If the Object3d has no parent,
 -- then it's identical to the local transform.
 foreign import javascript safe "($1)['matrixWorld']"
@@ -175,5 +183,11 @@ class (ThreeJSVal o) => IsObject3D o where
 
     updateMatrixWorld :: o -> Three ()
     updateMatrixWorld = thr_updateMatrixWorld . toJSVal
+
+    setCastShadow :: Bool -> o -> Three ()
+    setCastShadow b o = thr_setCastShadow (if b then 1 else 0) (toJSVal o)
+
+    setReceiveShadow :: Bool -> o -> Three ()
+    setReceiveShadow b o = thr_setReceiveShadow (if b then 1 else 0) (toJSVal o)
 
 instance IsObject3D Object3D

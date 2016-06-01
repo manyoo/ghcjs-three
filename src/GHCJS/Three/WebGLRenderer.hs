@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, OverloadedStrings #-}
 module GHCJS.Three.WebGLRenderer (
     WebGLRenderer(..), RendererOptionItem(..), RendererOption, mkWebGLRenderer,
-    domElement, setSize, setViewport, setClearColor, render
+    domElement, setSize, setViewport, setClearColor, setShadowMapEnabled, render
 ) where
 
 import GHCJS.Types
@@ -58,6 +58,9 @@ foreign import javascript unsafe "($3)['setClearColor']($1, $2)"
     thr_setClearColor :: Double -> Double -> JSVal -> Three ()
 foreign import javascript unsafe "($3)['render']($1, $2)"
     thr_render :: JSVal -> JSVal -> JSVal -> Three ()
+foreign import javascript unsafe "($2)['shadowMap']['enabled'] = $1 === 1"
+    thr_setShadowMapEnabled :: Int -> JSVal -> Three ()
+
 
 -- | get the dom element (canvas) of the output
 domElement :: WebGLRenderer -> Three (Maybe Element)
@@ -74,6 +77,10 @@ setViewport x y w h r = thr_setViewport x y w h $ toJSVal r
 -- | set clear color
 setClearColor :: Double -> Double -> WebGLRenderer -> Three ()
 setClearColor color alpha r = thr_setClearColor color alpha $ toJSVal r
+
+-- | set shadowMap.enabled
+setShadowMapEnabled :: Bool -> WebGLRenderer -> Three ()
+setShadowMapEnabled b r = thr_setShadowMapEnabled (if b then 1 else 0) (toJSVal r)
 
 -- | do render the scene
 render :: IsCamera c => Scene -> c -> WebGLRenderer -> Three ()
