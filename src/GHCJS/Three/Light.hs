@@ -2,7 +2,10 @@
 module GHCJS.Three.Light (
     Light(..), mkLight,
     AmbientLight(..), mkAmbientLight,
-    DirectionalLight(..), mkDirectionalLight,
+    DirectionalLight(..), mkDirectionalLight, shadowCamera,
+    setShadowCameraLeft, setShadowCameraRight,
+    setShadowCameraTop, setShadowCameraBottom,
+    setShadowCameraNear, setShadowCameraFar,
     PointLight(..), mkPointLight,
     SpotLight(..), mkSpotLight
 ) where
@@ -13,6 +16,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
 import GHCJS.Three.Visible
 import GHCJS.Three.GLNode
+import GHCJS.Three.Camera
 
 -- | generic Light
 
@@ -52,6 +56,48 @@ foreign import javascript unsafe "new window['THREE']['DirectionalLight']($1, $2
 -- | create a new directional light
 mkDirectionalLight :: Int -> Double -> Three DirectionalLight
 mkDirectionalLight c i = fromJSVal <$> thr_mkDirectionalLight c i
+
+foreign import javascript unsafe "$1['shadow']['camera']"
+    thr_shadowCamera :: JSVal -> Three JSVal
+
+shadowCamera :: DirectionalLight -> Three Camera
+shadowCamera = fmap fromJSVal . thr_shadowCamera . toJSVal
+
+foreign import javascript unsafe "$2['shadow']['camera']['left'] = $1"
+    thr_setShadowCameraLeft :: Double -> JSVal -> Three ()
+
+setShadowCameraLeft :: Double -> DirectionalLight -> Three ()
+setShadowCameraLeft d l = thr_setShadowCameraLeft d (toJSVal l)
+
+foreign import javascript unsafe "$2['shadow']['camera']['right'] = $1"
+    thr_setShadowCameraRight :: Double -> JSVal -> Three ()
+
+setShadowCameraRight :: Double -> DirectionalLight -> Three ()
+setShadowCameraRight d l = thr_setShadowCameraRight d (toJSVal l)
+
+foreign import javascript unsafe "$2['shadow']['camera']['top'] = $1"
+    thr_setShadowCameraTop :: Double -> JSVal -> Three ()
+
+setShadowCameraTop :: Double -> DirectionalLight -> Three ()
+setShadowCameraTop d l = thr_setShadowCameraTop d (toJSVal l)
+
+foreign import javascript unsafe "$2['shadow']['camera']['bottom'] = $1"
+    thr_setShadowCameraBottom :: Double -> JSVal -> Three ()
+
+setShadowCameraBottom :: Double -> DirectionalLight -> Three ()
+setShadowCameraBottom d l = thr_setShadowCameraBottom d (toJSVal l)
+
+foreign import javascript unsafe "$2['shadow']['camera']['near'] = $1"
+    thr_setShadowCameraNear :: Double -> JSVal -> Three ()
+
+setShadowCameraNear :: Double -> DirectionalLight -> Three ()
+setShadowCameraNear d l = thr_setShadowCameraNear d (toJSVal l)
+
+foreign import javascript unsafe "$2['shadow']['camera']['far'] = $1"
+    thr_setShadowCameraFar :: Double -> JSVal -> Three ()
+
+setShadowCameraFar :: Double -> DirectionalLight -> Three ()
+setShadowCameraFar d l = thr_setShadowCameraFar d (toJSVal l)
 
 -- | Point Light
 newtype PointLight = PointLight {

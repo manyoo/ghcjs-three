@@ -26,6 +26,7 @@ module GHCJS.Three
      module GHCJS.Three.Shape,
      module GHCJS.Three.ShapeGeometry,
      module GHCJS.Three.CylinderGeometry,
+     module GHCJS.Three.CameraHelper,
      runThree
     )
     where
@@ -56,6 +57,7 @@ import GHCJS.Three.Path
 import GHCJS.Three.Shape
 import GHCJS.Three.ShapeGeometry
 import GHCJS.Three.CylinderGeometry
+import GHCJS.Three.CameraHelper
 
 import JavaScript.Web.AnimationFrame
 import GHCJS.Foreign.Callback (OnBlocked(..))
