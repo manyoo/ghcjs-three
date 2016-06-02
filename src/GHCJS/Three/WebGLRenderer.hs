@@ -1,7 +1,9 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, OverloadedStrings #-}
 module GHCJS.Three.WebGLRenderer (
     WebGLRenderer(..), RendererOptionItem(..), RendererOption, mkWebGLRenderer,
-    domElement, setSize, setViewport, setClearColor, setShadowMapEnabled, render
+    domElement, setSize, setViewport, setClearColor, setShadowMapEnabled, render,
+    ShadowMapType, shadowMapTypeBasic, shadowMapTypePCF, shadowMapTypePCFSoft,
+    setShadowMapType
 ) where
 
 import GHCJS.Types
@@ -81,6 +83,24 @@ setClearColor color alpha r = thr_setClearColor color alpha $ toJSVal r
 -- | set shadowMap.enabled
 setShadowMapEnabled :: Bool -> WebGLRenderer -> Three ()
 setShadowMapEnabled b r = thr_setShadowMapEnabled (if b then 1 else 0) (toJSVal r)
+
+-- | set shadowMap.type
+type ShadowMapType = Int
+
+foreign import javascript safe "window['THREE']['BasicShadowMap']"
+    shadowMapTypeBasic :: ShadowMapType
+
+foreign import javascript safe "window['THREE']['PCFShadowMap']"
+    shadowMapTypePCF :: ShadowMapType
+
+foreign import javascript safe "window['THREE']['PCFSoftShadowMap']"
+    shadowMapTypePCFSoft :: ShadowMapType
+
+foreign import javascript unsafe "$2['shadowMap']['type'] = $1"
+    thr_setShadowMapType :: Int -> JSVal -> Three ()
+
+setShadowMapType :: ShadowMapType -> WebGLRenderer -> Three ()
+setShadowMapType t r = thr_setShadowMapType t (toJSVal r)
 
 -- | do render the scene
 render :: IsCamera c => Scene -> c -> WebGLRenderer -> Three ()
