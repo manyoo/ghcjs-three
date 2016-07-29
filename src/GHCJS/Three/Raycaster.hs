@@ -35,11 +35,12 @@ getResult = map fromJSVal . fromMaybe []
 foreign import javascript unsafe "($3)['set']($1, $2)"
     thr_setRay :: JSVal -> JSVal -> JSVal -> Three ()
 
+foreign import javascript unsafe "($7)['ray']['origin']['set']($1, $2, $3);\
+                                 \($7)['ray']['direction']['set']($4, $5, $6);"
+    thr_setRayValue :: Double -> Double -> Double -> Double -> Double -> Double -> JSVal -> Three ()
+
 setRay :: Vector3 -> Vector3 -> Raycaster -> Three ()
-setRay orig dir c = do
-    origVec <- toJSVal <$> mkTVector3 orig
-    dirVec  <- toJSVal <$> mkTVector3 dir
-    thr_setRay origVec dirVec (toJSVal c)
+setRay orig dir c = thr_setRayValue (v3x orig) (v3y orig) (v3z orig) (v3x dir) (v3y dir) (v3z dir) (toJSVal c)
 
 foreign import javascript unsafe "($3)['setFromCamera']($1, $2)"
     thr_setFromCamera :: JSVal -> JSVal -> JSVal -> Three ()
