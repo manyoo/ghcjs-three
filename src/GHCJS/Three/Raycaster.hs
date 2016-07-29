@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Raycaster (
     Raycaster(..), RaycastResult(..), setRay, setFromCamera, mkBaseRaycaster,
-    mkRaycaster, intersectObject, intersectObjects, getCastPoint, getCastObject
+    mkRaycaster, intersectObject, intersectingObject, intersectObjects, getCastPoint, getCastObject
 ) where
 
 import GHCJS.Types
@@ -24,6 +24,8 @@ newtype RaycastResult = RaycastResult {
 
 foreign import javascript unsafe "($2)['intersectObject']($1)"
     thr_intersectObject :: JSVal -> JSVal -> Three JSVal
+foreign import javascript unsafe "(($2)['intersectObject']($1)).length"
+    thr_intersectingObject :: JSVal -> JSVal -> Three Int
 foreign import javascript unsafe "($2)['intersectObjects']($1)"
     thr_intersectObjects :: JSVal -> JSVal -> Three JSVal
 
@@ -50,6 +52,9 @@ setFromCamera v c r = do
 -- | intersectObject
 intersectObject :: IsObject3D obj => obj -> Raycaster -> Three [RaycastResult]
 intersectObject obj ray = getResult <$> (thr_intersectObject (toJSVal obj) (toJSVal ray) >>= Marshal.fromJSVal)
+
+intersectingObject :: IsObject3D obj => obj -> Raycaster -> Three Bool
+intersectingObject obj ray = (> 0) <$> thr_intersectingObject (toJSVal obj) (toJSVal ray)
 
 -- | intersectObjects
 intersectObjects :: IsObject3D obj => [obj] -> Raycaster -> Three [RaycastResult]
