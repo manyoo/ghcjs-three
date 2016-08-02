@@ -15,6 +15,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.Vector hiding (getObject)
 import GHCJS.Three.Disposable
 import GHCJS.Three.Face3
+import Data.JSString (pack, unpack)
 
 newtype Geometry = Geometry {
     geometryObject :: BaseObject
@@ -48,6 +49,14 @@ foreign import javascript unsafe "($2)['faces'] = $1"
 foreign import javascript unsafe "($2)['elementsNeedUpdate'] = $1 === 1"
     thr_setElementsNeedUpdate :: Int -> JSVal -> Three ()
 
+-- | get name
+foreign import javascript safe "($1)['name']"
+    thr_getName :: JSVal -> JSString
+
+-- | set name
+foreign import javascript unsafe "($2)['name'] = $1"
+    thr_setName :: JSString -> JSVal -> Three ()
+
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
@@ -62,6 +71,12 @@ class ThreeJSVal g => IsGeometry g where
 
     setFaces :: [Face3] -> g -> Three ()
     setFaces fs g = Marshal.toJSVal (map toJSVal fs) >>= flip thr_setFaces (toJSVal g) >> thr_setElementsNeedUpdate 1 (toJSVal g)
+
+    getName :: g -> String
+    getName g = unpack $ thr_getName (toJSVal g)
+
+    setName :: String -> g -> Three ()
+    setName n g = thr_setName (pack n) (toJSVal g)
 
 instance IsGeometry Geometry
 instance Disposable Geometry
