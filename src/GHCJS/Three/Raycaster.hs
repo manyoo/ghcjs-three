@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Raycaster (
-    Raycaster(..), RaycastResult(..), setRay, setFromCamera, mkBaseRaycaster,
+    Raycaster(..), RaycastResult(..), setRay, setRayCasterNear, setRayCasterFar, setFromCamera, mkBaseRaycaster,
     mkRaycaster, intersectObject, intersectingObject, intersectObjects, getCastPoint, getCastObject
 ) where
 
@@ -41,6 +41,18 @@ foreign import javascript unsafe "($7)['ray']['origin']['set']($1, $2, $3);\
 
 setRay :: Vector3 -> Vector3 -> Raycaster -> Three ()
 setRay orig dir c = thr_setRayValue (v3x orig) (v3y orig) (v3z orig) (v3x dir) (v3y dir) (v3z dir) (toJSVal c)
+
+foreign import javascript unsafe "($2)['near'] = $1"
+    thr_setRayCasterNear :: Double -> JSVal -> Three ()
+
+setRayCasterNear :: Double -> Raycaster -> Three ()
+setRayCasterNear n c = thr_setRayCasterNear n (toJSVal c)
+
+foreign import javascript unsafe "($2)['far'] = $1"
+    thr_setRayCasterFar :: Double -> JSVal -> Three ()
+
+setRayCasterFar :: Double -> Raycaster -> Three ()
+setRayCasterFar f c = thr_setRayCasterFar f (toJSVal c)
 
 foreign import javascript unsafe "($3)['setFromCamera']($1, $2)"
     thr_setFromCamera :: JSVal -> JSVal -> JSVal -> Three ()
