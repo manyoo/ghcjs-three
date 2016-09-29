@@ -91,6 +91,7 @@ class ThreeJSVal o =>  HasColor o where
 
 -- | define a TColor type to be used by users easily
 data TColor = TColor Red Green Blue
+    deriving Eq
 
 toColor :: TColor -> Three Color
 toColor (TColor r g b) = mkColor r g b
