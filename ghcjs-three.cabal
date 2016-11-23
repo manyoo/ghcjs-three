@@ -48,7 +48,6 @@ library
                      , ghcjs-dom
                      , transformers
                      , AC-Vector
-                     , lens
                      , data-default
   default-language:    Haskell2010
   ghcjs-options:     -O2
