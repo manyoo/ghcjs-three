@@ -42,13 +42,14 @@ library
                      , GHCJS.Three.ShapeGeometry
                      , GHCJS.Three.CylinderGeometry
                      , GHCJS.Three.CameraHelper
+                     , GHCJS.Three.MTLLoader
+                     , GHCJS.Three.OBJLoader
                      , GHCJS.Three
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
                      , ghcjs-dom
                      , transformers
                      , AC-Vector
-                     , lens
                      , data-default
   default-language:    Haskell2010
   ghcjs-options:     -O2

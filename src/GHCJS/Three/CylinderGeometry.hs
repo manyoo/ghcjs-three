@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, TemplateHaskell #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.CylinderGeometry
     (CylinderGeometry(..), CylinderParam, cpRadiusTop, cpRadiusBot, cpHeight,
     cpRadiusSegments, cpHeightSegments, cpOpenEnded, cpThetaStart, cpThetaLength,
@@ -6,7 +6,6 @@ module GHCJS.Three.CylinderGeometry
     ) where
 
 import Data.Default
-import Control.Lens
 
 import GHCJS.Types
 
@@ -23,37 +22,35 @@ foreign import javascript unsafe "new window['THREE']['CylinderGeometry']($1, $2
 
 -- parameter data type
 data CylinderParam = CylinderParam {
-    _cpRadiusTop      :: Double,
-    _cpRadiusBot      :: Double,
-    _cpHeight         :: Double,
-    _cpRadiusSegments :: Int,
-    _cpHeightSegments :: Int,
-    _cpOpenEnded      :: Bool,
-    _cpThetaStart     :: Double,
-    _cpThetaLength    :: Double
+    cpRadiusTop      :: Double,
+    cpRadiusBot      :: Double,
+    cpHeight         :: Double,
+    cpRadiusSegments :: Int,
+    cpHeightSegments :: Int,
+    cpOpenEnded      :: Bool,
+    cpThetaStart     :: Double,
+    cpThetaLength    :: Double
 }
-
-makeLenses ''CylinderParam
 
 instance Default CylinderParam where
     def = CylinderParam {
-            _cpRadiusTop      = 20,
-            _cpRadiusBot      = 20,
-            _cpHeight         = 100,
-            _cpRadiusSegments = 8,
-            _cpHeightSegments = 1,
-            _cpOpenEnded      = False,
-            _cpThetaStart     = 0,
-            _cpThetaLength    = 2 * pi
+            cpRadiusTop      = 20,
+            cpRadiusBot      = 20,
+            cpHeight         = 100,
+            cpRadiusSegments = 8,
+            cpHeightSegments = 1,
+            cpOpenEnded      = False,
+            cpThetaStart     = 0,
+            cpThetaLength    = 2 * pi
         }
 
 mkCylinderGeometry :: CylinderParam -> Three CylinderGeometry
 mkCylinderGeometry p = fromJSVal <$> thr_mkCylinderGeometry top bot h rs hs oe ts tl
-    where top = p ^. cpRadiusTop
-          bot = p ^. cpRadiusBot
-          h   = p ^. cpHeight
-          rs  = p ^. cpRadiusSegments
-          hs  = p ^. cpHeightSegments
-          oe  = if (p ^. cpOpenEnded) then 1 else 0
-          ts  = p ^. cpThetaStart
-          tl  = p ^. cpThetaLength
+    where top = cpRadiusTop p
+          bot = cpRadiusBot p
+          h   = cpHeight p
+          rs  = cpRadiusSegments p
+          hs  = cpHeightSegments p
+          oe  = if (cpOpenEnded p) then 1 else 0
+          ts  = cpThetaStart p
+          tl  = cpThetaLength p
