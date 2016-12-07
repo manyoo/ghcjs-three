@@ -87,6 +87,16 @@ foreign import javascript unsafe "($2)['worldToLocal']($1)"
 foreign import javascript unsafe "($2)['lookAt']($1)"
     thr_lookAt :: JSVal -> JSVal -> Three ()
 
+-- | rotate around x axis in local space
+foreign import javascript unsafe "($2)['rotateX']($1)"
+    thr_rotateX :: Double -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['rotateY']($1)"
+    thr_rotateY :: Double -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['rotateZ']($1)"
+    thr_rotateZ :: Double -> JSVal -> Three ()
+
 -- | rotate on axis (which is normalized)
 foreign import javascript unsafe "($3)['rotateOnAxis']($1, $2)"
     thr_rotateOnAxis :: JSVal -> Double -> JSVal -> Three ()
@@ -174,6 +184,15 @@ class (ThreeJSVal o) => IsObject3D o where
     lookAt v o = do
         vv <- mkTVector3 v
         thr_lookAt (toJSVal vv) (toJSVal o)
+
+    rotateX :: Double -> o -> Three ()
+    rotateX x o = thr_rotateX x $ toJSVal o
+
+    rotateY :: Double -> o -> Three ()
+    rotateY y o = thr_rotateY y $ toJSVal o
+
+    rotateZ :: Double -> o -> Three ()
+    rotateZ z o = thr_rotateZ z $ toJSVal o
 
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()
     rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
