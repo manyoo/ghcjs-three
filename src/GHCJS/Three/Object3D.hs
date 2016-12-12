@@ -7,6 +7,7 @@ module GHCJS.Three.Object3D (
 
 import Data.Functor
 import GHCJS.Types
+import qualified GHCJS.Marshal as M
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector
@@ -28,6 +29,10 @@ foreign import javascript unsafe "new window['THREE']['Object3D']()"
 
 mkObject3D :: Three Object3D
 mkObject3D = fromJSVal <$> thr_mkObject3D
+
+-- | get children objects
+foreign import javascript safe "($1)['children']"
+    thr_children :: JSVal -> JSVal
 
 -- | get scale
 foreign import javascript safe "($1)['scale']"
@@ -121,6 +126,11 @@ foreign import javascript unsafe "($1)['updateMatrixWorld']()"
 class (ThreeJSVal o) => IsObject3D o where
     getObject3D :: o -> Object3D
     getObject3D = fromJSVal . toJSVal
+
+    getChildren :: o -> Three [Object3D]
+    getChildren o = (fmap fromJSVal . maybeToList) <$> M.fromJSVal (thr_children $ toJSVal o)
+        where maybeToList Nothing = []
+              maybeToList (Just l) = l
 
     -- functions with default implementations
     scale :: o -> Vector3
