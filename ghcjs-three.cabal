@@ -19,6 +19,8 @@ library
                      , GHCJS.Three.Matrix
                      , GHCJS.Three.Vector
                      , GHCJS.Three.Face3
+                     , GHCJS.Three.Box3
+                     , GHCJS.Three.Sphere
                      , GHCJS.Three.Object3D
                      , GHCJS.Three.Camera
                      , GHCJS.Three.Projection
