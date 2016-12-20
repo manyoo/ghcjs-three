@@ -28,6 +28,7 @@ module GHCJS.Three
      module GHCJS.Three.Shape,
      module GHCJS.Three.ShapeGeometry,
      module GHCJS.Three.CylinderGeometry,
+     module GHCJS.Three.BufferGeometry,
      module GHCJS.Three.CameraHelper,
      module GHCJS.Three.MTLLoader,
      module GHCJS.Three.OBJLoader,
@@ -63,6 +64,7 @@ import GHCJS.Three.Path
 import GHCJS.Three.Shape
 import GHCJS.Three.ShapeGeometry
 import GHCJS.Three.CylinderGeometry
+import GHCJS.Three.BufferGeometry
 import GHCJS.Three.CameraHelper
 import GHCJS.Three.MTLLoader
 import GHCJS.Three.OBJLoader

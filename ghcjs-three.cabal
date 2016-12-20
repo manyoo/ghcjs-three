@@ -43,6 +43,7 @@ library
                      , GHCJS.Three.Shape
                      , GHCJS.Three.ShapeGeometry
                      , GHCJS.Three.CylinderGeometry
+                     , GHCJS.Three.BufferGeometry
                      , GHCJS.Three.CameraHelper
                      , GHCJS.Three.MTLLoader
                      , GHCJS.Three.OBJLoader

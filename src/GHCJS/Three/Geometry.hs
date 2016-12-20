@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
-    IsGeometry(..),
+    IsGeometry(..), HasBounding(..),
     BoxGeometry(..), mkBoxGeometry,
     CircleGeometry(..), mkCircleGeometry
     ) where
@@ -92,6 +92,7 @@ class ThreeJSVal g => IsGeometry g where
     setName :: String -> g -> Three ()
     setName n g = thr_setName (pack n) (toJSVal g)
 
+class ThreeJSVal g => HasBounding g where
     computeBoundingBox :: g -> Three ()
     computeBoundingBox = thr_computeBoundingBox . toJSVal
 
@@ -105,12 +106,13 @@ class ThreeJSVal g => IsGeometry g where
     boundingSphere g = fmap fromJSVal <$> Marshal.fromJSVal (thr_boundingSphere $ toJSVal g)
 
 instance IsGeometry Geometry
+instance HasBounding Geometry
 instance Disposable Geometry
 
 -- | BoxGeometry
 newtype BoxGeometry = BoxGeometry {
     getGeometry :: Geometry
-} deriving (ThreeJSVal, IsGeometry, Disposable)
+} deriving (ThreeJSVal, IsGeometry, HasBounding, Disposable)
 
 foreign import javascript unsafe "new window['THREE']['BoxGeometry']($1, $2, $3)"
     thr_mkBoxGeometry :: Double -> Double -> Double -> Three JSVal
@@ -122,7 +124,7 @@ mkBoxGeometry w h d = fromJSVal <$> thr_mkBoxGeometry w h d
 -- | CircleGeometry
 newtype CircleGeometry = CircleGeometry {
     getCircleGeometry :: Geometry
-} deriving (ThreeJSVal, IsGeometry, Disposable)
+} deriving (ThreeJSVal, IsGeometry, HasBounding, Disposable)
 
 foreign import javascript unsafe "new window['THREE']['CircleGeometry']($1, $2)"
     thr_mkCircleGeometry :: Double -> Int -> Three JSVal
