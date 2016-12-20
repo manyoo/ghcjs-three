@@ -23,6 +23,7 @@ module GHCJS.Three
      module GHCJS.Three.Disposable,
      module GHCJS.Three.Visible,
      module GHCJS.Three.HasXYZ,
+     module GHCJS.Three.CanCopy,
      module GHCJS.Three.Texture,
      module GHCJS.Three.Path,
      module GHCJS.Three.Shape,
@@ -59,6 +60,7 @@ import GHCJS.Three.GLNode
 import GHCJS.Three.Disposable
 import GHCJS.Three.Visible
 import GHCJS.Three.HasXYZ
+import GHCJS.Three.CanCopy
 import GHCJS.Three.Texture
 import GHCJS.Three.Path
 import GHCJS.Three.Shape

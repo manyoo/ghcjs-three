@@ -207,7 +207,7 @@ class (ThreeJSVal o) => IsObject3D o where
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()
     rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
 
-    matrixWorld :: o -> Matrix
+    matrixWorld :: o -> Matrix4
     matrixWorld = fromJSVal . thr_matrixWorld . toJSVal
 
     updateMatrixWorld :: o -> Three ()

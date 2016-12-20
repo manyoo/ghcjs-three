@@ -27,6 +27,7 @@ library
                      , GHCJS.Three.Color
                      , GHCJS.Three.Disposable
                      , GHCJS.Three.HasXYZ
+                     , GHCJS.Three.CanCopy
                      , GHCJS.Three.Euler
                      , GHCJS.Three.Geometry
                      , GHCJS.Three.GLNode

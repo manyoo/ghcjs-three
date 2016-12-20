@@ -32,7 +32,7 @@ instance HasZ TVector3
 foreign import javascript unsafe "($2)['setFromMatrixPosition']($1)"
     thr_setFromMatrixPosition :: JSVal -> JSVal -> Three ()
 
-fromMatrixPosition :: Matrix -> Three Vector3
+fromMatrixPosition :: Matrix4 -> Three Vector3
 fromMatrixPosition m = do
     jv <- thr_mkVector3 0 0 0
     thr_setFromMatrixPosition (toJSVal m) jv
