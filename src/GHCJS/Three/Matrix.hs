@@ -8,6 +8,7 @@ import GHCJS.Types
 import qualified GHCJS.Marshal as M
 
 import GHCJS.Three.Monad
+import GHCJS.Three.CanCopy
 import Control.Monad
 
 import Data.Maybe
@@ -16,6 +17,8 @@ import Data.Maybe
 newtype Matrix4 = Matrix4 {
     matrixObject :: BaseObject
 } deriving ThreeJSVal
+
+instance CanCopy Matrix4
 
 -- create an identity matrix
 foreign import javascript unsafe "new window['THREE']['Matrix4']()"
@@ -29,6 +32,12 @@ foreign import javascript unsafe "($1).elements"
 
 elements :: Matrix4 -> Three [Double]
 elements m = (mapM (fmap (fromMaybe 0) . M.fromJSVal) . fromMaybe []) =<< M.fromJSVal (thr_elements $ toJSVal m)
+
+foreign import javascript unsafe "($2)['getInverse']($1)"
+    thr_getInverse :: JSVal -> JSVal -> Three ()
+
+getInverse :: Matrix4 -> Matrix4 -> Three ()
+getInverse m1 m2 = thr_getInverse (toJSVal m1) (toJSVal m1)
 
 foreign import javascript unsafe "($2)['applyMatrix4']($1)"
     thr_applyMatrix4 :: JSVal -> JSVal -> Three ()
