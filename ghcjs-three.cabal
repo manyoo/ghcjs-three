@@ -36,6 +36,7 @@ library
                      , GHCJS.Three.Visible
                      , GHCJS.Three.Mesh
                      , GHCJS.Three.Line
+                     , GHCJS.Three.Ray
                      , GHCJS.Three.Raycaster
                      , GHCJS.Three.Scene
                      , GHCJS.Three.WebGLRenderer

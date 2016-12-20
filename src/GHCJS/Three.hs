@@ -19,6 +19,7 @@ module GHCJS.Three
      module GHCJS.Three.Color,
      module GHCJS.Three.Light,
      module GHCJS.Three.Raycaster,
+     module GHCJS.Three.Ray,
      module GHCJS.Three.GLNode,
      module GHCJS.Three.Disposable,
      module GHCJS.Three.Visible,
@@ -55,6 +56,7 @@ import GHCJS.Three.Mesh
 import GHCJS.Three.Line
 import GHCJS.Three.Color
 import GHCJS.Three.Light
+import GHCJS.Three.Ray
 import GHCJS.Three.Raycaster
 import GHCJS.Three.GLNode
 import GHCJS.Three.Disposable
