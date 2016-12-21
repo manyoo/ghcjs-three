@@ -37,7 +37,7 @@ foreign import javascript unsafe "($2)['getInverse']($1)"
     thr_getInverse :: JSVal -> JSVal -> Three ()
 
 getInverse :: Matrix4 -> Matrix4 -> Three ()
-getInverse m1 m2 = thr_getInverse (toJSVal m1) (toJSVal m1)
+getInverse m1 m2 = thr_getInverse (toJSVal m1) (toJSVal m2)
 
 foreign import javascript unsafe "($2)['applyMatrix4']($1)"
     thr_applyMatrix4 :: JSVal -> JSVal -> Three ()
