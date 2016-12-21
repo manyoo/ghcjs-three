@@ -44,7 +44,7 @@ intersectsBox :: Box3 -> Ray -> Three Bool
 intersectsBox b r = thr_intersectsBox (toJSVal b) (toJSVal r)
 
 foreign import javascript unsafe "($5)['intersectTriangle']($1, $2, $3, $4)"
-    thr_intersectsTriangle :: Double -> Double -> Double -> Bool -> JSVal -> Three JSVal
+    thr_intersectsTriangle :: JSVal -> JSVal -> JSVal -> Bool -> JSVal -> Three JSVal
 
-intersectsTriangle :: Double -> Double -> Double -> Bool -> Ray -> Three Bool
-intersectsTriangle a b c backfaceCulling r = (not . isNull) <$> thr_intersectsTriangle a b c backfaceCulling (toJSVal r)
+intersectsTriangle :: TVector3 -> TVector3 -> TVector3 -> Bool -> Ray -> Three Bool
+intersectsTriangle a b c backfaceCulling r = (not . isNull) <$> thr_intersectsTriangle (toJSVal a) (toJSVal b) (toJSVal c) backfaceCulling (toJSVal r)

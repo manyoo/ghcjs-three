@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Matrix (
-    Matrix4(..), mkMatrix4, elements, CanApplyMatrix4(..)
+    Matrix4(..), mkMatrix4, elements, getInverse, CanApplyMatrix4(..)
 ) where
 
 import Data.Functor

@@ -59,6 +59,9 @@ foreign import javascript safe "($1)['name']"
 foreign import javascript unsafe "($2)['name'] = $1"
     thr_setName :: JSString -> JSVal -> Three ()
 
+foreign import javascript unsafe "($1)['isBufferGeometry']"
+    thr_isBufferGeometry :: JSVal -> Bool
+
 foreign import javascript unsafe "($1)['computeBoundingBox']()"
     thr_computeBoundingBox :: JSVal -> Three ()
 
@@ -91,6 +94,9 @@ class ThreeJSVal g => IsGeometry g where
 
     setName :: String -> g -> Three ()
     setName n g = thr_setName (pack n) (toJSVal g)
+
+    isBufferGeometry :: g -> Bool
+    isBufferGeometry = thr_isBufferGeometry . toJSVal
 
 class ThreeJSVal g => HasBounding g where
     computeBoundingBox :: g -> Three ()

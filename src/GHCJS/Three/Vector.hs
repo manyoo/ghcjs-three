@@ -90,8 +90,8 @@ class ThreeJSVal v => IsJSVector v where
     fromArray :: JSArray -> Int -> v -> Three ()
     fromArray arr idx v = thr_fromArray (jsval arr) idx (toJSVal v)
 
-    length :: v -> Double
-    length = thr_length . toJSVal
+    vlength :: v -> Double
+    vlength = thr_length . toJSVal
 
     normalize :: v -> Three ()
     normalize = thr_normalize . toJSVal
