@@ -20,16 +20,16 @@ instance CanCopy Ray
 instance CanApplyMatrix4 Ray
 
 foreign import javascript unsafe "($1)['origin']"
-    thr_origin :: JSVal -> JSVal
+    thr_origin :: JSVal -> Three JSVal
 
-origin :: Ray -> TVector3
-origin = fromJSVal . thr_origin . toJSVal
+origin :: Ray -> Three TVector3
+origin = fmap fromJSVal . thr_origin . toJSVal
 
 foreign import javascript unsafe "($1)['direction']"
-    thr_direction :: JSVal -> JSVal
+    thr_direction :: JSVal -> Three JSVal
 
-direction :: Ray -> TVector3
-direction = fromJSVal . thr_direction . toJSVal
+direction :: Ray -> Three TVector3
+direction = fmap fromJSVal . thr_direction . toJSVal
 
 foreign import javascript unsafe "($2)['intersectsSphere']($1)"
     thr_intersectsSphere :: JSVal -> JSVal -> Three Bool

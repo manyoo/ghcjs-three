@@ -31,7 +31,7 @@ mkGeometry = fromJSVal <$> thr_mkGeometry
 
 -- | get vertices
 foreign import javascript safe "($1)['vertices']"
-    thr_vertices :: JSVal -> JSVal
+    thr_vertices :: JSVal -> Three JSVal
 
 -- | set vertices
 foreign import javascript unsafe "($2)['vertices'] = $1"
@@ -42,7 +42,7 @@ foreign import javascript unsafe "($2)['verticesNeedUpdate'] = $1 === 1"
 
 -- | get faces
 foreign import javascript safe "($1)['faces']"
-    thr_faces :: JSVal -> JSVal
+    thr_faces :: JSVal -> Three JSVal
 
 -- | set vertices
 foreign import javascript unsafe "($2)['faces'] = $1"
@@ -53,49 +53,52 @@ foreign import javascript unsafe "($2)['elementsNeedUpdate'] = $1 === 1"
 
 -- | get name
 foreign import javascript safe "($1)['name']"
-    thr_getName :: JSVal -> JSString
+    thr_getName :: JSVal -> Three JSString
 
 -- | set name
 foreign import javascript unsafe "($2)['name'] = $1"
     thr_setName :: JSString -> JSVal -> Three ()
 
 foreign import javascript unsafe "($1)['isBufferGeometry']"
-    thr_isBufferGeometry :: JSVal -> Bool
+    thr_isBufferGeometry :: JSVal -> Three Bool
 
 foreign import javascript unsafe "($1)['computeBoundingBox']()"
     thr_computeBoundingBox :: JSVal -> Three ()
 
 foreign import javascript unsafe "($1)['boundingBox']"
-    thr_boundingBox :: JSVal -> JSVal
+    thr_boundingBox :: JSVal -> Three JSVal
 
 foreign import javascript unsafe "($1)['computeBoundingSphere']()"
     thr_computeBoundingSphere :: JSVal -> Three ()
 
 foreign import javascript unsafe "($1)['boundingSphere']"
-    thr_boundingSphere :: JSVal -> JSVal
+    thr_boundingSphere :: JSVal -> Three JSVal
 
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
     vertices :: g -> Three [Vector3]
-    vertices g = (map (toVector3 . fromJSVal) . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
+    vertices g = do
+        vs <- thr_vertices (toJSVal g)
+        vl <- Marshal.fromJSVal vs
+        mapM (toVector3 . fromJSVal) $ fromMaybe [] vl
 
     setVertices :: [Vector3] -> g -> Three ()
     setVertices vs g = mapM mkTVector3 vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g) >> thr_setVerticesNeedUpdate 1 (toJSVal g)
 
     faces :: g -> Three [Face3]
-    faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal $ thr_vertices $ toJSVal g)
+    faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal =<< thr_vertices (toJSVal g))
 
     setFaces :: [Face3] -> g -> Three ()
     setFaces fs g = Marshal.toJSVal (map toJSVal fs) >>= flip thr_setFaces (toJSVal g) >> thr_setElementsNeedUpdate 1 (toJSVal g)
 
-    getName :: g -> String
-    getName g = unpack $ thr_getName (toJSVal g)
+    getName :: g -> Three String
+    getName g = unpack <$> thr_getName (toJSVal g)
 
     setName :: String -> g -> Three ()
     setName n g = thr_setName (pack n) (toJSVal g)
 
-    isBufferGeometry :: g -> Bool
+    isBufferGeometry :: g -> Three Bool
     isBufferGeometry = thr_isBufferGeometry . toJSVal
 
 class ThreeJSVal g => HasBounding g where
@@ -103,13 +106,13 @@ class ThreeJSVal g => HasBounding g where
     computeBoundingBox = thr_computeBoundingBox . toJSVal
 
     boundingBox :: g -> Three (Maybe Box3)
-    boundingBox g = fmap fromJSVal <$> Marshal.fromJSVal (thr_boundingBox $ toJSVal g)
+    boundingBox g = fmap fromJSVal <$> (Marshal.fromJSVal =<< thr_boundingBox (toJSVal g))
 
     computeBoundingSphere :: g -> Three ()
     computeBoundingSphere = thr_computeBoundingSphere . toJSVal
 
     boundingSphere :: g -> Three (Maybe Sphere)
-    boundingSphere g = fmap fromJSVal <$> Marshal.fromJSVal (thr_boundingSphere $ toJSVal g)
+    boundingSphere g = fmap fromJSVal <$> (Marshal.fromJSVal =<< thr_boundingSphere (toJSVal g))
 
 instance IsGeometry Geometry
 instance HasBounding Geometry

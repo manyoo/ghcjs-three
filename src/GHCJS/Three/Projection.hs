@@ -16,7 +16,7 @@ project :: Camera -> Vector3 -> Three Vector3
 project c v = do
     jv <- mkTVector3 v
     thr_project (toJSVal c) (toJSVal jv)
-    return $ toVector3 jv
+    toVector3 jv
 
 foreign import javascript unsafe "($2)['unproject']($1)"
     thr_unproject :: JSVal -> JSVal -> Three ()
@@ -25,4 +25,4 @@ unproject :: Camera -> Vector3 -> Three Vector3
 unproject c v = do
     jv <- mkTVector3 v
     thr_unproject (toJSVal c) (toJSVal jv)
-    return $ toVector3 jv
+    toVector3 jv

@@ -22,11 +22,11 @@ mkShape :: Three Shape
 mkShape = fromJSVal <$> thr_mkShape
 
 foreign import javascript safe "($1)['holes']"
-    thr_holes :: JSVal -> JSVal
+    thr_holes :: JSVal -> Three JSVal
 
 -- | An array of paths that define the holes in the shape.
 holes :: Shape -> Three [Path]
-holes shape = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal . thr_holes $ toJSVal shape)
+holes shape = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal =<< thr_holes (toJSVal shape))
 
 
 foreign import javascript unsafe "($2)['holes'] = $1"

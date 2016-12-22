@@ -37,13 +37,13 @@ mkMaterial = fromJSVal <$> thr_mkMaterial
 
 -- private imported functions
 foreign import javascript safe "($1)['opacity']"
-    thr_opacity :: JSVal -> Double
+    thr_opacity :: JSVal -> Three Double
 
 foreign import javascript unsafe "($2)['opacity'] = $1"
     thr_setOpacity :: Double -> JSVal -> Three ()
 
 foreign import javascript safe "($1)['transparent']"
-    thr_transparent :: JSVal -> Bool
+    thr_transparent :: JSVal -> Three Bool
 
 foreign import javascript unsafe "($2)['transparent'] = $1 === 1"
     thr_setTransparent :: Int -> JSVal -> Three ()
@@ -62,7 +62,7 @@ foreign import javascript safe "window['THREE']['DoubleSide']"
 
 
 foreign import javascript safe "($1)['side']"
-    thr_side :: JSVal -> MaterialRenderFace
+    thr_side :: JSVal -> Three MaterialRenderFace
 
 foreign import javascript unsafe "($2)['side'] = $1"
     thr_setSide :: MaterialRenderFace -> JSVal -> Three ()
@@ -75,7 +75,7 @@ class ThreeJSVal m => IsMaterial m where
     fromMaterial = fromJSVal . toJSVal
 
     -- | get opacity
-    opacity :: m -> Double
+    opacity :: m -> Three Double
     opacity = thr_opacity . toJSVal
 
     -- | set opacity
@@ -83,14 +83,14 @@ class ThreeJSVal m => IsMaterial m where
     setOpacity o m = thr_setOpacity o $ toJSVal m
 
     -- | get transparent
-    transparent :: m -> Bool
+    transparent :: m -> Three Bool
     transparent = thr_transparent . toJSVal
 
     -- | set transparent
     setTransparent :: Bool -> m -> Three ()
     setTransparent t m = thr_setTransparent (if t then 1 else 0) $ toJSVal m
 
-    side :: m -> MaterialRenderFace
+    side :: m -> Three MaterialRenderFace
     side = thr_side . toJSVal
 
     setSide :: MaterialRenderFace -> m -> Three ()
@@ -196,7 +196,7 @@ mkLineDashedMaterial = fromJSVal <$> thr_mkLineDashedMaterial
 
 -- private functions
 foreign import javascript unsafe "($1)['linewidth']"
-    thr_lineWidth :: JSVal -> Int
+    thr_lineWidth :: JSVal -> Three Int
 
 foreign import javascript unsafe "($2)['linewidth'] = $1"
     thr_setLineWidth :: Int -> JSVal -> Three ()
@@ -210,7 +210,7 @@ class (ThreeJSVal l, IsMaterial l) => IsLineMaterial l where
     fromLineMaterial :: LineMaterial -> l
     fromLineMaterial = fromMaterial . toMaterial
 
-    lineWidth :: l -> Int
+    lineWidth :: l -> Three Int
     lineWidth = thr_lineWidth . toJSVal
 
     setLineWidth :: Int -> l -> Three ()

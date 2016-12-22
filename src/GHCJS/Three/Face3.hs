@@ -27,31 +27,31 @@ mkFace3 a b c nVec color matIdx = do
 
 -- varies functions to access the properties of a Face3 object
 foreign import javascript safe "($1)['a']"
-    thr_verticeA :: JSVal -> Int
+    thr_verticeA :: JSVal -> Three Int
 
-verticeA :: Face3 -> Int
+verticeA :: Face3 -> Three Int
 verticeA = thr_verticeA . toJSVal
 
 foreign import javascript safe "($1)['b']"
-    thr_verticeB :: JSVal -> Int
+    thr_verticeB :: JSVal -> Three Int
 
-verticeB :: Face3 -> Int
+verticeB :: Face3 -> Three Int
 verticeB = thr_verticeB . toJSVal
 
 foreign import javascript safe "($1)['c']"
-    thr_verticeC :: JSVal -> Int
+    thr_verticeC :: JSVal -> Three Int
 
-verticeC :: Face3 -> Int
+verticeC :: Face3 -> Three Int
 verticeC = thr_verticeC . toJSVal
 
 foreign import javascript safe "($1)['normal']"
-    thr_faceNormal :: JSVal -> JSVal
+    thr_faceNormal :: JSVal -> Three JSVal
 
-faceNormal :: Face3 -> Vector3
-faceNormal = toVector3 . fromJSVal . thr_faceNormal . toJSVal
+faceNormal :: Face3 -> Three Vector3
+faceNormal f = (toVector3 . fromJSVal) =<< thr_faceNormal (toJSVal f)
 
 foreign import javascript safe "($1)['color']"
-    thr_faceColor :: JSVal -> JSVal
+    thr_faceColor :: JSVal -> Three JSVal
 
-faceColor :: Face3 -> Color
-faceColor = fromJSVal . thr_faceColor . toJSVal
+faceColor :: Face3 -> Three Color
+faceColor = fmap fromJSVal . thr_faceColor . toJSVal

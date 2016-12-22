@@ -27,27 +27,27 @@ instance HasY Euler
 instance HasZ Euler
 
 foreign import javascript safe "($1)['x']"
-    thr_eulerX :: JSVal -> Double
+    thr_eulerX :: JSVal -> Three Double
 
 foreign import javascript safe "($1)['y']"
-    thr_eulerY :: JSVal -> Double
+    thr_eulerY :: JSVal -> Three Double
 
 foreign import javascript safe "($1)['z']"
-    thr_eulerZ :: JSVal -> Double
+    thr_eulerZ :: JSVal -> Three Double
 
 foreign import javascript safe "($1)['order']"
-    thr_order :: JSVal -> JSString
+    thr_order :: JSVal -> Three JSString
 
-eulerX :: Euler -> Double
+eulerX :: Euler -> Three Double
 eulerX = thr_eulerX . toJSVal
 
-eulerY :: Euler -> Double
+eulerY :: Euler -> Three Double
 eulerY = thr_eulerY . toJSVal
 
-eulerZ :: Euler -> Double
+eulerZ :: Euler -> Three Double
 eulerZ = thr_eulerZ . toJSVal
 
-eulerOrder :: Euler -> JSString
+eulerOrder :: Euler -> Three JSString
 eulerOrder = thr_order . toJSVal
 
 foreign import javascript unsafe "new window['THREE']['Euler']($1, $2, $3, $4)"
@@ -56,5 +56,5 @@ foreign import javascript unsafe "new window['THREE']['Euler']($1, $2, $3, $4)"
 mkEuler :: TEuler -> Three Euler
 mkEuler (TEuler x y z o) = fromJSVal <$> thr_mkEuler x y z o
 
-toTEuler :: Euler -> TEuler
-toTEuler v = TEuler (eulerX v) (eulerY v) (eulerZ v) (eulerOrder v)
+toTEuler :: Euler -> Three TEuler
+toTEuler v = TEuler <$> eulerX v <*> eulerY v <*> eulerZ v <*> eulerOrder v

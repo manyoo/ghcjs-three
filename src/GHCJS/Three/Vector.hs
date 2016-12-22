@@ -119,7 +119,7 @@ fromMatrixPosition :: Matrix4 -> Three Vector3
 fromMatrixPosition m = do
     jv <- thr_mkVector3 0 0 0
     thr_setFromMatrixPosition (toJSVal m) jv
-    return $ toVector3 $ fromJSVal jv
+    toVector3 $ fromJSVal jv
 
 -- JS version of 2D vector
 newtype TVector2 = TVector2 {
@@ -141,19 +141,19 @@ foreign import javascript unsafe "new window['THREE']['Vector2']($1, $2)"
     thr_mkVector2 :: Double -> Double -> Three JSVal
 
 foreign import javascript safe "($1)['x']"
-    thr_vecX :: JSVal -> Double
+    thr_vecX :: JSVal -> Three Double
 foreign import javascript safe "($1)['y']"
-    thr_vecY :: JSVal -> Double
+    thr_vecY :: JSVal -> Three Double
 foreign import javascript safe "($1)['z']"
-    thr_vecZ :: JSVal -> Double
+    thr_vecZ :: JSVal -> Three Double
 
-vecX :: IsJSVector v => v -> Double
+vecX :: IsJSVector v => v -> Three Double
 vecX = thr_vecX . toJSVal
 
-vecY :: IsJSVector v => v -> Double
+vecY :: IsJSVector v => v -> Three Double
 vecY = thr_vecY . toJSVal
 
-vecZ :: IsJSVector v => v -> Double
+vecZ :: IsJSVector v => v -> Three Double
 vecZ = thr_vecZ . toJSVal
 
 (#+) :: Vector3 -> Vector3 -> Vector3
@@ -170,11 +170,11 @@ mkTVector2 :: Vector2 -> Three TVector2
 mkTVector2 (Vector2 x y) = fromJSVal <$> thr_mkVector2 x y
 
 -- | convert Vector to TVector
-toVector3 :: TVector3 -> Vector3
-toVector3 v = Vector3 (vecX v) (vecY v) (vecZ v)
+toVector3 :: TVector3 -> Three Vector3
+toVector3 v = Vector3 <$> vecX v <*> vecY v <*> vecZ v
 
-toVector2 :: TVector2 -> Vector2
-toVector2 v = Vector2 (vecX v) (vecY v)
+toVector2 :: TVector2 -> Three Vector2
+toVector2 v = Vector2 <$> vecX v <*> vecY v
 
 -- | extract x and y fields of a 3D vector to form a new 2D vector
 vector3To2 :: Vector3 -> Vector2

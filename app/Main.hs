@@ -29,13 +29,13 @@ main = runWebGUI $ \webview -> do
   cube <- mkMesh geo mat
   add (toGLNode cube) (toGLNode scene)
 
-  let cp = position camera
+  cp <- position camera
   setPosition cp {v3z = 5} camera
 
   -- this is the action for each animation frame, change the rotation of the
   -- cube and render it.
   let rf = do
-         let cubeR = rotation cube
+         cubeR <- rotation cube
          setRotation cubeR {eX = eX cubeR + 0.01, eY = eY cubeR + 0.01} cube
          render scene camera renderer
   runThree rf

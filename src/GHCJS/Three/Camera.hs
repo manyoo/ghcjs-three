@@ -21,7 +21,7 @@ newtype Camera = Camera {
 -- | common camera operations
 -- | get near
 foreign import javascript safe "($1)['near']"
-    thr_near :: JSVal -> Near
+    thr_near :: JSVal -> Three Near
 
 -- | set near
 foreign import javascript unsafe "($2)['near'] = $1"
@@ -29,7 +29,7 @@ foreign import javascript unsafe "($2)['near'] = $1"
 
 -- | get far
 foreign import javascript safe "($1)['far']"
-    thr_far :: JSVal -> Far
+    thr_far :: JSVal -> Three Far
 
 -- | set far
 foreign import javascript unsafe "($2)['far'] = $1"
@@ -37,7 +37,7 @@ foreign import javascript unsafe "($2)['far'] = $1"
 
 -- | get zoom
 foreign import javascript safe "($1)['zoom']"
-    thr_zoom :: JSVal -> Zoom
+    thr_zoom :: JSVal -> Three Zoom
 
 -- | set zoom
 foreign import javascript unsafe "($2)['zoom'] = $1"
@@ -54,19 +54,19 @@ class (ThreeJSVal c) => IsCamera c where
     fromCamera :: Camera -> c
     fromCamera = fromJSVal . toJSVal
 
-    near :: c -> Near
+    near :: c -> Three Near
     near = thr_near . toJSVal
 
     setNear :: Near -> c -> Three ()
     setNear n c = thr_setNear n $ toJSVal c
 
-    far :: c -> Far
+    far :: c -> Three Far
     far = thr_far . toJSVal
 
     setFar :: Far -> c -> Three ()
     setFar f c = thr_setFar f $ toJSVal c
 
-    zoom :: c -> Zoom
+    zoom :: c -> Three Zoom
     zoom = thr_zoom . toJSVal
 
     setZoom :: Zoom -> c -> Three ()
@@ -101,7 +101,7 @@ mkOrthographicCamera l r t b n f = fromJSVal <$> thr_mkOrthographicCamera l r t 
 
 -- | get left
 foreign import javascript safe "($1)['left']"
-    thr_left :: JSVal -> Left
+    thr_left :: JSVal -> Three Left
 
 -- | set left
 foreign import javascript unsafe "($2)['left'] = $1"
@@ -109,7 +109,7 @@ foreign import javascript unsafe "($2)['left'] = $1"
 
 -- | get right
 foreign import javascript safe "($1)['right']"
-    thr_right :: JSVal -> Right
+    thr_right :: JSVal -> Three Right
 
 -- | set right
 foreign import javascript unsafe "($2)['right'] = $1"
@@ -117,7 +117,7 @@ foreign import javascript unsafe "($2)['right'] = $1"
 
 -- | get top
 foreign import javascript safe "($1)['top']"
-    thr_top :: JSVal -> Top
+    thr_top :: JSVal -> Three Top
 
 -- | set top
 foreign import javascript unsafe "($2)['top'] = $1"
@@ -125,32 +125,32 @@ foreign import javascript unsafe "($2)['top'] = $1"
 
 -- | get bottom
 foreign import javascript safe "($1)['bottom']"
-    thr_bottom :: JSVal -> Bottom
+    thr_bottom :: JSVal -> Three Bottom
 
 -- | set bottom
 foreign import javascript unsafe "($2)['bottom'] = $1"
     thr_setBottom :: Bottom -> JSVal -> Three ()
 
 class (ThreeJSVal c) => IsOrthoGraphicCamera c where
-    left :: c -> Left
+    left :: c -> Three Left
     left = thr_left . toJSVal
 
     setLeft :: Left -> c -> Three ()
     setLeft l c = thr_setLeft l $ toJSVal c
 
-    right :: c -> Right
+    right :: c -> Three Right
     right = thr_right . toJSVal
 
     setRight :: Right -> c -> Three ()
     setRight r c = thr_setRight r $ toJSVal c
 
-    top :: c -> Top
+    top :: c -> Three Top
     top = thr_top . toJSVal
 
     setTop :: Top -> c -> Three ()
     setTop t c = thr_setTop t $ toJSVal c
 
-    bottom :: c -> Bottom
+    bottom :: c -> Three Bottom
     bottom = thr_bottom . toJSVal
 
     setBottom :: Bottom -> c -> Three ()
@@ -179,7 +179,7 @@ mkPerspectiveCamera fov a n f = fromJSVal <$> thr_mkPerspectiveCamera fov a n f
 
 -- | get field of view
 foreign import javascript safe "($1)['fov']"
-    thr_fov :: JSVal -> Fov
+    thr_fov :: JSVal -> Three Fov
 
 -- | set field of view
 foreign import javascript unsafe "($2)['fov'] = $1"
@@ -187,7 +187,7 @@ foreign import javascript unsafe "($2)['fov'] = $1"
 
 -- | get aspect
 foreign import javascript safe "($1)['aspect']"
-    thr_aspect :: JSVal -> Aspect
+    thr_aspect :: JSVal -> Three Aspect
 
 -- | set aspect
 foreign import javascript unsafe "($2)['aspect'] = $1"
@@ -198,13 +198,13 @@ foreign import javascript unsafe "($3)['setLens']($1, $2)"
     thr_setLens :: FocalLength -> FrameSize -> JSVal -> Three ()
 
 class (ThreeJSVal c) => IsPerspectiveCamera c where
-    fov :: c -> Fov
+    fov :: c -> Three Fov
     fov = thr_fov . toJSVal
 
     setFov :: Fov -> c -> Three ()
     setFov f c = thr_setFov f $ toJSVal c
 
-    aspect :: c -> Aspect
+    aspect :: c -> Three Aspect
     aspect = thr_aspect . toJSVal
 
     setAspect :: Aspect -> c -> Three ()

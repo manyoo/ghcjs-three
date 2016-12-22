@@ -23,7 +23,7 @@ mkColor r g b = fromJSVal <$> thr_mkColor r g b
 
 -- | get red
 foreign import javascript safe "($1)['r']"
-    thr_red :: JSVal -> Red
+    thr_red :: JSVal -> Three Red
 
 -- | set red
 foreign import javascript unsafe "($2)['r'] = $1"
@@ -31,7 +31,7 @@ foreign import javascript unsafe "($2)['r'] = $1"
 
 -- | get green
 foreign import javascript safe "($1)['g']"
-    thr_green :: JSVal -> Green
+    thr_green :: JSVal -> Three Green
 
 -- | set green
 foreign import javascript unsafe "($2)['g'] = $1"
@@ -39,7 +39,7 @@ foreign import javascript unsafe "($2)['g'] = $1"
 
 -- | get blue
 foreign import javascript safe "($1)['b']"
-    thr_blue :: JSVal -> Blue
+    thr_blue :: JSVal -> Three Blue
 
 -- | set blue
 foreign import javascript unsafe "($2)['b'] = $1"
@@ -51,25 +51,25 @@ foreign import javascript unsafe "($4)['setRGB']($1, $2, $3)"
 
 -- generic function to get/set color for objects
 foreign import javascript safe "($1)['color']"
-    thr_color :: JSVal -> JSVal
+    thr_color :: JSVal -> Three JSVal
 
 foreign import javascript unsafe "($2)['color'] = $1"
     thr_setColor :: JSVal -> JSVal -> Three ()
 
 class ThreeJSVal c => IsColor c where
-    red :: c -> Red
+    red :: c -> Three Red
     red = thr_red . toJSVal
 
     setRed :: Red -> c -> Three ()
     setRed r c = thr_setRed r $ toJSVal c
 
-    green :: c -> Green
+    green :: c -> Three Green
     green = thr_green . toJSVal
 
     setGreen :: Green -> c -> Three ()
     setGreen g c = thr_setGreen g $ toJSVal c
 
-    blue :: c -> Blue
+    blue :: c -> Three Blue
     blue = thr_blue . toJSVal
 
     setBlue :: Blue -> c -> Three ()
@@ -82,8 +82,8 @@ instance IsColor Color
 
 class ThreeJSVal o =>  HasColor o where
     -- | get color object
-    color :: o -> Color
-    color = fromJSVal . thr_color . toJSVal
+    color :: o -> Three Color
+    color = fmap fromJSVal . thr_color . toJSVal
 
     setColor :: Color -> o -> Three ()
     setColor c o = thr_setColor (toJSVal c) (toJSVal o)
@@ -96,5 +96,5 @@ data TColor = TColor Red Green Blue
 toColor :: TColor -> Three Color
 toColor (TColor r g b) = mkColor r g b
 
-fromColor :: Color -> TColor
-fromColor c = TColor (red c) (green c) (blue c)
+fromColor :: Color -> Three TColor
+fromColor c = TColor <$> red c <*> green c <*> blue c

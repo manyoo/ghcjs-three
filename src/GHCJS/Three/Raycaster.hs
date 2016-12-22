@@ -6,7 +6,9 @@ module GHCJS.Three.Raycaster (
 
 import GHCJS.Types
 import qualified GHCJS.Marshal as Marshal
+import Control.Monad
 import Data.Maybe (fromMaybe)
+
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
 import GHCJS.Three.Vector
@@ -64,10 +66,10 @@ setFromCamera v c r = do
     thr_setFromCamera vecVal (toJSVal c) (toJSVal r)
 
 foreign import javascript unsafe "($1)['ray']"
-    thr_getRay :: JSVal -> JSVal
+    thr_getRay :: JSVal -> Three JSVal
 
-getRay :: Raycaster -> Ray
-getRay = fromJSVal . thr_getRay . toJSVal
+getRay :: Raycaster -> Three Ray
+getRay = fmap fromJSVal . thr_getRay . toJSVal
 
 -- | intersectObject
 intersectObject :: IsObject3D obj => obj -> Raycaster -> Three [RaycastResult]
@@ -98,13 +100,13 @@ mkBaseRaycaster = fromJSVal <$> thr_mkBaseRaycaster
 
 -- | get raycast point and object from the result
 foreign import javascript safe "($1)['point']"
-    thr_point :: JSVal -> JSVal
+    thr_point :: JSVal -> Three JSVal
 
 foreign import javascript safe "($1)['object']"
-    thr_object :: JSVal -> JSVal
+    thr_object :: JSVal -> Three JSVal
 
-getCastPoint :: RaycastResult -> Vector3
-getCastPoint = (toVector3 . fromJSVal) <$> thr_point . toJSVal
+getCastPoint :: RaycastResult -> Three Vector3
+getCastPoint = (toVector3 . fromJSVal) <=< (thr_point . toJSVal)
 
-getCastObject :: RaycastResult -> Object3D
-getCastObject = fromJSVal <$> thr_object . toJSVal
+getCastObject :: RaycastResult -> Three Object3D
+getCastObject = fmap fromJSVal . thr_object . toJSVal

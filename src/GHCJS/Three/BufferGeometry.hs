@@ -14,15 +14,15 @@ newtype BufferAttribute = BufferAttribute {
     } deriving ThreeJSVal
 
 foreign import javascript unsafe "($1)['array']"
-    thr_array :: JSVal -> JSVal
+    thr_array :: JSVal -> Three JSVal
 
-array :: BufferAttribute -> JSArray
-array = SomeJSArray . thr_array . toJSVal
+array :: BufferAttribute -> Three JSArray
+array = fmap SomeJSArray . thr_array . toJSVal
 
 foreign import javascript unsafe "($1)['count']"
-    thr_count :: JSVal -> Int
+    thr_count :: JSVal -> Three Int
 
-count :: BufferAttribute -> Int
+count :: BufferAttribute -> Three Int
 count = thr_count . toJSVal
 
 
@@ -45,13 +45,13 @@ maybeAttribute v = if isNull v
                    else Just (fromJSVal v)
 
 foreign import javascript unsafe "($2)['getAttribute']($1)"
-    thr_getAttribute :: JSString -> JSVal -> JSVal
+    thr_getAttribute :: JSString -> JSVal -> Three JSVal
 
-getAttribute :: JSString -> BufferGeometry -> Maybe BufferAttribute
-getAttribute n g = maybeAttribute $ thr_getAttribute n (toJSVal g)
+getAttribute :: JSString -> BufferGeometry -> Three (Maybe BufferAttribute)
+getAttribute n g = maybeAttribute <$> thr_getAttribute n (toJSVal g)
 
 foreign import javascript unsafe "($1)['getIndex']()"
-    thr_getIndex :: JSVal -> JSVal
+    thr_getIndex :: JSVal -> Three JSVal
 
-getIndex :: BufferGeometry -> Maybe BufferAttribute
-getIndex = maybeAttribute . thr_getIndex . toJSVal
+getIndex :: BufferGeometry -> Three (Maybe BufferAttribute)
+getIndex = fmap maybeAttribute . thr_getIndex . toJSVal

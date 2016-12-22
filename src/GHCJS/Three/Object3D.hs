@@ -5,6 +5,7 @@ module GHCJS.Three.Object3D (
     IsObject3D(..)
     ) where
 
+import Control.Monad
 import Data.Functor
 import GHCJS.Types
 import qualified GHCJS.Marshal as M
@@ -32,11 +33,11 @@ mkObject3D = fromJSVal <$> thr_mkObject3D
 
 -- | get children objects
 foreign import javascript safe "($1)['children']"
-    thr_children :: JSVal -> JSVal
+    thr_children :: JSVal -> Three JSVal
 
 -- | get scale
 foreign import javascript safe "($1)['scale']"
-    thr_scale :: JSVal -> JSVal
+    thr_scale :: JSVal -> Three JSVal
 
 -- | set scale
 foreign import javascript unsafe "($2)['scale']['copy']($1)"
@@ -44,7 +45,7 @@ foreign import javascript unsafe "($2)['scale']['copy']($1)"
 
 -- | get position
 foreign import javascript safe "($1)['position']"
-    thr_position :: JSVal -> JSVal
+    thr_position :: JSVal -> Three JSVal
 
 -- | set position
 foreign import javascript unsafe "($2)['position']['copy']($1)"
@@ -52,7 +53,7 @@ foreign import javascript unsafe "($2)['position']['copy']($1)"
 
 -- | get rotation
 foreign import javascript safe "($1)['rotation']"
-    thr_rotation :: JSVal -> JSVal
+    thr_rotation :: JSVal -> Three JSVal
 
 -- | set rotation
 foreign import javascript unsafe "($2)['rotation']['copy']($1)"
@@ -60,7 +61,7 @@ foreign import javascript unsafe "($2)['rotation']['copy']($1)"
 
 -- | get up direction
 foreign import javascript safe "($1)['up']"
-    thr_up :: JSVal -> JSVal
+    thr_up :: JSVal -> Three JSVal
 
 -- | set up direction
 foreign import javascript unsafe "($2)['up']['copy']($1)"
@@ -117,7 +118,7 @@ foreign import javascript unsafe "($2)['receiveShadow'] = $1 === 1"
 -- | The global transform of the object. If the Object3d has no parent,
 -- then it's identical to the local transform.
 foreign import javascript safe "($1)['matrixWorld']"
-    thr_matrixWorld :: JSVal -> JSVal
+    thr_matrixWorld :: JSVal -> Three JSVal
 
 -- | updatesglobal transform of the object and its children
 foreign import javascript unsafe "($1)['updateMatrixWorld']()"
@@ -128,37 +129,37 @@ class (ThreeJSVal o) => IsObject3D o where
     getObject3D = fromJSVal . toJSVal
 
     getChildren :: o -> Three [Object3D]
-    getChildren o = (fmap fromJSVal . maybeToList) <$> M.fromJSVal (thr_children $ toJSVal o)
+    getChildren o = (fmap fromJSVal . maybeToList) <$> (M.fromJSVal =<< thr_children (toJSVal o))
         where maybeToList Nothing = []
               maybeToList (Just l) = l
 
     -- functions with default implementations
-    scale :: o -> Vector3
-    scale = toVector3 . fromJSVal . thr_scale . toJSVal
+    scale :: o -> Three Vector3
+    scale = (toVector3 . fromJSVal) <=< (thr_scale . toJSVal)
 
     setScale :: Vector3 -> o -> Three ()
     setScale s o = do
         sv <- mkTVector3 s
         thr_setScale (toJSVal sv) (toJSVal o)
 
-    position :: o -> Vector3
-    position = toVector3 . fromJSVal . thr_position . toJSVal
+    position :: o -> Three Vector3
+    position = (toVector3 . fromJSVal) <=< (thr_position . toJSVal)
 
     setPosition :: Vector3 -> o -> Three ()
     setPosition p o = do
         pv <- mkTVector3 p
         thr_setPosition (toJSVal pv) (toJSVal o)
 
-    rotation :: o -> TEuler
-    rotation = toTEuler . fromJSVal . thr_rotation . toJSVal
+    rotation :: o -> Three TEuler
+    rotation = (toTEuler . fromJSVal) <=< (thr_rotation . toJSVal)
 
     setRotation :: TEuler -> o -> Three ()
     setRotation r o = do
         re <- mkEuler r
         thr_setRotation (toJSVal re) (toJSVal o)
 
-    up :: o -> Vector3
-    up = toVector3 . fromJSVal . thr_up . toJSVal
+    up :: o -> Three Vector3
+    up = (toVector3 . fromJSVal) <=< (thr_up . toJSVal)
 
     setUp :: Vector3 -> o -> Three ()
     setUp u o = do
@@ -183,12 +184,12 @@ class (ThreeJSVal o) => IsObject3D o where
     localToWorld :: Vector3 -> o -> Three Vector3
     localToWorld v o = do
         vv <- mkTVector3 v
-        (toVector3 . fromJSVal) <$> thr_localToWorld (toJSVal vv) (toJSVal o)
+        (toVector3 . fromJSVal) =<< thr_localToWorld (toJSVal vv) (toJSVal o)
 
     worldToLocal :: Vector3 -> o -> Three Vector3
     worldToLocal v o = do
         vv <- mkTVector3 v
-        (toVector3 . fromJSVal) <$> thr_worldToLocal (toJSVal vv) (toJSVal o)
+        (toVector3 . fromJSVal) =<< thr_worldToLocal (toJSVal vv) (toJSVal o)
 
     lookAt :: Vector3 -> o -> Three ()
     lookAt v o = do
@@ -207,8 +208,8 @@ class (ThreeJSVal o) => IsObject3D o where
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()
     rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
 
-    matrixWorld :: o -> Matrix4
-    matrixWorld = fromJSVal . thr_matrixWorld . toJSVal
+    matrixWorld :: o -> Three Matrix4
+    matrixWorld = fmap fromJSVal . thr_matrixWorld . toJSVal
 
     updateMatrixWorld :: o -> Three ()
     updateMatrixWorld = thr_updateMatrixWorld . toJSVal

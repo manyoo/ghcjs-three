@@ -28,10 +28,10 @@ mkMatrix4 :: Three Matrix4
 mkMatrix4 = fromJSVal <$> thr_mkMatrix
 
 foreign import javascript unsafe "($1).elements"
-    thr_elements :: JSVal -> JSVal
+    thr_elements :: JSVal -> Three JSVal
 
 elements :: Matrix4 -> Three [Double]
-elements m = (mapM (fmap (fromMaybe 0) . M.fromJSVal) . fromMaybe []) =<< M.fromJSVal (thr_elements $ toJSVal m)
+elements m = (mapM (fmap (fromMaybe 0) . M.fromJSVal) . fromMaybe []) =<< M.fromJSVal =<< thr_elements (toJSVal m)
 
 foreign import javascript unsafe "($2)['getInverse']($1)"
     thr_getInverse :: JSVal -> JSVal -> Three ()

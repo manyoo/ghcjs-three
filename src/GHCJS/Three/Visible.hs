@@ -7,7 +7,7 @@ import GHCJS.Types
 import GHCJS.Three.Monad
 
 foreign import javascript safe "($1)['visible']"
-    thr_visible :: JSVal -> Bool
+    thr_visible :: JSVal -> Three Bool
 
 -- NOTE: ghcjs/ghc has a bug that Bool values are not translated to JS
 -- correctly at the time. So we use an Int here to bypass the bug
@@ -16,7 +16,7 @@ foreign import javascript unsafe "($2)['visible'] = $1 === 1"
 
 class ThreeJSVal v => Visible v where
     -- | get Visible
-    visible :: v -> Bool
+    visible :: v -> Three Bool
     visible = thr_visible . toJSVal
 
     -- | set visible
