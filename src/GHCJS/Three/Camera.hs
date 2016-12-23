@@ -20,7 +20,7 @@ newtype Camera = Camera {
 
 -- | common camera operations
 -- | get near
-foreign import javascript safe "($1)['near']"
+foreign import javascript unsafe "($1)['near']"
     thr_near :: JSVal -> Three Near
 
 -- | set near
@@ -28,7 +28,7 @@ foreign import javascript unsafe "($2)['near'] = $1"
     thr_setNear :: Near -> JSVal -> Three ()
 
 -- | get far
-foreign import javascript safe "($1)['far']"
+foreign import javascript unsafe "($1)['far']"
     thr_far :: JSVal -> Three Far
 
 -- | set far
@@ -36,7 +36,7 @@ foreign import javascript unsafe "($2)['far'] = $1"
     thr_setFar :: Far -> JSVal -> Three ()
 
 -- | get zoom
-foreign import javascript safe "($1)['zoom']"
+foreign import javascript unsafe "($1)['zoom']"
     thr_zoom :: JSVal -> Three Zoom
 
 -- | set zoom
@@ -100,7 +100,7 @@ mkOrthographicCamera l r t b n f = fromJSVal <$> thr_mkOrthographicCamera l r t 
 -- | orthographic camera operations
 
 -- | get left
-foreign import javascript safe "($1)['left']"
+foreign import javascript unsafe "($1)['left']"
     thr_left :: JSVal -> Three Left
 
 -- | set left
@@ -108,7 +108,7 @@ foreign import javascript unsafe "($2)['left'] = $1"
     thr_setLeft :: Left -> JSVal -> Three ()
 
 -- | get right
-foreign import javascript safe "($1)['right']"
+foreign import javascript unsafe "($1)['right']"
     thr_right :: JSVal -> Three Right
 
 -- | set right
@@ -116,7 +116,7 @@ foreign import javascript unsafe "($2)['right'] = $1"
     thr_setRight :: Right -> JSVal -> Three ()
 
 -- | get top
-foreign import javascript safe "($1)['top']"
+foreign import javascript unsafe "($1)['top']"
     thr_top :: JSVal -> Three Top
 
 -- | set top
@@ -124,7 +124,7 @@ foreign import javascript unsafe "($2)['top'] = $1"
     thr_setTop :: Top -> JSVal -> Three ()
 
 -- | get bottom
-foreign import javascript safe "($1)['bottom']"
+foreign import javascript unsafe "($1)['bottom']"
     thr_bottom :: JSVal -> Three Bottom
 
 -- | set bottom
@@ -178,7 +178,7 @@ mkPerspectiveCamera fov a n f = fromJSVal <$> thr_mkPerspectiveCamera fov a n f
 -- | perspective camera operations
 
 -- | get field of view
-foreign import javascript safe "($1)['fov']"
+foreign import javascript unsafe "($1)['fov']"
     thr_fov :: JSVal -> Three Fov
 
 -- | set field of view
@@ -186,7 +186,7 @@ foreign import javascript unsafe "($2)['fov'] = $1"
     thr_setFov :: Fov -> JSVal -> Three ()
 
 -- | get aspect
-foreign import javascript safe "($1)['aspect']"
+foreign import javascript unsafe "($1)['aspect']"
     thr_aspect :: JSVal -> Three Aspect
 
 -- | set aspect

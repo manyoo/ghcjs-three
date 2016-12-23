@@ -26,31 +26,31 @@ mkFace3 a b c nVec color matIdx = do
 
 
 -- varies functions to access the properties of a Face3 object
-foreign import javascript safe "($1)['a']"
+foreign import javascript unsafe "($1)['a']"
     thr_verticeA :: JSVal -> Three Int
 
 verticeA :: Face3 -> Three Int
 verticeA = thr_verticeA . toJSVal
 
-foreign import javascript safe "($1)['b']"
+foreign import javascript unsafe "($1)['b']"
     thr_verticeB :: JSVal -> Three Int
 
 verticeB :: Face3 -> Three Int
 verticeB = thr_verticeB . toJSVal
 
-foreign import javascript safe "($1)['c']"
+foreign import javascript unsafe "($1)['c']"
     thr_verticeC :: JSVal -> Three Int
 
 verticeC :: Face3 -> Three Int
 verticeC = thr_verticeC . toJSVal
 
-foreign import javascript safe "($1)['normal']"
+foreign import javascript unsafe "($1)['normal']"
     thr_faceNormal :: JSVal -> Three JSVal
 
 faceNormal :: Face3 -> Three Vector3
 faceNormal f = (toVector3 . fromJSVal) =<< thr_faceNormal (toJSVal f)
 
-foreign import javascript safe "($1)['color']"
+foreign import javascript unsafe "($1)['color']"
     thr_faceColor :: JSVal -> Three JSVal
 
 faceColor :: Face3 -> Three Color

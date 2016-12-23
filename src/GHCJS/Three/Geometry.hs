@@ -30,7 +30,7 @@ mkGeometry :: Three Geometry
 mkGeometry = fromJSVal <$> thr_mkGeometry
 
 -- | get vertices
-foreign import javascript safe "($1)['vertices']"
+foreign import javascript unsafe "($1)['vertices']"
     thr_vertices :: JSVal -> Three JSVal
 
 -- | set vertices
@@ -41,7 +41,7 @@ foreign import javascript unsafe "($2)['verticesNeedUpdate'] = $1 === 1"
     thr_setVerticesNeedUpdate :: Int -> JSVal -> Three ()
 
 -- | get faces
-foreign import javascript safe "($1)['faces']"
+foreign import javascript unsafe "($1)['faces']"
     thr_faces :: JSVal -> Three JSVal
 
 -- | set vertices
@@ -52,7 +52,7 @@ foreign import javascript unsafe "($2)['elementsNeedUpdate'] = $1 === 1"
     thr_setElementsNeedUpdate :: Int -> JSVal -> Three ()
 
 -- | get name
-foreign import javascript safe "($1)['name']"
+foreign import javascript unsafe "($1)['name']"
     thr_getName :: JSVal -> Three JSString
 
 -- | set name

@@ -6,7 +6,7 @@ module GHCJS.Three.Visible (
 import GHCJS.Types
 import GHCJS.Three.Monad
 
-foreign import javascript safe "($1)['visible']"
+foreign import javascript unsafe "($1)['visible']"
     thr_visible :: JSVal -> Three Bool
 
 -- NOTE: ghcjs/ghc has a bug that Bool values are not translated to JS

@@ -26,16 +26,16 @@ instance HasX Euler
 instance HasY Euler
 instance HasZ Euler
 
-foreign import javascript safe "($1)['x']"
+foreign import javascript unsafe "($1)['x']"
     thr_eulerX :: JSVal -> Three Double
 
-foreign import javascript safe "($1)['y']"
+foreign import javascript unsafe "($1)['y']"
     thr_eulerY :: JSVal -> Three Double
 
-foreign import javascript safe "($1)['z']"
+foreign import javascript unsafe "($1)['z']"
     thr_eulerZ :: JSVal -> Three Double
 
-foreign import javascript safe "($1)['order']"
+foreign import javascript unsafe "($1)['order']"
     thr_order :: JSVal -> Three JSString
 
 eulerX :: Euler -> Three Double

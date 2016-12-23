@@ -23,13 +23,13 @@ foreign import javascript unsafe "new window['THREE']['Mesh']($1, $2)"
 mkMesh :: (IsGeometry g, IsMaterial m) => g -> m -> Three Mesh
 mkMesh g m = fromJSVal <$> thr_mkMesh (toJSVal g) (toJSVal m)
 
-foreign import javascript safe "($1)['geometry']"
+foreign import javascript unsafe "($1)['geometry']"
     thr_geometry :: JSVal -> Three JSVal
 
 foreign import javascript unsafe "($2)['geometry'] = $1"
     thr_setGeometry :: JSVal -> JSVal -> Three ()
 
-foreign import javascript safe "($1)['material']"
+foreign import javascript unsafe "($1)['material']"
     thr_material :: JSVal -> Three JSVal
 
 foreign import javascript unsafe "($2)['material'] = $1"

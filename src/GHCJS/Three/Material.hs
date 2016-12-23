@@ -36,13 +36,13 @@ mkMaterial :: Three Material
 mkMaterial = fromJSVal <$> thr_mkMaterial
 
 -- private imported functions
-foreign import javascript safe "($1)['opacity']"
+foreign import javascript unsafe "($1)['opacity']"
     thr_opacity :: JSVal -> Three Double
 
 foreign import javascript unsafe "($2)['opacity'] = $1"
     thr_setOpacity :: Double -> JSVal -> Three ()
 
-foreign import javascript safe "($1)['transparent']"
+foreign import javascript unsafe "($1)['transparent']"
     thr_transparent :: JSVal -> Three Bool
 
 foreign import javascript unsafe "($2)['transparent'] = $1 === 1"
@@ -51,17 +51,17 @@ foreign import javascript unsafe "($2)['transparent'] = $1 === 1"
 
 type MaterialRenderFace = Int
 
-foreign import javascript safe "window['THREE']['FrontSide']"
+foreign import javascript unsafe "window['THREE']['FrontSide']"
     materialFrontSide :: MaterialRenderFace
 
-foreign import javascript safe "window['THREE']['BackSide']"
+foreign import javascript unsafe "window['THREE']['BackSide']"
     materialBackSide :: MaterialRenderFace
 
-foreign import javascript safe "window['THREE']['DoubleSide']"
+foreign import javascript unsafe "window['THREE']['DoubleSide']"
     materialDoubleSide :: MaterialRenderFace
 
 
-foreign import javascript safe "($1)['side']"
+foreign import javascript unsafe "($1)['side']"
     thr_side :: JSVal -> Three MaterialRenderFace
 
 foreign import javascript unsafe "($2)['side'] = $1"

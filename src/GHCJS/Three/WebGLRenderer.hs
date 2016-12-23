@@ -87,13 +87,13 @@ setShadowMapEnabled b r = thr_setShadowMapEnabled (if b then 1 else 0) (toJSVal 
 -- | set shadowMap.type
 type ShadowMapType = Int
 
-foreign import javascript safe "window['THREE']['BasicShadowMap']"
+foreign import javascript unsafe "window['THREE']['BasicShadowMap']"
     shadowMapTypeBasic :: ShadowMapType
 
-foreign import javascript safe "window['THREE']['PCFShadowMap']"
+foreign import javascript unsafe "window['THREE']['PCFShadowMap']"
     shadowMapTypePCF :: ShadowMapType
 
-foreign import javascript safe "window['THREE']['PCFSoftShadowMap']"
+foreign import javascript unsafe "window['THREE']['PCFSoftShadowMap']"
     shadowMapTypePCFSoft :: ShadowMapType
 
 foreign import javascript unsafe "$2['shadowMap']['type'] = $1"

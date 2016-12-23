@@ -140,11 +140,11 @@ foreign import javascript unsafe "new window['THREE']['Vector3']($1, $2, $3)"
 foreign import javascript unsafe "new window['THREE']['Vector2']($1, $2)"
     thr_mkVector2 :: Double -> Double -> Three JSVal
 
-foreign import javascript safe "($1)['x']"
+foreign import javascript unsafe "($1)['x']"
     thr_vecX :: JSVal -> Three Double
-foreign import javascript safe "($1)['y']"
+foreign import javascript unsafe "($1)['y']"
     thr_vecY :: JSVal -> Three Double
-foreign import javascript safe "($1)['z']"
+foreign import javascript unsafe "($1)['z']"
     thr_vecZ :: JSVal -> Three Double
 
 vecX :: IsJSVector v => v -> Three Double

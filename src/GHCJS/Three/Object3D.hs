@@ -32,11 +32,11 @@ mkObject3D :: Three Object3D
 mkObject3D = fromJSVal <$> thr_mkObject3D
 
 -- | get children objects
-foreign import javascript safe "($1)['children']"
+foreign import javascript unsafe "($1)['children']"
     thr_children :: JSVal -> Three JSVal
 
 -- | get scale
-foreign import javascript safe "($1)['scale']"
+foreign import javascript unsafe "($1)['scale']"
     thr_scale :: JSVal -> Three JSVal
 
 -- | set scale
@@ -44,7 +44,7 @@ foreign import javascript unsafe "($2)['scale']['copy']($1)"
     thr_setScale :: JSVal -> JSVal -> Three ()
 
 -- | get position
-foreign import javascript safe "($1)['position']"
+foreign import javascript unsafe "($1)['position']"
     thr_position :: JSVal -> Three JSVal
 
 -- | set position
@@ -52,7 +52,7 @@ foreign import javascript unsafe "($2)['position']['copy']($1)"
     thr_setPosition :: JSVal -> JSVal -> Three ()
 
 -- | get rotation
-foreign import javascript safe "($1)['rotation']"
+foreign import javascript unsafe "($1)['rotation']"
     thr_rotation :: JSVal -> Three JSVal
 
 -- | set rotation
@@ -60,7 +60,7 @@ foreign import javascript unsafe "($2)['rotation']['copy']($1)"
     thr_setRotation :: JSVal -> JSVal -> Three ()
 
 -- | get up direction
-foreign import javascript safe "($1)['up']"
+foreign import javascript unsafe "($1)['up']"
     thr_up :: JSVal -> Three JSVal
 
 -- | set up direction
@@ -117,7 +117,7 @@ foreign import javascript unsafe "($2)['receiveShadow'] = $1 === 1"
 
 -- | The global transform of the object. If the Object3d has no parent,
 -- then it's identical to the local transform.
-foreign import javascript safe "($1)['matrixWorld']"
+foreign import javascript unsafe "($1)['matrixWorld']"
     thr_matrixWorld :: JSVal -> Three JSVal
 
 -- | updatesglobal transform of the object and its children

@@ -99,10 +99,10 @@ mkBaseRaycaster :: Three Raycaster
 mkBaseRaycaster = fromJSVal <$> thr_mkBaseRaycaster
 
 -- | get raycast point and object from the result
-foreign import javascript safe "($1)['point']"
+foreign import javascript unsafe "($1)['point']"
     thr_point :: JSVal -> Three JSVal
 
-foreign import javascript safe "($1)['object']"
+foreign import javascript unsafe "($1)['object']"
     thr_object :: JSVal -> Three JSVal
 
 getCastPoint :: RaycastResult -> Three Vector3

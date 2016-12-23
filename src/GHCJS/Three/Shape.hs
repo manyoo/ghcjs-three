@@ -21,7 +21,7 @@ foreign import javascript unsafe "new window['THREE']['Shape']()"
 mkShape :: Three Shape
 mkShape = fromJSVal <$> thr_mkShape
 
-foreign import javascript safe "($1)['holes']"
+foreign import javascript unsafe "($1)['holes']"
     thr_holes :: JSVal -> Three JSVal
 
 -- | An array of paths that define the holes in the shape.
