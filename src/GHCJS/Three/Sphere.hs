@@ -1,5 +1,5 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
-module GHCJS.Three.Sphere where
+module GHCJS.Three.Sphere (Sphere(..), mkSphere) where
 
 import GHCJS.Types
 
@@ -13,3 +13,9 @@ newtype Sphere = Sphere {
 
 instance CanApplyMatrix4 Sphere
 instance CanCopy Sphere
+
+foreign import javascript unsafe "new window['THREE']['Sphere']()"
+    thr_mkSphere :: Three JSVal
+
+mkSphere :: Three Sphere
+mkSphere = fromJSVal <$> thr_mkSphere

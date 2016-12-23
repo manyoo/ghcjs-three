@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Ray (
-    Ray(..), origin, direction, intersectsSphere, intersectsBox, intersectsTriangle
+    Ray(..), mkRay, origin, direction, intersectsSphere, intersectsBox, intersectsTriangle
     ) where
 
 import GHCJS.Types
@@ -18,6 +18,12 @@ newtype Ray = Ray {
 
 instance CanCopy Ray
 instance CanApplyMatrix4 Ray
+
+foreign import javascript unsafe "new window['THREE']['Ray']()"
+    thr_mkRay :: Three JSVal
+
+mkRay :: Three Ray
+mkRay = fromJSVal <$> thr_mkRay
 
 foreign import javascript unsafe "($1)['origin']"
     thr_origin :: JSVal -> Three JSVal
