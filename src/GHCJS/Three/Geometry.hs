@@ -3,7 +3,9 @@ module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
     IsGeometry(..), HasBounding(..),
     BoxGeometry(..), mkBoxGeometry,
-    CircleGeometry(..), mkCircleGeometry
+    CircleGeometry(..), mkCircleGeometry,
+    SphereGeometry(..), mkSphereGeometry,
+    Radius, WidthSegments, HeightSegments, PhiStart, PhiLength, ThetaStart, ThetaLength
     ) where
 
 import GHCJS.Types
@@ -141,3 +143,23 @@ foreign import javascript unsafe "new window['THREE']['CircleGeometry']($1, $2)"
 -- | create a new CircleGeometry
 mkCircleGeometry :: Double -> Int -> Three CircleGeometry
 mkCircleGeometry radius segments = fromJSVal <$> thr_mkCircleGeometry radius segments
+
+
+-- | SphereGeometry
+newtype SphereGeometry = SphereGeometry {
+    getSphereGeometry :: Geometry
+    } deriving (ThreeJSVal, IsGeometry, HasBounding, Disposable)
+
+foreign import javascript unsafe "new window['THREE']['SphereGeometry']($1, $2, $3, $4, $5, $6, $7)"
+    thr_mkSphereGeometry :: Double -> Int -> Int -> Double -> Double -> Double -> Double -> Three JSVal
+
+type Radius         = Double
+type WidthSegments  = Int
+type HeightSegments = Int
+type PhiStart       = Double
+type PhiLength      = Double
+type ThetaStart     = Double
+type ThetaLength    = Double
+
+mkSphereGeometry :: Radius -> WidthSegments -> HeightSegments -> PhiStart -> PhiLength -> ThetaStart -> ThetaLength -> Three SphereGeometry
+mkSphereGeometry r ws hs ps pl ts tl = fromJSVal <$> thr_mkSphereGeometry r ws hs ps pl ts tl
