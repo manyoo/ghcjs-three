@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Matrix (
-    Matrix4(..), mkMatrix4, elements, getInverse, matrixFromArray, CanApplyMatrix4(..)
+    Matrix4(..), mkMatrix4, elements, getInverse, matrixFromArray, transpose, CanApplyMatrix4(..)
 ) where
 
 import Data.Functor
@@ -46,6 +46,12 @@ foreign import javascript unsafe "($2)['fromArray']($1)"
 
 matrixFromArray :: JSArray -> Matrix4 -> Three ()
 matrixFromArray arr m = thr_fromArray (jsval arr) (toJSVal m)
+
+foreign import javascript unsafe "($1)['transpose']()"
+    thr_transpose :: JSVal -> Three ()
+
+transpose :: Matrix4 -> Three ()
+transpose = thr_transpose . toJSVal
 
 foreign import javascript unsafe "($2)['applyMatrix4']($1)"
     thr_applyMatrix4 :: JSVal -> JSVal -> Three ()
