@@ -124,6 +124,9 @@ foreign import javascript unsafe "($1)['matrixWorld']"
 foreign import javascript unsafe "($1)['updateMatrixWorld']()"
     thr_updateMatrixWorld :: JSVal -> Three ()
 
+foreign import javascript unsafe "($2)['modelViewMatrix'] = $1"
+    thr_setModelViewMatrix :: JSVal -> JSVal -> Three ()
+
 class (ThreeJSVal o) => IsObject3D o where
     getObject3D :: o -> Object3D
     getObject3D = fromJSVal . toJSVal
@@ -213,6 +216,9 @@ class (ThreeJSVal o) => IsObject3D o where
 
     updateMatrixWorld :: o -> Three ()
     updateMatrixWorld = thr_updateMatrixWorld . toJSVal
+
+    setModelViewMatrix :: Matrix4 -> o -> Three ()
+    setModelViewMatrix m o = thr_setModelViewMatrix (toJSVal m) (toJSVal o)
 
     setCastShadow :: Bool -> o -> Three ()
     setCastShadow b o = thr_setCastShadow (if b then 1 else 0) (toJSVal o)
