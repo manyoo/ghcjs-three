@@ -13,6 +13,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
 import GHCJS.Three.Visible
 import GHCJS.Three.GLNode
+import GHCJS.Three.Matrix
 
 newtype Camera = Camera {
     cameraObject3D :: Object3D
@@ -47,6 +48,9 @@ foreign import javascript unsafe "($2)['zoom'] = $1"
 foreign import javascript unsafe "($1)['updateProjectionMatrix']()"
     thr_updateProjectionMatrix :: JSVal -> Three ()
 
+foreign import javascript unsafe "($2)['projectionMatrix'] = $1"
+    thr_setProjectionMatrix :: JSVal -> JSVal -> Three ()
+
 class (ThreeJSVal c) => IsCamera c where
     toCamera :: c -> Camera
     toCamera = fromJSVal . toJSVal
@@ -74,6 +78,9 @@ class (ThreeJSVal c) => IsCamera c where
 
     updateProjectionMatrix :: c -> Three ()
     updateProjectionMatrix = thr_updateProjectionMatrix . toJSVal
+
+    setProjectionMatrix :: Matrix4 -> c -> Three ()
+    setProjectionMatrix m c = thr_setProjectionMatrix (toJSVal m) (toJSVal c)
 
 instance IsCamera Camera
 
