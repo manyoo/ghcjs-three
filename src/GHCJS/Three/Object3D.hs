@@ -120,11 +120,17 @@ foreign import javascript unsafe "($2)['receiveShadow'] = $1 === 1"
 foreign import javascript unsafe "($1)['matrixWorld']"
     thr_matrixWorld :: JSVal -> Three JSVal
 
+foreign import javascript unsafe "($2)['matrix']['copy']($1)"
+    thr_setMatrix :: JSVal -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['matrixAutoUpdate'] = $1"
+    thr_setMatrixAutoUpdate :: Bool -> JSVal -> Three ()
+
 -- | updatesglobal transform of the object and its children
 foreign import javascript unsafe "($1)['updateMatrixWorld']()"
     thr_updateMatrixWorld :: JSVal -> Three ()
 
-foreign import javascript unsafe "($2)['modelViewMatrix'] = $1"
+foreign import javascript unsafe "($2)['modelViewMatrix']['copy']($1)"
     thr_setModelViewMatrix :: JSVal -> JSVal -> Three ()
 
 class (ThreeJSVal o) => IsObject3D o where
@@ -213,6 +219,12 @@ class (ThreeJSVal o) => IsObject3D o where
 
     matrixWorld :: o -> Three Matrix4
     matrixWorld = fmap fromJSVal . thr_matrixWorld . toJSVal
+
+    setMatrix :: Matrix4 -> o -> Three ()
+    setMatrix m o = thr_setMatrix (toJSVal m) (toJSVal o)
+
+    setMatrixAutoUpdate :: Bool -> o -> Three ()
+    setMatrixAutoUpdate u o = thr_setMatrixAutoUpdate u (toJSVal o)
 
     updateMatrixWorld :: o -> Three ()
     updateMatrixWorld = thr_updateMatrixWorld . toJSVal

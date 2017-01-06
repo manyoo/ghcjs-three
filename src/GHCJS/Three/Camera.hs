@@ -48,7 +48,7 @@ foreign import javascript unsafe "($2)['zoom'] = $1"
 foreign import javascript unsafe "($1)['updateProjectionMatrix']()"
     thr_updateProjectionMatrix :: JSVal -> Three ()
 
-foreign import javascript unsafe "($2)['projectionMatrix'] = $1"
+foreign import javascript unsafe "($2)['projectionMatrix']['copy']($1)"
     thr_setProjectionMatrix :: JSVal -> JSVal -> Three ()
 
 class (ThreeJSVal c) => IsCamera c where
