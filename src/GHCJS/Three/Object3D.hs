@@ -159,6 +159,9 @@ class (ThreeJSVal o) => IsObject3D o where
         pv <- mkTVector3 p
         thr_setPosition (toJSVal pv) (toJSVal o)
 
+    setPositionOrig :: TVector3 -> o -> Three ()
+    setPositionOrig p o = thr_setPosition (toJSVal p) (toJSVal o)
+
     rotation :: o -> Three TEuler
     rotation = (toTEuler . fromJSVal) <=< (thr_rotation . toJSVal)
 
@@ -166,6 +169,9 @@ class (ThreeJSVal o) => IsObject3D o where
     setRotation r o = do
         re <- mkEuler r
         thr_setRotation (toJSVal re) (toJSVal o)
+
+    setRotationOrig :: Euler -> o -> Three ()
+    setRotationOrig r o = thr_setRotation (toJSVal r) (toJSVal o)
 
     up :: o -> Three Vector3
     up = (toVector3 . fromJSVal) <=< (thr_up . toJSVal)
