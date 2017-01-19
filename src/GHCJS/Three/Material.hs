@@ -135,14 +135,19 @@ mkMeshNormalMaterial :: Three MeshNormalMaterial
 mkMeshNormalMaterial = fromJSVal <$> thr_mkMeshNormalMaterial
 
 
--- | class for materials that can set textures
+-- | class for materials that can get and set textures
 foreign import javascript unsafe "($2)['map'] = $1"
     thr_setTextureMap :: JSVal -> JSVal -> Three ()
+
+foreign import javascript unsafe "($1)['map']"
+    thr_textureMap :: JSVal -> Three JSVal
 
 class IsMaterial m => TexturedMaterial m where
     setTextureMap :: Texture -> m -> Three ()
     setTextureMap t m = thr_setTextureMap (toJSVal t) (toJSVal m)
 
+    textureMap :: m -> Three Texture
+    textureMap = fmap fromJSVal . thr_textureMap . toJSVal
 
 -- | MeshLambertMaterial
 newtype MeshLambertMaterial = MeshLambertMaterial {
