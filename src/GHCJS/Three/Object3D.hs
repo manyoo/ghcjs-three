@@ -16,6 +16,7 @@ import GHCJS.Three.Matrix
 import GHCJS.Three.Euler
 import GHCJS.Three.GLNode
 import GHCJS.Three.Visible
+import GHCJS.Three.HasName
 
 newtype Object3D = Object3D {
     getObject :: BaseObject
@@ -23,6 +24,7 @@ newtype Object3D = Object3D {
 
 instance IsGLNode Object3D
 instance Visible Object3D
+instance HasName Object3D
 
 -- | create a new Object3D object
 foreign import javascript unsafe "new window['THREE']['Object3D']()"

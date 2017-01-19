@@ -15,15 +15,17 @@ import Data.Maybe (fromMaybe)
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Vector hiding (getObject)
+import GHCJS.Three.HasName
 import GHCJS.Three.Disposable
 import GHCJS.Three.Face3
 import GHCJS.Three.Box3
 import GHCJS.Three.Sphere
-import Data.JSString (pack, unpack)
 
 newtype Geometry = Geometry {
     geometryObject :: BaseObject
 } deriving (ThreeJSVal)
+
+instance HasName Geometry
 
 foreign import javascript unsafe "new window['THREE']['Geometry']()"
     thr_mkGeometry :: Three JSVal
@@ -52,14 +54,6 @@ foreign import javascript unsafe "($2)['faces'] = $1"
 
 foreign import javascript unsafe "($2)['elementsNeedUpdate'] = $1 === 1"
     thr_setElementsNeedUpdate :: Int -> JSVal -> Three ()
-
--- | get name
-foreign import javascript unsafe "($1)['name']"
-    thr_getName :: JSVal -> Three JSString
-
--- | set name
-foreign import javascript unsafe "($2)['name'] = $1"
-    thr_setName :: JSString -> JSVal -> Three ()
 
 foreign import javascript unsafe "($1)['isBufferGeometry']"
     thr_isBufferGeometry :: JSVal -> Three Bool
@@ -93,12 +87,6 @@ class ThreeJSVal g => IsGeometry g where
 
     setFaces :: [Face3] -> g -> Three ()
     setFaces fs g = Marshal.toJSVal (map toJSVal fs) >>= flip thr_setFaces (toJSVal g) >> thr_setElementsNeedUpdate 1 (toJSVal g)
-
-    getName :: g -> Three String
-    getName g = unpack <$> thr_getName (toJSVal g)
-
-    setName :: String -> g -> Three ()
-    setName n g = thr_setName (pack n) (toJSVal g)
 
     isBufferGeometry :: g -> Three Bool
     isBufferGeometry = thr_isBufferGeometry . toJSVal

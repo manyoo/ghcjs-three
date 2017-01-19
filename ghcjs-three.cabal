@@ -25,6 +25,7 @@ library
                      , GHCJS.Three.Camera
                      , GHCJS.Three.Projection
                      , GHCJS.Three.Color
+                     , GHCJS.Three.HasName
                      , GHCJS.Three.Disposable
                      , GHCJS.Three.HasXYZ
                      , GHCJS.Three.CanCopy
