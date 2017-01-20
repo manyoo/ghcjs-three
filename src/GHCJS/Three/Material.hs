@@ -67,6 +67,15 @@ foreign import javascript unsafe "($1)['side']"
 foreign import javascript unsafe "($2)['side'] = $1"
     thr_setSide :: MaterialRenderFace -> JSVal -> Three ()
 
+foreign import javascript unsafe "($2)['polygonOffset'] = $1"
+    thr_setPolygonOffset :: Bool -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['polygonOffsetFactor'] = $1"
+    thr_setPolygonOffsetFactor :: Double -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['precision'] = $1"
+    thr_setPrecision :: JSString -> JSVal -> Three ()
+
 class ThreeJSVal m => IsMaterial m where
     toMaterial :: m -> Material
     toMaterial = fromJSVal . toJSVal
@@ -95,6 +104,15 @@ class ThreeJSVal m => IsMaterial m where
 
     setSide :: MaterialRenderFace -> m -> Three ()
     setSide s m = thr_setSide s $ toJSVal m
+
+    setPolygonOffset :: Bool -> m -> Three ()
+    setPolygonOffset o m = thr_setPolygonOffset o (toJSVal m)
+
+    setPolygonOffsetFactor :: Double -> m -> Three ()
+    setPolygonOffsetFactor f m = thr_setPolygonOffsetFactor f (toJSVal m)
+    
+    setPrecision :: JSString -> m -> Three ()
+    setPrecision p m = thr_setPrecision p (toJSVal m)
 
 instance IsMaterial Material
 
