@@ -55,3 +55,10 @@ foreign import javascript unsafe "($1)['getIndex']()"
 
 getIndex :: BufferGeometry -> Three (Maybe BufferAttribute)
 getIndex = fmap maybeAttribute . thr_getIndex . toJSVal
+
+
+foreign import javascript unsafe "($2)['fromBufferGeometry']($1)"
+    thr_fromBufferGeometry :: JSVal -> JSVal -> Three ()
+
+fromBufferGeometry :: BufferGeometry -> Geometry -> Three ()
+fromBufferGeometry bg g = thr_fromBufferGeometry (toJSVal bg) (toJSVal g)
