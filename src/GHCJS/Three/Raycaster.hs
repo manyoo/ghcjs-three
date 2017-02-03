@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Raycaster (
     Raycaster(..), RaycastResult(..), setRay, setRayCasterNear, setRayCasterFar, setFromCamera, getRay, mkBaseRaycaster,
-    mkRaycaster, intersectObject, intersectingObject, intersectObjects, getCastPoint, getCastObject
+    mkRaycaster, intersectObject, intersectingObject, intersectObjects, getCastPoint, getCastObject, getCastFace
 ) where
 
 import GHCJS.Types
@@ -11,6 +11,7 @@ import Data.Maybe (fromMaybe)
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Object3D
+import GHCJS.Three.Face3
 import GHCJS.Three.Vector
 import GHCJS.Three.Camera
 import GHCJS.Three.Ray
@@ -105,8 +106,14 @@ foreign import javascript unsafe "($1)['point']"
 foreign import javascript unsafe "($1)['object']"
     thr_object :: JSVal -> Three JSVal
 
+foreign import javascript unsafe "($1)['face']"
+    thr_face :: JSVal -> Three JSVal
+
 getCastPoint :: RaycastResult -> Three Vector3
 getCastPoint = (toVector3 . fromJSVal) <=< (thr_point . toJSVal)
 
 getCastObject :: RaycastResult -> Three Object3D
 getCastObject = fmap fromJSVal . thr_object . toJSVal
+
+getCastFace :: RaycastResult -> Three Face3
+getCastFace = fmap fromJSVal . thr_face . toJSVal
