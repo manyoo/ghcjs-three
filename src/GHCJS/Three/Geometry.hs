@@ -87,10 +87,10 @@ class ThreeJSVal g => IsGeometry g where
     setVertices vs g = mapM mkTVector3 vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g) >> thr_setVerticesNeedUpdate 1 (toJSVal g)
 
     faces :: g -> Three [Face3]
-    faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal =<< thr_vertices (toJSVal g))
+    faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal =<< thr_faces (toJSVal g))
 
     facesArray :: g -> Three JSArray
-    facesArray = fmap SomeJSArray . thr_vertices . toJSVal
+    facesArray = fmap SomeJSArray . thr_faces . toJSVal
 
     setFaces :: [Face3] -> g -> Three ()
     setFaces fs g = Marshal.toJSVal (map toJSVal fs) >>= flip thr_setFaces (toJSVal g) >> thr_setElementsNeedUpdate 1 (toJSVal g)
