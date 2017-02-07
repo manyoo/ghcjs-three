@@ -1,7 +1,8 @@
 {-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
 module GHCJS.Three.Raycaster (
     Raycaster(..), RaycastResult(..), setRay, setRayCasterNear, setRayCasterFar, setFromCamera, getRay, mkBaseRaycaster,
-    mkRaycaster, intersectObject, intersectingObject, intersectObjects, getCastPoint, getCastObject, getCastFace
+    mkRaycaster, intersectObject, intersectingObject, intersectObjects, getCastPoint, getCastObject, getCastFace,
+    getCastFaceIndex
 ) where
 
 import GHCJS.Types
@@ -109,6 +110,9 @@ foreign import javascript unsafe "($1)['object']"
 foreign import javascript unsafe "($1)['face']"
     thr_face :: JSVal -> Three JSVal
 
+foreign import javascript unsafe "($1)['faceIndex']"
+    thr_faceIndex :: JSVal -> Three Int
+
 getCastPoint :: RaycastResult -> Three Vector3
 getCastPoint = (toVector3 . fromJSVal) <=< (thr_point . toJSVal)
 
@@ -117,3 +121,6 @@ getCastObject = fmap fromJSVal . thr_object . toJSVal
 
 getCastFace :: RaycastResult -> Three Face3
 getCastFace = fmap fromJSVal . thr_face . toJSVal
+
+getCastFaceIndex :: RaycastResult -> Three Int
+getCastFaceIndex = thr_faceIndex . toJSVal
