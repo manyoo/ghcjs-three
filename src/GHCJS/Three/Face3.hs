@@ -15,15 +15,11 @@ newtype Face3 = Face3 {
 } deriving (ThreeJSVal)
 
 -- create a new Face3 Object
-foreign import javascript unsafe "new window['THREE']['Face3']($1, $2, $3, $4, $5, $6)"
-    thr_mkFace3 :: Int -> Int -> Int -> JSVal -> JSVal -> Int -> Three JSVal
+foreign import javascript unsafe "new window['THREE']['Face3']($1, $2, $3)"
+    thr_mkFace3 :: Int -> Int -> Int -> Three JSVal
 
-mkFace3 :: Int -> Int -> Int -> Vector3 -> TColor -> Int -> Three Face3
-mkFace3 a b c nVec color matIdx = do
-    nv <- mkTVector3 nVec
-    cl <- toColor color
-    fromJSVal <$> thr_mkFace3 a b c (toJSVal nv) (toJSVal cl) matIdx
-
+mkFace3 :: Int -> Int -> Int -> Three Face3
+mkFace3 a b c = fromJSVal <$> thr_mkFace3 a b c
 
 -- varies functions to access the properties of a Face3 object
 foreign import javascript unsafe "($1)['a']"
