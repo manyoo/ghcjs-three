@@ -19,6 +19,9 @@ foreign import javascript unsafe "($1)['max']"
 foreign import javascript unsafe "($1)['getCenter']()"
     thr_boxCenter :: JSVal -> Three JSVal
 
+foreign import javascript unsafe "($1)['getSize']()"
+    thr_boxSize :: JSVal -> Three JSVal
+
 boxMin :: Box3 -> Three Vector3
 boxMin b = thr_boxMin (toJSVal b) >>= toVector3 . fromJSVal
 
@@ -27,3 +30,6 @@ boxMax b = thr_boxMax (toJSVal b) >>= toVector3 . fromJSVal
 
 boxCenter :: Box3 -> Three Vector3
 boxCenter b = thr_boxCenter (toJSVal b) >>= toVector3 . fromJSVal
+
+boxSize :: Box3 -> Three Vector3
+boxSize b = thr_boxSize (toJSVal b) >>= toVector3 . fromJSVal
