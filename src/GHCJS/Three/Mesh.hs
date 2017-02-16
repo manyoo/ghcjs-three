@@ -36,6 +36,9 @@ foreign import javascript unsafe "($1)['material']"
 foreign import javascript unsafe "($2)['material'] = $1"
     thr_setMaterial :: JSVal -> JSVal -> Three ()
 
+foreign import javascript unsafe "($1)['isMesh']"
+    thr_isMesh :: JSVal -> Three Bool
+
 class ThreeJSVal m => IsMesh m where
     -- | get geometry
     geometry :: m -> Three Geometry
@@ -52,5 +55,8 @@ class ThreeJSVal m => IsMesh m where
     -- | set material
     setMaterial :: IsMaterial mat => mat -> m -> Three ()
     setMaterial mat m = thr_setMaterial (toJSVal mat) (toJSVal m)
+
+    isMesh :: m -> Three Bool
+    isMesh = thr_isMesh . toJSVal
 
 instance IsMesh Mesh
