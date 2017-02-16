@@ -11,6 +11,7 @@ import GHCJS.Three.Material
 import GHCJS.Three.Visible
 import GHCJS.Three.HasName
 import GHCJS.Three.GLNode
+import GHCJS.Three.HasGeoMat
 
 -- | Mesh type definition
 newtype Mesh = Mesh {
@@ -24,39 +25,12 @@ foreign import javascript unsafe "new window['THREE']['Mesh']($1, $2)"
 mkMesh :: (IsGeometry g, IsMaterial m) => g -> m -> Three Mesh
 mkMesh g m = fromJSVal <$> thr_mkMesh (toJSVal g) (toJSVal m)
 
-foreign import javascript unsafe "($1)['geometry']"
-    thr_geometry :: JSVal -> Three JSVal
-
-foreign import javascript unsafe "($2)['geometry'] = $1"
-    thr_setGeometry :: JSVal -> JSVal -> Three ()
-
-foreign import javascript unsafe "($1)['material']"
-    thr_material :: JSVal -> Three JSVal
-
-foreign import javascript unsafe "($2)['material'] = $1"
-    thr_setMaterial :: JSVal -> JSVal -> Three ()
-
 foreign import javascript unsafe "($1)['isMesh']"
     thr_isMesh :: JSVal -> Three Bool
 
 class ThreeJSVal m => IsMesh m where
-    -- | get geometry
-    geometry :: m -> Three Geometry
-    geometry = fmap fromJSVal . thr_geometry . toJSVal
-
-    -- | set geometry
-    setGeometry :: IsGeometry g => g -> m -> Three ()
-    setGeometry g m = thr_setGeometry (toJSVal g) (toJSVal m)
-
-    -- | get material
-    material :: m -> Three Material
-    material = fmap fromJSVal . thr_material . toJSVal
-
-    -- | set material
-    setMaterial :: IsMaterial mat => mat -> m -> Three ()
-    setMaterial mat m = thr_setMaterial (toJSVal mat) (toJSVal m)
-
     isMesh :: m -> Three Bool
     isMesh = thr_isMesh . toJSVal
 
 instance IsMesh Mesh
+instance HasGeoMat Mesh
