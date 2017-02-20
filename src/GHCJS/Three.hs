@@ -36,6 +36,8 @@ module GHCJS.Three
      module GHCJS.Three.CameraHelper,
      module GHCJS.Three.MTLLoader,
      module GHCJS.Three.OBJLoader,
+     module GHCJS.Three.Font,
+     module GHCJS.Three.TextGeometry,
      runThree
     )
     where
@@ -76,6 +78,8 @@ import GHCJS.Three.BufferGeometry
 import GHCJS.Three.CameraHelper
 import GHCJS.Three.MTLLoader
 import GHCJS.Three.OBJLoader
+import GHCJS.Three.Font
+import GHCJS.Three.TextGeometry
 
 import JavaScript.Web.AnimationFrame
 import GHCJS.Foreign.Callback (OnBlocked(..))

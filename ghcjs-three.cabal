@@ -51,6 +51,8 @@ library
                      , GHCJS.Three.CameraHelper
                      , GHCJS.Three.MTLLoader
                      , GHCJS.Three.OBJLoader
+                     , GHCJS.Three.Font
+                     , GHCJS.Three.TextGeometry
                      , GHCJS.Three
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
