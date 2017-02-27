@@ -37,6 +37,7 @@ module GHCJS.Three
      module GHCJS.Three.MTLLoader,
      module GHCJS.Three.OBJLoader,
      module GHCJS.Three.Font,
+     module GHCJS.Three.FontLoader,
      module GHCJS.Three.TextGeometry,
      runThree
     )
@@ -79,6 +80,7 @@ import GHCJS.Three.CameraHelper
 import GHCJS.Three.MTLLoader
 import GHCJS.Three.OBJLoader
 import GHCJS.Three.Font
+import GHCJS.Three.FontLoader
 import GHCJS.Three.TextGeometry
 
 import JavaScript.Web.AnimationFrame
