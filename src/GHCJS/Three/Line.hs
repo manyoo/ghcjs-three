@@ -9,11 +9,12 @@ import GHCJS.Three.Material
 import GHCJS.Three.Visible
 import GHCJS.Three.GLNode
 import GHCJS.Three.HasGeoMat
+import GHCJS.Three.CanCopy
 
 -- | Line type definition
 newtype Line = Line {
     lineObject3D :: Object3D
-} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode)
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode, CanCopy)
 
 instance HasGeoMat Line
 

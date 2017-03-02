@@ -12,11 +12,12 @@ import GHCJS.Three.Visible
 import GHCJS.Three.HasName
 import GHCJS.Three.GLNode
 import GHCJS.Three.HasGeoMat
+import GHCJS.Three.CanCopy
 
 -- | Mesh type definition
 newtype Mesh = Mesh {
     meshObject3D :: Object3D
-} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode, HasName)
+} deriving (ThreeJSVal, IsObject3D, Visible, IsGLNode, HasName, CanCopy)
 
 foreign import javascript unsafe "new window['THREE']['Mesh']($1, $2)"
     thr_mkMesh :: JSVal -> JSVal -> Three JSVal
