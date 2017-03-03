@@ -8,7 +8,7 @@ import GHCJS.Three.Monad
 foreign import javascript unsafe "($2)['copy']($1)"
     thr_copy :: JSVal -> JSVal -> Three ()
 
-foreign import javascript unsafe "($1).clone()"
+foreign import javascript unsafe "($1)['clone']()"
     thr_clone :: JSVal -> Three JSVal
 
 class ThreeJSVal v => CanCopy v where
