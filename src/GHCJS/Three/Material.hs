@@ -9,7 +9,8 @@ module GHCJS.Three.Material (
     TexturedMaterial(..),
     LineBasicMaterial(..), mkLineBasicMaterial,
     LineDashedMaterial(..), mkLineDashedMaterial,
-    LineMaterial(..), IsLineMaterial(..)
+    LineMaterial(..), IsLineMaterial(..),
+    setDashSize, setGapSize
 ) where
 
 import GHCJS.Types
@@ -110,7 +111,7 @@ class ThreeJSVal m => IsMaterial m where
 
     setPolygonOffsetFactor :: Double -> m -> Three ()
     setPolygonOffsetFactor f m = thr_setPolygonOffsetFactor f (toJSVal m)
-    
+
     setPrecision :: JSString -> m -> Three ()
     setPrecision p m = thr_setPrecision p (toJSVal m)
 
@@ -223,6 +224,18 @@ foreign import javascript unsafe "($1)['linewidth']"
 
 foreign import javascript unsafe "($2)['linewidth'] = $1"
     thr_setLineWidth :: Int -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['dashSize'] = $1"
+    thr_setDashSize :: Double -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['gapSize'] = $1"
+    thr_setGapSize :: Double -> JSVal -> Three ()
+
+setDashSize :: Double -> LineDashedMaterial -> Three ()
+setDashSize s m = thr_setDashSize s $ toJSVal m
+
+setGapSize :: Double -> LineDashedMaterial -> Three ()
+setGapSize s m = thr_setGapSize s $ toJSVal m
 
 newtype LineMaterial = LineMaterial Material deriving (ThreeJSVal, IsMaterial)
 

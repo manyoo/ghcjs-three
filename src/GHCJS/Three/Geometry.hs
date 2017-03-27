@@ -71,6 +71,9 @@ foreign import javascript unsafe "($1)['computeBoundingSphere']()"
 foreign import javascript unsafe "($1)['boundingSphere']"
     thr_boundingSphere :: JSVal -> Three JSVal
 
+foreign import javascript unsafe "($1)['computeLineDistances']()"
+    thr_computeLineDistances :: JSVal -> Three ()
+
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
@@ -97,6 +100,9 @@ class ThreeJSVal g => IsGeometry g where
 
     isBufferGeometry :: g -> Three Bool
     isBufferGeometry = thr_isBufferGeometry . toJSVal
+
+    computeLineDistances :: g -> Three ()
+    computeLineDistances = thr_computeLineDistances . toJSVal
 
 class ThreeJSVal g => HasBounding g where
     computeBoundingBox :: g -> Three ()
