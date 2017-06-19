@@ -5,12 +5,14 @@ module GHCJS.Three.Geometry (
     BoxGeometry(..), mkBoxGeometry,
     CircleGeometry(..), mkCircleGeometry,
     SphereGeometry(..), mkSphereGeometry,
+    FacesArray(..), VerticeArray(..), IsArray(..),
     Radius, WidthSegments, HeightSegments, PhiStart, PhiLength, ThetaStart, ThetaLength
     ) where
 
 import GHCJS.Types
 import qualified GHCJS.Marshal as Marshal
-import JavaScript.Array.Internal
+import JavaScript.Array.Internal (MutableJSArray, SomeJSArray(..))
+import qualified JavaScript.Array.Internal as JSArr
 
 import Data.Maybe (fromMaybe)
 
@@ -74,6 +76,26 @@ foreign import javascript unsafe "($1)['boundingSphere']"
 foreign import javascript unsafe "($1)['computeLineDistances']()"
     thr_computeLineDistances :: JSVal -> Three ()
 
+newtype FacesArray = FacesArray { unFacesArray :: JSArr.MutableJSArray }
+newtype VerticeArray = VerticeArray { unVerticeArray :: JSArr.MutableJSArray }
+
+class IsArray a where
+    getArray :: a -> JSArr.MutableJSArray
+
+    arrLength :: a -> IO Int
+    arrLength = JSArr.lengthIO . getArray
+
+    arrRead :: Int -> a -> IO JSVal
+    arrRead i a = JSArr.read i (getArray a)
+
+    arrWrite :: Int -> JSVal -> a -> IO ()
+    arrWrite i v a = JSArr.write i v (getArray a)
+
+instance IsArray FacesArray
+    where getArray = unFacesArray
+instance IsArray VerticeArray
+    where getArray = unVerticeArray
+
 -- use Marshal.fromJSVal to convert JSVal -> IO (Maybe [JSVal])
 -- and Marshal.toJSVal to convert [JSVal] -> IO JSVal
 class ThreeJSVal g => IsGeometry g where
@@ -83,8 +105,8 @@ class ThreeJSVal g => IsGeometry g where
         vl <- Marshal.fromJSVal vs
         mapM (toVector3 . fromJSVal) $ fromMaybe [] vl
 
-    verticesArray :: g -> Three JSArray
-    verticesArray = fmap SomeJSArray . thr_vertices . toJSVal
+    verticesArray :: g -> Three VerticeArray
+    verticesArray = fmap (VerticeArray . SomeJSArray) . thr_vertices . toJSVal
 
     setVertices :: [Vector3] -> g -> Three ()
     setVertices vs g = mapM mkTVector3 vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g) >> thr_setVerticesNeedUpdate 1 (toJSVal g)
@@ -92,8 +114,8 @@ class ThreeJSVal g => IsGeometry g where
     faces :: g -> Three [Face3]
     faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal =<< thr_faces (toJSVal g))
 
-    facesArray :: g -> Three JSArray
-    facesArray = fmap SomeJSArray . thr_faces . toJSVal
+    facesArray :: g -> Three FacesArray
+    facesArray = fmap (FacesArray . SomeJSArray) . thr_faces . toJSVal
 
     setFaces :: [Face3] -> g -> Three ()
     setFaces fs g = Marshal.toJSVal (map toJSVal fs) >>= flip thr_setFaces (toJSVal g) >> thr_setElementsNeedUpdate 1 (toJSVal g)
