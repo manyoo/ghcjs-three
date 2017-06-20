@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE JavaScriptFFI, GeneralizedNewtypeDeriving, ScopedTypeVariables #-}
 module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
     IsGeometry(..), HasBounding(..),
@@ -23,6 +23,7 @@ import GHCJS.Three.Disposable
 import GHCJS.Three.Face3
 import GHCJS.Three.Box3
 import GHCJS.Three.Sphere
+import GHCJS.Three.HasXYZ
 
 newtype Geometry = Geometry {
     geometryObject :: BaseObject
@@ -88,8 +89,12 @@ class IsArray a where
     arrRead :: Int -> a -> IO JSVal
     arrRead i a = JSArr.read i (getArray a)
 
-    arrWrite :: Int -> JSVal -> a -> IO ()
-    arrWrite i v a = JSArr.write i v (getArray a)
+    arrWrite :: Int -> Vector3 -> a -> IO ()
+    arrWrite i (Vector3 x y z) a = do
+        (v :: TVector3) <- fromJSVal <$> arrRead i a
+        setX x v
+        setY y v
+        setZ z v
 
 instance IsArray FacesArray
     where getArray = unFacesArray
@@ -110,6 +115,9 @@ class ThreeJSVal g => IsGeometry g where
 
     setVertices :: [Vector3] -> g -> Three ()
     setVertices vs g = mapM mkTVector3 vs >>= Marshal.toJSVal . map toJSVal >>= flip thr_setVectices (toJSVal g) >> thr_setVerticesNeedUpdate 1 (toJSVal g)
+
+    verticesNeedUpdate :: g -> Three ()
+    verticesNeedUpdate = thr_setVerticesNeedUpdate 1 . toJSVal
 
     faces :: g -> Three [Face3]
     faces g = (map fromJSVal . fromMaybe []) <$> (Marshal.fromJSVal =<< thr_faces (toJSVal g))
