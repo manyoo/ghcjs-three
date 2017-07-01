@@ -38,6 +38,7 @@ library
                      , GHCJS.Three.Visible
                      , GHCJS.Three.Mesh
                      , GHCJS.Three.Line
+                     , GHCJS.Three.Quaternion
                      , GHCJS.Three.Ray
                      , GHCJS.Three.Raycaster
                      , GHCJS.Three.Scene
@@ -64,14 +65,14 @@ library
   default-language:    Haskell2010
   ghcjs-options:     -O2
 
-executable ghcjs-three-demo
-  hs-source-dirs:      app
-  main-is:             Main.hs
-  build-depends:       base
-                     , ghcjs-three
-                     , ghcjs-dom
-  default-language:    Haskell2010
-  ghcjs-options:      -O2 -DGHCJS_BROWSER
+-- executable ghcjs-three-demo
+--   hs-source-dirs:      app
+--   main-is:             Main.hs
+--   build-depends:       base
+--                      , ghcjs-three
+--                      , ghcjs-dom
+--   default-language:    Haskell2010
+--   ghcjs-options:      -O2 -DGHCJS_BROWSER
 
 test-suite ghcjs-three-test
   type:                exitcode-stdio-1.0

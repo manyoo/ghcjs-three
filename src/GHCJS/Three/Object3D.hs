@@ -14,6 +14,7 @@ import GHCJS.Three.Monad
 import GHCJS.Three.Vector
 import GHCJS.Three.Matrix
 import GHCJS.Three.Euler
+import GHCJS.Three.Quaternion
 import GHCJS.Three.GLNode
 import GHCJS.Three.Visible
 import GHCJS.Three.HasName
@@ -111,6 +112,10 @@ foreign import javascript unsafe "($2)['rotateZ']($1)"
 foreign import javascript unsafe "($3)['rotateOnAxis']($1, $2)"
     thr_rotateOnAxis :: JSVal -> Double -> JSVal -> Three ()
 
+-- | Set the rotation around an axis (which is normalized)
+foreign import javascript unsafe "($3)['setRotationFromAxisAngle']($1, $2)"
+  thr_setRotationFromAxisAngle :: JSVal -> Double -> JSVal -> Three ()
+
 -- | Gets rendered into shadow map.
 foreign import javascript unsafe "($2)['castShadow'] = $1 === 1"
     thr_setCastShadow :: Int -> JSVal -> Three ()
@@ -136,6 +141,12 @@ foreign import javascript unsafe "($1)['updateMatrixWorld']()"
 
 foreign import javascript unsafe "($2)['modelViewMatrix']['copy']($1)"
     thr_setModelViewMatrix :: JSVal -> JSVal -> Three ()
+
+foreign import javascript unsafe "($1)['quaternion']"
+    thr_quaternion :: JSVal -> Three JSVal
+
+foreign import javascript unsafe "($2)['quaternion']['copy']($1)"
+  thr_setQuaternion :: JSVal -> JSVal -> Three ()
 
 class (ThreeJSVal o) => IsObject3D o where
     getObject3D :: o -> Object3D
@@ -165,6 +176,12 @@ class (ThreeJSVal o) => IsObject3D o where
 
     setPositionOrig :: TVector3 -> o -> Three ()
     setPositionOrig p o = thr_setPosition (toJSVal p) (toJSVal o)
+
+    quaternion :: o -> Three Quaternion
+    quaternion = fmap fromJSVal . thr_quaternion . toJSVal
+
+    setQuaternion :: Quaternion -> o -> Three ()
+    setQuaternion q o = thr_setQuaternion (toJSVal q) (toJSVal o)
 
     rotation :: o -> Three TEuler
     rotation = (toTEuler . fromJSVal) <=< (thr_rotation . toJSVal)
@@ -226,6 +243,9 @@ class (ThreeJSVal o) => IsObject3D o where
 
     rotateOnAxis :: NormalVector -> Double -> o -> Three ()
     rotateOnAxis v d o = thr_rotateOnAxis (toJSVal v) d (toJSVal o)
+
+    setRotationFromAxisAngle :: NormalVector -> Double -> o -> Three ()
+    setRotationFromAxisAngle v d o = thr_setRotationFromAxisAngle (toJSVal v) d (toJSVal o)
 
     matrixWorld :: o -> Three Matrix4
     matrixWorld = fmap fromJSVal . thr_matrixWorld . toJSVal
