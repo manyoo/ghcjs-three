@@ -8,7 +8,7 @@ import GHCJS.Types
 import GHCJS.Foreign.Callback
 import GHCJS.Concurrent
 
-import GHCJS.DOM.Types
+import GHCJS.DOM.Types        hiding (toJSVal, fromJSVal)
 
 import GHCJS.Three.Monad
 import GHCJS.Three.Disposable

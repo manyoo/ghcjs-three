@@ -1,6 +1,6 @@
 {-# LANGUAGE JavaScriptFFI #-}
 module GHCJS.Three.HasXYZ (
-    HasX(..), HasY(..), HasZ(..)
+    HasX(..), HasY(..), HasZ(..), HasW
     ) where
 
 import GHCJS.Types
@@ -24,6 +24,12 @@ foreign import javascript unsafe "($1)['z']"
 foreign import javascript unsafe "($2)['z'] = $1"
     objSetZ :: Double -> JSVal -> Three ()
 
+foreign import javascript unsafe "($1)['w']"
+    objGetW :: JSVal -> Three Double
+
+foreign import javascript unsafe "($2)['w'] = $1"
+    objSetW :: Double -> JSVal -> Three ()
+
 class (ThreeJSVal o) => HasX o where
     getX :: o -> Three Double
     getX = objGetX . toJSVal
@@ -44,3 +50,10 @@ class (ThreeJSVal o) => HasZ o where
 
     setZ :: Double -> o -> Three ()
     setZ z o = objSetZ z (toJSVal o)
+
+class (ThreeJSVal o) => HasW o where
+  getW :: o -> Three Double
+  getW = objGetW . toJSVal
+
+  setW :: Double -> o -> Three ()
+  setW w o = objSetW w (toJSVal o)
