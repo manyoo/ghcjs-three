@@ -135,6 +135,9 @@ foreign import javascript unsafe "($2)['matrix']['copy']($1)"
 foreign import javascript unsafe "($2)['matrixAutoUpdate'] = $1"
     thr_setMatrixAutoUpdate :: Bool -> JSVal -> Three ()
 
+foreign import javascript unsafe "($2)['matrixWorld']['copy']($1)"
+    thr_setMatrixWorld :: JSVal -> JSVal -> Three ()
+
 -- | updatesglobal transform of the object and its children
 foreign import javascript unsafe "($1)['updateMatrixWorld']()"
     thr_updateMatrixWorld :: JSVal -> Three ()
@@ -142,11 +145,15 @@ foreign import javascript unsafe "($1)['updateMatrixWorld']()"
 foreign import javascript unsafe "($2)['modelViewMatrix']['copy']($1)"
     thr_setModelViewMatrix :: JSVal -> JSVal -> Three ()
 
+
 foreign import javascript unsafe "($1)['quaternion']"
     thr_quaternion :: JSVal -> Three JSVal
 
 foreign import javascript unsafe "($2)['quaternion']['copy']($1)"
-  thr_setQuaternion :: JSVal -> JSVal -> Three ()
+    thr_setQuaternion :: JSVal -> JSVal -> Three ()
+
+foreign import javascript unsafe "($2)['parent'] = $1"
+    thr_setParent :: JSVal -> JSVal -> Three ()
 
 class (ThreeJSVal o) => IsObject3D o where
     getObject3D :: o -> Object3D
@@ -256,6 +263,9 @@ class (ThreeJSVal o) => IsObject3D o where
     setMatrixAutoUpdate :: Bool -> o -> Three ()
     setMatrixAutoUpdate u o = thr_setMatrixAutoUpdate u (toJSVal o)
 
+    setMatrixWorld :: Matrix4 -> o -> Three ()
+    setMatrixWorld m o = thr_setMatrixWorld (toJSVal m) (toJSVal o)
+
     updateMatrixWorld :: o -> Three ()
     updateMatrixWorld = thr_updateMatrixWorld . toJSVal
 
@@ -267,5 +277,9 @@ class (ThreeJSVal o) => IsObject3D o where
 
     setReceiveShadow :: Bool -> o -> Three ()
     setReceiveShadow b o = thr_setReceiveShadow (if b then 1 else 0) (toJSVal o)
+
+    setParent :: JSVal -> o -> Three ()
+    setParent p o = thr_setParent p (toJSVal o)
+
 
 instance IsObject3D Object3D
