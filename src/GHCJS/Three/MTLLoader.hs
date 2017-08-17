@@ -55,9 +55,9 @@ setTexturePath :: JSString -> MTLLoader -> Three ()
 setTexturePath p l = thr_setTexturePath p (toJSVal l)
 
 foreign import javascript unsafe "($2)['setCrossOrigin']($1)"
-    thr_setCrossOrigin :: JSString -> JSVal -> Three ()
+    thr_setCrossOrigin :: Bool -> JSVal -> Three ()
 
-setMTLLoaderCrossOrigin :: JSString -> MTLLoader -> Three ()
+setMTLLoaderCrossOrigin :: Bool -> MTLLoader -> Three ()
 setMTLLoaderCrossOrigin c l = thr_setCrossOrigin c (toJSVal l)
 
 foreign import javascript unsafe "($5)['load']($1, $2, $3, $4)"

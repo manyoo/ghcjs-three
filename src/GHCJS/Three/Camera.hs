@@ -51,6 +51,9 @@ foreign import javascript unsafe "($1)['updateProjectionMatrix']()"
 foreign import javascript unsafe "($2)['projectionMatrix']['copy']($1)"
     thr_setProjectionMatrix :: JSVal -> JSVal -> Three ()
 
+foreign import javascript unsafe "($2)['matrixWorldInverse']['copy']($1)"
+    thr_setMatrixWorldInverse :: JSVal -> JSVal -> Three ()
+
 class (ThreeJSVal c) => IsCamera c where
     toCamera :: c -> Camera
     toCamera = fromJSVal . toJSVal
@@ -81,6 +84,9 @@ class (ThreeJSVal c) => IsCamera c where
 
     setProjectionMatrix :: Matrix4 -> c -> Three ()
     setProjectionMatrix m c = thr_setProjectionMatrix (toJSVal m) (toJSVal c)
+
+    setMatrixWorldInverse :: Matrix4 -> c -> Three ()
+    setMatrixWorldInverse m c = thr_setMatrixWorldInverse (toJSVal m) (toJSVal c)
 
 instance IsCamera Camera
 
