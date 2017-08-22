@@ -2,7 +2,7 @@
 module GHCJS.Three.Light (
     Light(..), mkLight,
     AmbientLight(..), mkAmbientLight,
-    DirectionalLight(..), mkDirectionalLight, shadowCamera, lightTarget,
+    DirectionalLight(..), mkDirectionalLight, shadowCamera, lightTarget, setLightTarget,
     setShadowCameraLeft, setShadowCameraRight,
     setShadowCameraTop, setShadowCameraBottom,
     setShadowCameraNear, setShadowCameraFar,
@@ -68,6 +68,12 @@ foreign import javascript unsafe "$1['target']"
 
 lightTarget :: DirectionalLight -> Three Object3D
 lightTarget = fmap fromJSVal . thr_target . toJSVal
+
+foreign import javascript unsafe "$2['target'] = $1"
+    thr_setTarget :: JSVal -> JSVal -> Three ()
+
+setLightTarget :: Object3D -> DirectionalLight -> Three ()
+setLightTarget t l = thr_setTarget (toJSVal t) (toJSVal l)
 
 foreign import javascript unsafe "$2['shadow']['camera']['left'] = $1"
     thr_setShadowCameraLeft :: Double -> JSVal -> Three ()
