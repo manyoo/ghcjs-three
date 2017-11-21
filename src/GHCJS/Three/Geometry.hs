@@ -3,6 +3,7 @@ module GHCJS.Three.Geometry (
     Geometry(..), mkGeometry,
     IsGeometry(..), HasBounding(..),
     BoxGeometry(..), mkBoxGeometry,
+    IcosahedronGeometry(..), mkIcosahedronGeometry,
     CircleGeometry(..), mkCircleGeometry,
     SphereGeometry(..), mkSphereGeometry,
     FacesArray(..), VerticeArray(..), IsArray(..),
@@ -163,6 +164,18 @@ foreign import javascript unsafe "new window['THREE']['BoxGeometry']($1, $2, $3)
 mkBoxGeometry :: Double -> Double -> Double -> Three BoxGeometry
 mkBoxGeometry w h d = fromJSVal <$> thr_mkBoxGeometry w h d
 
+-- | IcosahedronGeometry
+newtype IcosahedronGeometry = IcosahedronGeometry {
+    getIcosahedronGeometry :: Geometry
+} deriving (ThreeJSVal, IsGeometry, HasBounding, Disposable)
+
+foreign import javascript unsafe "new window['THREE']['IcosahedronGeometry']($1, $2)"
+    thr_mkIcosahedronGeometry :: Double -> Int -> Three JSVal
+
+-- | create a new IcosahedronGeometry
+mkIcosahedronGeometry :: Double -> Int -> Three IcosahedronGeometry
+mkIcosahedronGeometry radius detail = fromJSVal <$> thr_mkIcosahedronGeometry radius detail
+
 -- | CircleGeometry
 newtype CircleGeometry = CircleGeometry {
     getCircleGeometry :: Geometry
@@ -194,3 +207,4 @@ type ThetaLength    = Double
 
 mkSphereGeometry :: Radius -> WidthSegments -> HeightSegments -> PhiStart -> PhiLength -> ThetaStart -> ThetaLength -> Three SphereGeometry
 mkSphereGeometry r ws hs ps pl ts tl = fromJSVal <$> thr_mkSphereGeometry r ws hs ps pl ts tl
+
