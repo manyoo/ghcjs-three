@@ -57,7 +57,7 @@ foreign import javascript unsafe "($3)['setSize']($1, $2)"
 foreign import javascript unsafe "($5)['setViewport']($1, $2, $3, $4)"
     thr_setViewport :: Double -> Double -> Double -> Double -> JSVal -> Three ()
 foreign import javascript unsafe "($3)['setClearColor']($1, $2)"
-    thr_setClearColor :: Double -> Double -> JSVal -> Three ()
+    thr_setClearColor :: Int -> Double -> JSVal -> Three ()
 foreign import javascript unsafe "($3)['render']($1, $2)"
     thr_render :: JSVal -> JSVal -> JSVal -> Three ()
 foreign import javascript unsafe "($2)['shadowMap']['enabled'] = $1 === 1"
@@ -77,7 +77,7 @@ setViewport :: Double -> Double -> Double -> Double -> WebGLRenderer -> Three ()
 setViewport x y w h r = thr_setViewport x y w h $ toJSVal r
 
 -- | set clear color
-setClearColor :: Double -> Double -> WebGLRenderer -> Three ()
+setClearColor :: Int -> Double -> WebGLRenderer -> Three ()
 setClearColor color alpha r = thr_setClearColor color alpha $ toJSVal r
 
 -- | set shadowMap.enabled
